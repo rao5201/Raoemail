@@ -428,6 +428,28 @@
              color: #0d47a1; 
              font-size: 0.95rem; 
              font-weight: 500; 
+         }
+
+         /* AI隐私保护框样式 */ 
+         .privacy-notice { 
+             margin: 20px 0; 
+             padding: 15px 20px; 
+             background-color: #f1f8e9; /* 浅绿色背景，代表安全/通过 */ 
+             border: 1px solid #c5e1a5; 
+             border-radius: 8px; 
+         } 
+ 
+         .privacy-notice p { 
+             margin: 0 0 10px 0; 
+             color: #33691e; 
+             font-weight: bold; 
+         } 
+ 
+         .privacy-notice p:last-child { 
+             margin: 0; 
+             font-weight: normal; 
+             color: #555; 
+             line-height: 1.6; 
          } 
      </style> 
  </head> 
@@ -722,8 +744,50 @@
                              <li>点击 “生成内容”，AI将自动为您撰写一封得体的邮件。</li> 
                              <li>您可以直接采纳，也可以让AI“更正式一点”或“更简短一点”进行微调。</li> 
                          </ol> 
+                         <div class="privacy-notice"> 
+                             <p>🛡️ 隐私保护承诺：</p> 
+                             <p>您的邮件内容仅用于本次生成请求，AI模型不会存储、记忆或将其用于任何训练目的。所有数据处理均遵循端到端加密标准，确保您的商业机密和个人隐私绝对安全。</p> 
+                         </div> 
                          <div class="feature-highlight"> 
                              <p>💡 提示： 此功能完全免费，且支持多轮对话润色，直到您满意为止。</p> 
+                         </div> 
+                     </div> 
+                 </div> 
+ 
+                 <!-- FAQ 9 --> 
+                 <div class="faq-item"> 
+                     <div class="faq-question"> 
+                         <h3>AI生成的邮件内容准确吗？我可以修改吗？</h3> 
+                         <span class="icon">+</span> 
+                     </div> 
+                     <div class="faq-answer"> 
+                         <p>Raoemail的AI助手旨在为您提供高质量的草稿和灵感，但最终的决定权在您手中。</p> 
+                         <ul class="reset-steps"> 
+                             <li>智能草稿：AI会根据您的指令生成通顺、得体的文本，但建议您发送前快速浏览，确保符合具体语境。</li> 
+                             <li>完全可编辑：AI生成的内容会直接填充到您的编辑框中。您可以像平常写邮件一样，随意修改、删除或添加任何文字，确认无误后再点击发送。</li> 
+                         </ul> 
+                         <div class="feature-highlight"> 
+                             <p>💡 建议：对于涉及重要金额、合同条款或极度敏感的信息，请务必人工复核后再发送。</p> 
+                         </div> 
+                     </div> 
+                 </div> 
+ 
+                 <!-- FAQ 10 --> 
+                 <div class="faq-item"> 
+                     <div class="faq-question"> 
+                         <h3>AI助手有哪些使用限制需要注意？</h3> 
+                         <span class="icon">+</span> 
+                     </div> 
+                     <div class="faq-answer"> 
+                         <p>虽然Raoemail的AI助手非常强大，但为了给您提供更好的服务体验，请注意以下使用限制：</p> 
+                         <ul class="reset-steps"> 
+                             <li>准确性免责： AI生成的内容基于概率模型，可能会出现“幻觉”或不准确的信息（如日期、数据）。请务必在发送前人工核对关键信息。</li> 
+                             <li>语言支持： 目前AI主要针对中文和英文进行了优化，对其他小语种的支持可能不够完美。</li> 
+                             <li>每日配额： 为了保证服务器稳定，免费用户每天最多可使用 50次 AI生成功能。次日会自动重置。</li> 
+                             <li>内容合规： AI助手内置了安全过滤机制，无法生成涉及暴力、仇恨言论或非法内容的邮件。</li> 
+                         </ul> 
+                         <div class="feature-highlight"> 
+                             <p>💡 建议： 如果您发现AI生成的内容有误，可以尝试修改您的指令（提示词），描述得更具体一些，效果会更好。</p> 
                          </div> 
                      </div> 
                  </div> 
