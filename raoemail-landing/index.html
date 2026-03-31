@@ -1,368 +1,382 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raoemail - 免费注册电子邮件</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4F46E5',
-                        secondary: '#6366F1',
-                        accent: '#8B5CF6',
-                        dark: '#1E293B',
-                        light: '#F8FAFC'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .animate-float {
-                animation: float 6s ease-in-out infinite;
-            }
-            @keyframes float {
-                0% { transform: translateY(0px); }
-                50% { transform: translateY(-10px); }
-                100% { transform: translateY(0px); }
-            }
-            .gradient-bg {
-                background: linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%);
-            }
-            .card-hover {
-                transition: all 0.3s ease;
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            }
-        }
-    </style>
-</head>
-<body class="bg-light font-sans">
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-md fixed w-full z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <i class="fa fa-envelope text-primary text-2xl"></i>
-                    <span class="text-xl font-bold text-dark">Raoemail</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="text-gray-600 hover:text-primary transition-colors">功能特点</a>
-                    <a href="#technology" class="text-gray-600 hover:text-primary transition-colors">技术支持</a>
-                    <a href="#contact" class="text-gray-600 hover:text-primary transition-colors">联系我们</a>
-                    <a href="../frontend/" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors">立即使用</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="menu-toggle" class="text-gray-600 hover:text-primary">
-                        <i class="fa fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- 移动端菜单 -->
-            <div id="mobile-menu" class="md:hidden hidden mt-4 pb-4">
-                <div class="flex flex-col space-y-3">
-                    <a href="#features" class="text-gray-600 hover:text-primary transition-colors">功能特点</a>
-                    <a href="#technology" class="text-gray-600 hover:text-primary transition-colors">技术支持</a>
-                    <a href="#contact" class="text-gray-600 hover:text-primary transition-colors">联系我们</a>
-                    <a href="../frontend/" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-center">立即使用</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+<!DOCTYPE html> 
+ <html lang="zh-CN"> 
+ <head> 
+     <meta charset="UTF-8"> 
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+     <title>Raoemail - 免费注册电子邮件 官方网站</title> 
+     <style> 
+         /* --- 基础样式重置 --- */ 
+         * { margin: 0; padding: 0; box-sizing: border-box; } 
+         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; } 
+         a { text-decoration: none; color: inherit; } 
+         ul { list-style: none; } 
+ 
+         /* --- 通用工具类 --- */ 
+         .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 0 20px; } 
+         .hidden { display: none !important; } 
+         .fade-in { animation: fadeIn 0.5s ease-in; } 
+         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } 
+ 
+         /* --- 头部导航 --- */ 
+         header { background-color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); position: fixed; width: 100%; top: 0; z-index: 1000; } 
+         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; } 
+         .logo { font-size: 1.8rem; font-weight: 700; color: #007BFF; cursor: pointer; } 
+         .nav-links a { margin-left: 20px; font-weight: 500; color: #555; transition: color 0.3s ease; } 
+         .nav-links a:hover { color: #007BFF; } 
+ 
+         /* --- 英雄区域 (Landing Page) --- */ 
+         .hero { background: linear-gradient(135deg, #007BFF, #0056b3); color: white; padding: 140px 0 100px; text-align: center; } 
+         .hero h1 { font-size: 2.8rem; margin-bottom: 20px; } 
+         .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; } 
+         .cta-button { display: inline-block; background-color: #ff9800; color: white; padding: 15px 40px; border-radius: 50px; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; cursor: pointer; border: none; } 
+         .cta-button:hover { background-color: #f57c00; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3); } 
+ 
+         /* --- 邮箱主页 (App Page - 跳转后) --- */ 
+         .app-dashboard { padding: 100px 0 50px; min-height: 80vh; } 
+         .dashboard-header { text-align: center; margin-bottom: 50px; } 
+         .dashboard-header h1 { font-size: 2.5rem; color: #333; margin-bottom: 10px; } 
+         .dashboard-header p { color: #666; } 
+         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; } 
+         .stat-card { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; } 
+         .stat-card h3 { color: #007BFF; font-size: 2rem; margin-bottom: 10px; } 
+         .stat-card p { color: #555; } 
+ 
+         /* --- 特性区域 --- */ 
+         .features { padding: 80px 0; background-color: #fff; } 
+         .features h2 { text-align: center; font-size: 2.2rem; margin-bottom: 60px; color: #333; } 
+         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; } 
+         .feature-card { text-align: center; padding: 30px; border-radius: 10px; background-color: #f9f9f9; transition: transform 0.3s ease; } 
+         .feature-card:hover { transform: translateY(-5px); } 
+         .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #007BFF; } 
+ 
+         /* --- 页脚 --- */ 
+         footer { background-color: #333; color: #ddd; padding: 60px 0 30px; text-align: center; } 
+         .footer-info p { margin: 5px 0; font-size: 0.95rem; } 
+         .footer-info strong { color: #fff; } 
+         .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #555; font-size: 0.9rem; color: #aaa; } 
+ 
+         /* --- 模态框 (登录/注册) --- */ 
+         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(3px); } 
+         .modal-overlay.active { opacity: 1; visibility: visible; } 
+         .modal { background-color: #fff; padding: 40px; border-radius: 15px; width: 90%; max-width: 450px; position: relative; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); transform: scale(0.9); transition: transform 0.3s ease; max-height: 95vh; overflow-y: auto; } 
+         .modal-overlay.active .modal { transform: scale(1); } 
+         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #aaa; cursor: pointer; transition: color 0.2s ease; } 
+         .modal-close:hover { color: #333; } 
+         
+         /* --- 表单样式 --- */ 
+         .form-header { text-align: center; margin-bottom: 30px; } 
+         .form-header h2 { color: #007BFF; margin-bottom: 10px; } 
+         .form-header p { color: #666; } 
+         .form-group { margin-bottom: 20px; } 
+         .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; } 
+         .form-group input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease; } 
+         .form-group input:focus { outline: none; border-color: #007BFF; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); } 
+         .submit-btn { width: 100%; padding: 14px; background-color: #007BFF; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease; } 
+         .submit-btn:hover { background-color: #0056b3; } 
+         .submit-btn:disabled { background-color: #a0c4ff; cursor: not-allowed; }
 
-    <!-- 英雄区域 -->
-    <section class="pt-28 pb-20 gradient-bg text-white">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-shadow">
-                        免费注册电子邮件<br>
-                        <span class="text-yellow-300">保护您的隐私</span>
-                    </h1>
-                    <p class="text-lg mb-8 text-gray-100">
-                        一键创建临时邮箱，用于网站注册、验证等场景，避免主邮箱收到垃圾邮件
-                    </p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="../frontend/" class="bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors text-center">
-                            立即创建邮箱
-                        </a>
-                        <a href="#features" class="border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-primary transition-colors text-center">
-                            了解更多
-                        </a>
-                    </div>
-                </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="animate-float">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20email%20application%20interface%20with%20inbox%20and%20messages&image_size=landscape_16_9" alt="Raoemail 界面" class="rounded-xl shadow-2xl max-w-full h-auto">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+         /* --- 协议勾选 --- */ 
+         .form-agreement { font-size: 0.8rem; color: #666; margin: 20px 0; display: flex; align-items: flex-start; gap: 8px; } 
+         .form-agreement input { margin-top: 4px; } 
+         .form-agreement a { color: #007BFF; text-decoration: underline; } 
 
-    <!-- 功能特点 -->
-    <section id="features" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-dark mb-4">强大的功能特点</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">
-                    Raoemail 提供多种实用功能，满足您的邮件管理需求
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 功能卡片 1 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-paper-plane text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">一键创建邮箱</h3>
-                    <p class="text-gray-600">
-                        无需注册，立即获取一个可用的邮箱地址，方便快捷
-                    </p>
-                </div>
-                <!-- 功能卡片 2 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-envelope-open text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">实时接收邮件</h3>
-                    <p class="text-gray-600">
-                        即时接收和查看邮件，不错过任何重要信息
-                    </p>
-                </div>
-                <!-- 功能卡片 3 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-shield text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">隐私保护</h3>
-                    <p class="text-gray-600">
-                        避免主邮箱收到垃圾邮件，保护您的个人信息
-                    </p>
-                </div>
-                <!-- 功能卡片 4 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-pencil text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">编写邮件</h3>
-                    <p class="text-gray-600">
-                        支持编写和发送邮件，方便您与他人沟通
-                    </p>
-                </div>
-                <!-- 功能卡片 5 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-cloud-upload text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">上传资料</h3>
-                    <p class="text-gray-600">
-                        支持上传和管理文件，方便您共享资料
-                    </p>
-                </div>
-                <!-- 功能卡片 6 -->
-                <div class="bg-light rounded-xl p-6 shadow-md card-hover">
-                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-save text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-3 text-dark">保存邮件</h3>
-                    <p class="text-gray-600">
-                        支持保存重要邮件，方便您后续查看
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+         /* --- 切换模式 --- */ 
+         .form-switch { text-align: center; margin-top: 20px; font-size: 0.95rem; color: #555; } 
+         .form-switch span { cursor: pointer; color: #007BFF; font-weight: 600; } 
+         .form-switch span:hover { text-decoration: underline; } 
 
-    <!-- 技术支持 -->
-    <section id="technology" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-dark mb-4">技术支持</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">
-                    我们提供专业的技术支持，确保您的使用体验
-                </p>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-8">
-                <div class="flex flex-col md:flex-row items-center">
-                    <div class="md:w-1/2 mb-10 md:mb-0">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=technical%20support%20team%20working%20on%20computers&image_size=landscape_16_9" alt="技术支持" class="rounded-lg shadow-lg max-w-full h-auto">
-                    </div>
-                    <div class="md:w-1/2 md:pl-10">
-                        <h3 class="text-2xl font-semibold mb-4 text-dark">专业的技术支持团队</h3>
-                        <p class="text-gray-600 mb-6">
-                            我们的技术支持团队随时为您提供帮助，解决您在使用过程中遇到的任何问题
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-center">
-                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
-                                <span class="text-gray-700">7x24小时技术支持</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
-                                <span class="text-gray-700">快速响应您的问题</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
-                                <span class="text-gray-700">专业的技术解决方案</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
-                                <span class="text-gray-700">定期系统更新维护</span>
-                            </li>
-                        </ul>
-                        <div class="mt-8">
-                            <a href="mailto:rao5201@126.com" class="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-secondary transition-colors inline-block">
-                                联系技术支持
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+         /* --- 法律条款弹窗 --- */ 
+         .legal-modal .modal { max-width: 700px; } 
+         .legal-content { line-height: 1.8; color: #444; } 
+         .legal-content h3 { color: #007BFF; margin: 20px 0 10px; } 
+         .legal-content p { margin-bottom: 10px; text-align: justify; } 
 
-    <!-- 联系我们 -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-dark mb-4">联系我们</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">
-                    如有任何问题或建议，欢迎随时联系我们
-                </p>
-            </div>
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-light rounded-xl p-8 shadow-md">
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-gray-700 mb-2">姓名</label>
-                                <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-gray-700 mb-2">邮箱</label>
-                                <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="subject" class="block text-gray-700 mb-2">主题</label>
-                            <input type="text" id="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-gray-700 mb-2">留言</label>
-                            <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-secondary transition-colors">
-                                发送留言
-                            </button>
-                        </div>
-                    </form>
-                    <div class="mt-10 pt-6 border-t border-gray-200">
-                        <h3 class="text-xl font-semibold mb-4 text-dark">联系信息</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center">
-                                <i class="fa fa-envelope text-primary mr-4 text-xl"></i>
-                                <span class="text-gray-700">rao5201@126.com</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fa fa-map-marker text-primary mr-4 text-xl"></i>
-                                <span class="text-gray-700">武穴茶海虾王电子商务中心</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+         /* --- 响应式 --- */ 
+         @media (max-width: 768px) { 
+             .hero { padding: 100px 0 60px; } 
+             .hero h1 { font-size: 2.2rem; } 
+             .modal { padding: 30px 20px; } 
+         } 
+     </style> 
+ </head> 
+ <body> 
 
-    <!-- 页脚 -->
-    <footer class="bg-dark text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i class="fa fa-envelope text-primary text-2xl"></i>
-                        <span class="text-xl font-bold">Raoemail</span>
-                    </div>
-                    <p class="text-gray-400">
-                        免费注册电子邮件，保护您的隐私
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">快速链接</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">功能特点</a></li>
-                        <li><a href="#technology" class="text-gray-400 hover:text-white transition-colors">技术支持</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
-                        <li><a href="../frontend/" class="text-gray-400 hover:text-white transition-colors">立即使用</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">运营方</h4>
-                    <p class="text-gray-400">
-                        武穴茶海虾王电子商务中心
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">技术支持</h4>
-                    <p class="text-gray-400">
-                        <strong>技术支持服务联系：</strong><a href="mailto:rao5201@126.com" class="text-primary hover:underline">rao5201@126.com</a>
-                    </p>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-gray-700 text-center">
-                <p class="text-gray-400">
-                    &copy; 2026 Raoemail. 保留所有权利。
-                </p>
-            </div>
-        </div>
-    </footer>
+     <!-- 1. 头部导航 --> 
+     <header> 
+         <div class="container"> 
+             <nav> 
+                 <div class="logo" onclick="location.reload()">Raoemail</div> 
+                 <div class="nav-links"> 
+                     <a href="#features">特性</a> 
+                     <a href="#footer">关于</a> 
+                 </div> 
+             </nav> 
+         </div> 
+     </header> 
 
-    <script>
-        // 移动端菜单切换
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
+     <!-- 2. 宣传页 (默认显示) --> 
+     <section id="landing-page" class="hero fade-in"> 
+         <div class="container"> 
+             <h1>安全、稳定、免费的专属邮箱</h1> 
+             <p>Raoemail 致力于为您提供极致的沟通体验，即刻注册，连接世界。</p> 
+             <button id="open-register-btn" class="cta-button">立即免费注册</button> 
+         </div> 
+     </section> 
 
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    // 关闭移动端菜单
-                    document.getElementById('mobile-menu').classList.add('hidden');
-                }
-            });
-        });
+     <!-- 3. 特性区域 --> 
+     <section id="features" class="features"> 
+         <div class="container"> 
+             <h2>产品特性</h2> 
+             <div class="features-grid"> 
+                 <div class="feature-card fade-in"> 
+                     <h3>安全可靠</h3> 
+                     <p>采用先进的加密技术，保障您的邮件安全，防止信息泄露。</p> 
+                 </div> 
+                 <div class="feature-card fade-in"> 
+                     <h3>稳定服务</h3> 
+                     <p>99.9% 服务可用性，确保您随时都能收发邮件，不会错过重要信息。</p> 
+                 </div> 
+                 <div class="feature-card fade-in"> 
+                     <h3>免费使用</h3> 
+                     <p>完全免费，无隐藏费用，让每个人都能享受高质量的邮箱服务。</p> 
+                 </div> 
+                 <div class="feature-card fade-in"> 
+                     <h3>易于使用</h3> 
+                     <p>简洁直观的界面设计，让邮件管理变得轻松简单。</p> 
+                 </div> 
+                 <div class="feature-card fade-in"> 
+                     <h3>多设备同步</h3> 
+                     <p>在电脑、手机、平板等设备上随时随地访问您的邮箱。</p> 
+                 </div> 
+                 <div class="feature-card fade-in"> 
+                     <h3>大容量存储</h3> 
+                     <p>提供充足的存储空间，让您不再为邮件存储问题担忧。</p> 
+                 </div> 
+             </div> 
+         </div> 
+     </section> 
 
-        // 表单提交
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('留言已提交，我们会尽快回复您！');
-            this.reset();
-        });
-    </script>
-</body>
-</html>
+     <!-- 4. 页脚 --> 
+     <footer id="footer"> 
+         <div class="container"> 
+             <div class="footer-info"> 
+                 <p>运营方：武穴茶海虾王电子商务中心</p> 
+                 <p><strong>技术支持服务联系：</strong><a href="mailto:rao5201@126.com">rao5201@126.com</a></p> 
+             </div> 
+             <div class="footer-bottom"> 
+                 <p>&copy; 2026 Raoemail. 保留所有权利。</p> 
+             </div> 
+         </div> 
+     </footer> 
+
+     <!-- 5. 注册模态框 --> 
+     <div id="register-modal" class="modal-overlay"> 
+         <div class="modal"> 
+             <span class="modal-close">&times;</span> 
+             <div class="form-header"> 
+                 <h2>免费注册</h2> 
+                 <p>创建您的 Raoemail 账户，开启安全沟通之旅</p> 
+             </div> 
+             <form id="register-form"> 
+                 <div class="form-group"> 
+                     <label for="register-email">邮箱地址</label> 
+                     <input type="email" id="register-email" required> 
+                 </div> 
+                 <div class="form-group"> 
+                     <label for="register-password">密码</label> 
+                     <input type="password" id="register-password" required> 
+                 </div> 
+                 <div class="form-group"> 
+                     <label for="register-confirm-password">确认密码</label> 
+                     <input type="password" id="register-confirm-password" required> 
+                 </div> 
+                 <div class="form-agreement"> 
+                     <input type="checkbox" id="agree-terms" required> 
+                     <label for="agree-terms">我已阅读并同意 <a href="#" id="open-terms">《服务条款》</a> 和 <a href="#" id="open-privacy">《隐私政策》</a></label> 
+                 </div> 
+                 <button type="submit" class="submit-btn">注册</button> 
+                 <div class="form-switch"> 
+                     已有账户？<span id="switch-to-login">立即登录</span> 
+                 </div> 
+             </form> 
+         </div> 
+     </div> 
+
+     <!-- 6. 登录模态框 --> 
+     <div id="login-modal" class="modal-overlay"> 
+         <div class="modal"> 
+             <span class="modal-close">&times;</span> 
+             <div class="form-header"> 
+                 <h2>用户登录</h2> 
+                 <p>欢迎回来，请登录您的 Raoemail 账户</p> 
+             </div> 
+             <form id="login-form"> 
+                 <div class="form-group"> 
+                     <label for="login-email">邮箱地址</label> 
+                     <input type="email" id="login-email" required> 
+                 </div> 
+                 <div class="form-group"> 
+                     <label for="login-password">密码</label> 
+                     <input type="password" id="login-password" required> 
+                 </div> 
+                 <button type="submit" class="submit-btn">登录</button> 
+                 <div class="form-switch"> 
+                     还没有账户？<span id="switch-to-register">立即注册</span> 
+                 </div> 
+             </form> 
+         </div> 
+     </div> 
+
+     <!-- 7. 服务条款模态框 --> 
+     <div id="terms-modal" class="modal-overlay legal-modal"> 
+         <div class="modal"> 
+             <span class="modal-close">&times;</span> 
+             <div class="form-header"> 
+                 <h2>服务条款</h2> 
+             </div> 
+             <div class="legal-content"> 
+                 <h3>1. 服务条款的接受</h3> 
+                 <p>通过注册或使用本服务，您同意遵守本服务条款。如果您不同意本条款的任何部分，您不得使用本服务。</p> 
+                 <h3>2. 服务内容</h3> 
+                 <p>Raoemail 提供免费的电子邮件服务，包括邮件收发、存储等功能。我们保留随时修改、暂停或终止服务的权利。</p> 
+                 <h3>3. 用户责任</h3> 
+                 <p>用户应妥善保管账户信息，不得将账户转借他人使用。用户应遵守法律法规，不得利用本服务发送垃圾邮件、违法信息等。</p> 
+                 <h3>4. 隐私保护</h3> 
+                 <p>我们重视用户隐私，将按照隐私政策保护用户信息。</p> 
+                 <h3>5. 免责声明</h3> 
+                 <p>我们不保证服务的绝对安全性和可靠性，对于因使用本服务造成的损失不承担责任。</p> 
+             </div> 
+         </div> 
+     </div> 
+
+     <!-- 8. 隐私政策模态框 --> 
+     <div id="privacy-modal" class="modal-overlay legal-modal"> 
+         <div class="modal"> 
+             <span class="modal-close">&times;</span> 
+             <div class="form-header"> 
+                 <h2>隐私政策</h2> 
+             </div> 
+             <div class="legal-content"> 
+                 <h3>1. 信息收集</h3> 
+                 <p>我们收集用户注册信息，包括邮箱地址、密码等，以及使用过程中的邮件数据。</p> 
+                 <h3>2. 信息使用</h3> 
+                 <p>我们使用收集的信息提供、维护和改进服务，以及保障账户安全。</p> 
+                 <h3>3. 信息保护</h3> 
+                 <p>我们采取技术和管理措施保护用户信息，防止未授权访问。</p> 
+                 <h3>4. 信息共享</h3> 
+                 <p>我们不会向第三方共享用户个人信息，除非法律要求或用户同意。</p> 
+                 <h3>5. 政策修改</h3> 
+                 <p>我们可能会不时修改隐私政策，修改后将在网站上公布。</p> 
+             </div> 
+         </div> 
+     </div> 
+
+     <script> 
+         // --- 模态框控制 --- 
+         const modals = {
+             register: document.getElementById('register-modal'),
+             login: document.getElementById('login-modal'),
+             terms: document.getElementById('terms-modal'),
+             privacy: document.getElementById('privacy-modal')
+         };
+
+         // 打开模态框
+         function openModal(modalId) {
+             modals[modalId].classList.add('active');
+             document.body.style.overflow = 'hidden';
+         }
+
+         // 关闭模态框
+         function closeModal(modalId) {
+             modals[modalId].classList.remove('active');
+             document.body.style.overflow = 'auto';
+         }
+
+         // 关闭所有模态框
+         function closeAllModals() {
+             Object.values(modals).forEach(modal => modal.classList.remove('active'));
+             document.body.style.overflow = 'auto';
+         }
+
+         // 模态框关闭按钮
+         document.querySelectorAll('.modal-close').forEach(button => {
+             button.addEventListener('click', closeAllModals);
+         });
+
+         // 点击模态框外部关闭
+         Object.values(modals).forEach(modal => {
+             modal.addEventListener('click', (e) => {
+                 if (e.target === modal) closeAllModals();
+             });
+         });
+
+         // --- 事件绑定 --- 
+         // 注册按钮
+         document.getElementById('open-register-btn').addEventListener('click', () => openModal('register'));
+
+         // 切换登录/注册
+         document.getElementById('switch-to-login').addEventListener('click', () => {
+             closeModal('register');
+             openModal('login');
+         });
+
+         document.getElementById('switch-to-register').addEventListener('click', () => {
+             closeModal('login');
+             openModal('register');
+         });
+
+         // 法律条款
+         document.getElementById('open-terms').addEventListener('click', (e) => {
+             e.preventDefault();
+             openModal('terms');
+         });
+
+         document.getElementById('open-privacy').addEventListener('click', (e) => {
+             e.preventDefault();
+             openModal('privacy');
+         });
+
+         // --- 表单提交 --- 
+         // 注册表单
+         document.getElementById('register-form').addEventListener('submit', function(e) {
+             e.preventDefault();
+             const email = document.getElementById('register-email').value;
+             const password = document.getElementById('register-password').value;
+             const confirmPassword = document.getElementById('register-confirm-password').value;
+
+             if (password !== confirmPassword) {
+                 alert('两次输入的密码不一致');
+                 return;
+             }
+
+             // 模拟注册成功
+             alert('注册成功！请登录您的账户。');
+             closeModal('register');
+             openModal('login');
+             document.getElementById('login-email').value = email;
+         });
+
+         // 登录表单
+         document.getElementById('login-form').addEventListener('submit', function(e) {
+             e.preventDefault();
+             const email = document.getElementById('login-email').value;
+
+             // 模拟登录成功，跳转到邮箱应用
+             alert('登录成功！正在跳转至邮箱应用...');
+             closeAllModals();
+             // 跳转到前端应用
+             window.location.href = '../frontend/';
+         });
+
+         // --- 页面加载动画 --- 
+         window.addEventListener('load', function() {
+             document.querySelectorAll('.fade-in').forEach((el, index) => {
+                 setTimeout(() => {
+                     el.style.opacity = '1';
+                     el.style.transform = 'translateY(0)';
+                 }, index * 100);
+             });
+         });
+     </script> 
+ </body> 
+ </html>
