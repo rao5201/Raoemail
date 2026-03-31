@@ -96,6 +96,104 @@
              .hero { padding: 100px 0 60px; } 
              .hero h1 { font-size: 2.2rem; } 
              .modal { padding: 30px 20px; } 
+         }
+
+         /* 用户评价区域样式 */ 
+         .testimonials { 
+             padding: 80px 0; 
+             background-color: #f8f9fa; /* 浅灰背景，与白色特性区区分 */ 
+         } 
+ 
+         .testimonials h2 { 
+             text-align: center; 
+             font-size: 2.2rem; 
+             margin-bottom: 10px; 
+             color: #333; 
+         } 
+ 
+         .section-subtitle { 
+             text-align: center; 
+             color: #666; 
+             margin-bottom: 60px; 
+             font-size: 1.1rem; 
+         } 
+ 
+         .testimonials-grid { 
+             display: grid; 
+             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+             gap: 40px; 
+         } 
+ 
+         .testimonial-card { 
+             background-color: #fff; 
+             padding: 40px; 
+             border-radius: 15px; 
+             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+             transition: transform 0.3s ease; 
+             display: flex; 
+             flex-direction: column; 
+             justify-content: space-between; 
+         } 
+ 
+         .testimonial-card:hover { 
+             transform: translateY(-10px); 
+         } 
+ 
+         .stars { 
+             color: #ffc107; /* 星星颜色 */ 
+             font-size: 1.2rem; 
+             margin-bottom: 20px; 
+             letter-spacing: 2px; 
+         } 
+ 
+         .review-text { 
+             font-size: 1rem; 
+             color: #555; 
+             line-height: 1.8; 
+             margin-bottom: 30px; 
+             font-style: italic; 
+         } 
+ 
+         .user-info { 
+             display: flex; 
+             align-items: center; 
+             gap: 15px; 
+             border-top: 1px solid #eee; 
+             padding-top: 20px; 
+         } 
+ 
+         .avatar { 
+             width: 50px; 
+             height: 50px; 
+             border-radius: 50%; 
+             background-color: #007BFF; 
+             color: white; 
+             display: flex; 
+             justify-content: center; 
+             align-items: center; 
+             font-size: 1.2rem; 
+             font-weight: bold; 
+         } 
+ 
+         .user-info h4 { 
+             font-size: 1.1rem; 
+             color: #333; 
+             margin-bottom: 2px; 
+         } 
+ 
+         .user-info span { 
+             font-size: 0.9rem; 
+             color: #888; 
+         } 
+ 
+         /* 响应式调整 */ 
+         @media (max-width: 768px) { 
+             .testimonials { 
+                 padding: 60px 0; 
+             } 
+             .testimonial-card { 
+                 padding: 30px; 
+             } 
          } 
      </style> 
  </head> 
@@ -181,6 +279,55 @@
                  <div class="feature-card fade-in"> 
                      <h3>大容量存储</h3> 
                      <p>提供充足的存储空间，让您不再为邮件存储问题担忧。</p> 
+                 </div> 
+             </div> 
+         </div> 
+     </section> 
+
+     <!-- 用户评价区域 --> 
+     <section class="testimonials"> 
+         <div class="container"> 
+             <h2>来自用户的真实声音</h2> 
+             <p class="section-subtitle">看看大家为什么选择 Raoemail</p> 
+             
+             <div class="testimonials-grid"> 
+                 <!-- 评价 1：商务办公 --> 
+                 <div class="testimonial-card"> 
+                     <div class="stars">⭐⭐⭐⭐⭐</div> 
+                     <p class="review-text">"以前用的邮箱总是有各种广告弹窗，非常影响工作效率。切换到 Raoemail 后，界面清爽，收发信速度极快，现在它是我工作中不可或缺的得力助手！"</p> 
+                     <div class="user-info"> 
+                         <div class="avatar">李</div> 
+                         <div> 
+                             <h4>李先生</h4> 
+                             <span>项目经理</span> 
+                         </div> 
+                     </div> 
+                 </div> 
+
+                 <!-- 评价 2：隐私安全 --> 
+                 <div class="testimonial-card"> 
+                     <div class="stars">⭐⭐⭐⭐⭐</div> 
+                     <p class="review-text">"作为一个对隐私比较敏感的人，Raoemail 的安全机制让我很放心。注册过程简单，而且能看到运营方是正规公司，用起来很有安全感。"</p> 
+                     <div class="user-info"> 
+                         <div class="avatar">陈</div> 
+                         <div> 
+                             <h4>陈小姐</h4> 
+                             <span>自由职业者</span> 
+                         </div> 
+                     </div> 
+                 </div> 
+
+                 <!-- 评价 3：学生/日常 --> 
+                 <div class="testimonial-card"> 
+                     <div class="stars">⭐⭐⭐⭐⭐</div> 
+                     <p class="review-text">"手机同步功能太棒了！在宿舍用电脑写的邮件，出门在路上用手机就能接着看。对于我们要经常提交作业和简历的大学生来说，真的非常方便。"</p> 
+                     <div class="user-info"> 
+                         <div class="avatar">王</div> 
+                         <div> 
+                             <h4>王同学</h4> 
+                             <span>在校大学生</span> 
+                         </div> 
+                     </div> 
                  </div> 
              </div> 
          </div> 
