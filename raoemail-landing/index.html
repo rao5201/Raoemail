@@ -351,6 +351,39 @@
          .reset-steps li::marker { 
              color: #007BFF; /* 列表数字颜色 */ 
              font-weight: bold; 
+         }
+
+         /* 客服联系方式样式 */ 
+         .support-contact { 
+             margin-top: 15px; 
+             padding: 15px; 
+             background-color: #f0f7ff; 
+             border-left: 3px solid #007BFF; 
+             border-radius: 4px; 
+             font-size: 0.9rem; 
+         } 
+ 
+         .support-contact p { 
+             margin: 5px 0; 
+             color: #333; 
+         } 
+ 
+         .support-contact a { 
+             color: #007BFF; 
+             text-decoration: none; 
+             font-weight: 500; 
+         } 
+ 
+         .support-contact a:hover { 
+             text-decoration: underline; 
+         } 
+ 
+         /* 响应式调整 */ 
+         @media (max-width: 768px) { 
+             .support-contact { 
+                 padding: 12px; 
+                 font-size: 0.85rem; 
+             } 
          } 
      </style> 
  </head> 
@@ -594,6 +627,11 @@
                              <li>点击邮件中的安全链接，即可设置新密码。</li> 
                          </ol> 
                          <p><strong>注意：</strong> 为了安全起见，重置链接在发送后 24小时 内有效。如果您没有收到邮件，请检查您的垃圾邮件文件夹。</p> 
+                         <div class="support-contact"> 
+                             <p>若仍无法解决，请联系我们的客服团队：</p> 
+                             <p>邮箱：<a href="mailto:rao5201@126.com">rao5201@126.com</a></p> 
+                             <p>服务时间：周一至周五 9:00-18:00（法定节假日除外）</p> 
+                         </div> 
                      </div> 
                  </div> 
              </div> 
