@@ -412,6 +412,22 @@
              margin-bottom: 5px; 
              color: #555; 
              line-height: 1.6; 
+         }
+
+         /* AI功能高亮提示框 */ 
+         .feature-highlight { 
+             margin-top: 15px; 
+             padding: 12px 15px; 
+             background-color: #e3f2fd; /* 浅蓝色背景，代表科技/智能 */ 
+             border-left: 4px solid #2196f3; 
+             border-radius: 4px; 
+         } 
+ 
+         .feature-highlight p { 
+             margin: 0; 
+             color: #0d47a1; 
+             font-size: 0.95rem; 
+             font-weight: 500; 
          } 
      </style> 
  </head> 
@@ -680,12 +696,34 @@
                              <li>在客户端（如 Outlook）的密码栏中，<strong>粘贴此授权码</strong>代替原密码登录。</li> 
                          </ol> 
                          <div class="security-notice"> 
-                             <p>安全小贴士：</p> 
+                             <p>⚠️ 安全小贴士：</p> 
                              <ul> 
+                                 <li><strong>有效期说明：</strong> 授权码默认长期有效。但为了安全，建议每 90天 更换一次。如果您在设置中开启了“定期轮换”模式，授权码将在 30天 后自动失效，需重新生成。</li> 
                                  <li>授权码仅在生成时显示一次，请务必立即复制保存。</li> 
                                  <li>若怀疑授权码泄露，可随时在网页版设置中“重置”或“关闭”它。</li> 
                                  <li>一个账号最多可同时支持 5 个不同的客户端授权码。</li> 
                              </ul> 
+                         </div> 
+                     </div> 
+                 </div> 
+ 
+                 <!-- FAQ 8 --> 
+                 <div class="faq-item"> 
+                     <div class="faq-question"> 
+                         <h3>如何使用AI助手帮我自动写邮件和回复？</h3> 
+                         <span class="icon">+</span> 
+                     </div> 
+                     <div class="faq-answer"> 
+                         <p>Raoemail 集成了先进的 免费AI大模型，能帮您大幅提升沟通效率。无论是商务回复还是日常寒暄，AI都能为您提供草稿建议。</p> 
+                         <p>使用步骤：</p> 
+                         <ol class="reset-steps"> 
+                             <li>在写信或回复页面，找到右下角的 “ AI 助手” 悬浮按钮。</li> 
+                             <li>输入您的意图（例如：“委婉地拒绝这个会议邀请” 或 “感谢客户的询价”）。</li> 
+                             <li>点击 “生成内容”，AI将自动为您撰写一封得体的邮件。</li> 
+                             <li>您可以直接采纳，也可以让AI“更正式一点”或“更简短一点”进行微调。</li> 
+                         </ol> 
+                         <div class="feature-highlight"> 
+                             <p>💡 提示： 此功能完全免费，且支持多轮对话润色，直到您满意为止。</p> 
                          </div> 
                      </div> 
                  </div> 
