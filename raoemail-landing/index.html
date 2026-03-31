@@ -334,6 +334,23 @@
                  padding: 10px; 
                  font-size: 0.9rem; 
              } 
+         }
+
+         /* 密码重置步骤列表样式 */ 
+         .reset-steps { 
+             margin: 15px 0 15px 20px; /* 左侧缩进 */ 
+             padding: 0; 
+             line-height: 1.8; 
+             color: #555; 
+         } 
+ 
+         .reset-steps li { 
+             margin-bottom: 8px; 
+         } 
+ 
+         .reset-steps li::marker { 
+             color: #007BFF; /* 列表数字颜色 */ 
+             font-weight: bold; 
          } 
      </style> 
  </head> 
@@ -559,6 +576,24 @@
                              </table> 
                          </div> 
                          <p><strong>提示：</strong> 用户名请填写您的完整邮箱地址。为了账户安全，建议在客户端登录时使用“授权码”而非邮箱密码（需在网页版邮箱设置中开启）。</p> 
+                     </div> 
+                 </div> 
+ 
+                 <!-- FAQ 6 --> 
+                 <div class="faq-item"> 
+                     <div class="faq-question"> 
+                         <h3>如果我忘记了登录密码，该如何找回？</h3> 
+                         <span class="icon">+</span> 
+                     </div> 
+                     <div class="faq-answer"> 
+                         <p>别担心，找回密码非常简单。请按照以下步骤操作：</p> 
+                         <ol class="reset-steps"> 
+                             <li>在登录页面点击“忘记密码”链接。</li> 
+                             <li>输入您注册时使用的完整邮箱地址。</li> 
+                             <li>登录您的邮箱，查收来自 Raoemail 的“密码重置邮件”。</li> 
+                             <li>点击邮件中的安全链接，即可设置新密码。</li> 
+                         </ol> 
+                         <p><strong>注意：</strong> 为了安全起见，重置链接在发送后 24小时 内有效。如果您没有收到邮件，请检查您的垃圾邮件文件夹。</p> 
                      </div> 
                  </div> 
              </div> 
