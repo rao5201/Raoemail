@@ -450,6 +450,82 @@
              font-weight: normal; 
              color: #555; 
              line-height: 1.6; 
+         }
+
+         /* AI提示词技巧框样式 */ 
+         .prompt-tips { 
+             margin: 20px 0; 
+             padding: 15px 20px; 
+             background-color: #fff9c4; /* 浅黄色背景，代表提示/技巧 */ 
+             border: 1px solid #fff59d; 
+             border-radius: 8px; 
+         } 
+ 
+         .prompt-tips p { 
+             margin: 0 0 10px 0; 
+             color: #fbc02d; 
+             font-weight: bold; 
+         } 
+ 
+         .prompt-tips p:last-child { 
+             margin: 0; 
+             font-weight: normal; 
+             color: #555; 
+             line-height: 1.6; 
+         } 
+ 
+         .prompt-tips ul { 
+             margin: 0 0 10px 0; 
+             padding-left: 20px; 
+             list-style-type: disc; 
+         } 
+ 
+         .prompt-tips li { 
+             margin-bottom: 5px; 
+             color: #555; 
+             line-height: 1.6; 
+         } 
+
+         /* AI付费升级框样式 */ 
+         .upgrade-notice { 
+             margin-top: 20px; 
+             padding: 15px 20px; 
+             background-color: #e8f5e9; /* 浅绿色背景，代表升级/特权 */ 
+             border: 1px solid #c8e6c9; 
+             border-radius: 8px; 
+         } 
+ 
+         .upgrade-notice p { 
+             margin: 0 0 10px 0; 
+             color: #2e7d32; 
+             font-weight: bold; 
+         } 
+ 
+         .upgrade-notice ul { 
+             margin: 0 0 15px 0; 
+             padding-left: 20px; 
+             list-style-type: disc; 
+         } 
+ 
+         .upgrade-notice li { 
+             margin-bottom: 5px; 
+             color: #555; 
+             line-height: 1.6; 
+         } 
+ 
+         .upgrade-button { 
+             display: inline-block; 
+             padding: 10px 20px; 
+             background-color: #4caf50; 
+             color: white; 
+             text-decoration: none; 
+             border-radius: 5px; 
+             font-weight: bold; 
+             transition: background-color 0.3s ease; 
+         } 
+ 
+         .upgrade-button:hover { 
+             background-color: #43a047; 
          } 
      </style> 
  </head> 
@@ -462,6 +538,9 @@
                  <div class="logo" onclick="location.reload()">Raoemail</div> 
                  <div class="nav-links"> 
                      <a href="#features">特性</a> 
+                     <a href="#faq">常见问题</a> 
+                     <a href="ai-tutorial.html">AI教程</a> 
+                     <a href="ai-feedback.html">AI反馈</a> 
                      <a href="#footer">关于</a> 
                  </div> 
              </nav> 
@@ -766,6 +845,17 @@
                              <li>智能草稿：AI会根据您的指令生成通顺、得体的文本，但建议您发送前快速浏览，确保符合具体语境。</li> 
                              <li>完全可编辑：AI生成的内容会直接填充到您的编辑框中。您可以像平常写邮件一样，随意修改、删除或添加任何文字，确认无误后再点击发送。</li> 
                          </ul> 
+                         <div class="prompt-tips"> 
+                             <p>💡 提示词技巧：</p> 
+                             <p>清晰、具体的提示词能让AI生成更符合您需求的内容。以下是一些实用技巧：</p> 
+                             <ul> 
+                                 <li>明确角色：告诉AI“你是一位专业的商务顾问”或“你是一位亲切的客服代表”。</li> 
+                                 <li>指定语气：使用“正式”、“友好”、“简洁”、“委婉”等词汇来描述您想要的语气。</li> 
+                                 <li>提供背景：简要说明邮件的背景信息，如“回复客户的询价邮件”或“向老板请假”。</li> 
+                                 <li>设定格式：指定邮件的结构，如“分点列出”或“包含问候语和结束语”。</li> 
+                             </ul> 
+                             <p>示例：“你是一位专业的商务顾问。请用正式的语气，回复客户的询价邮件。邮件内容需要包含产品价格、交货时间和付款方式，并分点列出。”</p> 
+                         </div> 
                          <div class="feature-highlight"> 
                              <p>💡 建议：对于涉及重要金额、合同条款或极度敏感的信息，请务必人工复核后再发送。</p> 
                          </div> 
@@ -788,6 +878,20 @@
                          </ul> 
                          <div class="feature-highlight"> 
                              <p>💡 建议： 如果您发现AI生成的内容有误，可以尝试修改您的指令（提示词），描述得更具体一些，效果会更好。</p> 
+                         </div> 
+                         <div class="feature-highlight"> 
+                             <p>📚 想要了解更多AI助手使用技巧？<a href="ai-tutorial.html" style="color: #007BFF; text-decoration: underline;">查看详细教程</a></p> 
+                         </div> 
+                         <div class="upgrade-notice"> 
+                             <p>🚀 想要无限制使用AI助手？</p> 
+                             <p>升级至Raoemail Pro版本，即可享受以下特权：</p> 
+                             <ul> 
+                                 <li>无限次AI生成功能</li> 
+                                 <li>更高级的AI模型，生成内容更精准</li> 
+                                 <li>专属的AI提示词模板库</li> 
+                                 <li>优先客服支持</li> 
+                             </ul> 
+                             <a href="#" class="upgrade-button">立即升级</a> 
                          </div> 
                      </div> 
                  </div> 
