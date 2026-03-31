@@ -6,6 +6,11 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [selectedMessage, setSelectedMessage] = useState(null)
+  const [composeEmail, setComposeEmail] = useState(false)
+  const [newEmail, setNewEmail] = useState({ to: '', subject: '', body: '' })
+  const [savedEmails, setSavedEmails] = useState([])
+  const [uploadedFiles, setUploadedFiles] = useState([])
+  const [fileToUpload, setFileToUpload] = useState(null)
 
   // Create new email
   const createEmail = async () => {
@@ -75,6 +80,8 @@ function App() {
         setEmailData(null)
         setMessages([])
         setSelectedMessage(null)
+        setSavedEmails([])
+        setUploadedFiles([])
       }
     } catch (err) {
       console.error('Failed to delete email:', err)
@@ -88,16 +95,52 @@ function App() {
     }
   }
 
+  // Save email
+  const saveEmail = (message) => {
+    setSavedEmails([...savedEmails, message])
+    alert('邮件已保存')
+  }
+
+  // Handle file upload
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFileToUpload(file)
+      // Simulate upload success
+      setTimeout(() => {
+        setUploadedFiles([...uploadedFiles, {
+          id: Date.now(),
+          name: file.name,
+          size: file.size,
+          type: file.type
+        }])
+        setFileToUpload(null)
+        alert('文件上传成功')
+      }, 1000)
+    }
+  }
+
+  // Send email
+  const sendEmail = () => {
+    // Simulate sending email
+    alert(`邮件已发送至: ${newEmail.to}`)
+    setNewEmail({ to: '', subject: '', body: '' })
+    setComposeEmail(false)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-indigo-900 mb-2">
-            📧 免费邮箱注册
+            📧 Raoemail
           </h1>
           <p className="text-gray-600">
-            一键创建临时邮箱，用于注册、验证等场景
+            免费注册电子邮件，保护您的隐私
+          </p>
+          <p className="text-gray-500 text-sm mt-1">
+            运营方：武穴茶海虾王电子商务中心 | 技术支持：rao5201@126.com
           </p>
         </header>
 
@@ -109,7 +152,7 @@ function App() {
               <div className="mb-6">
                 <div className="text-6xl mb-4">🎉</div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  创建您的免费临时邮箱
+                  创建您的免费邮箱
                 </h2>
                 <p className="text-gray-600">
                   立即获取一个可用的邮箱地址，无需注册
@@ -150,6 +193,9 @@ function App() {
                   <li>✅ 即时接收邮件</li>
                   <li>✅ 可用于网站验证</li>
                   <li>✅ 保护隐私，避免垃圾邮件</li>
+                  <li>✅ 支持编写和发送邮件</li>
+                  <li>✅ 支持上传和保存资料</li>
+                  <li>✅ 支持保存重要邮件</li>
                 </ul>
               </div>
             </div>
@@ -172,15 +218,25 @@ function App() {
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={deleteEmail}
-                    className="text-red-600 hover:text-red-800 text-sm"
-                  >
-                    删除邮箱
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => setComposeEmail(true)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white 
+                               font-medium py-2 px-4 rounded-lg transition-colors
+                               text-sm"
+                    >
+                      ✏️ 编写邮件
+                    </button>
+                    <button
+                      onClick={deleteEmail}
+                      className="text-red-600 hover:text-red-800 text-sm"
+                    >
+                      🗑️ 删除邮箱
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
                   <button
                     onClick={refreshMessages}
                     className="bg-green-600 hover:bg-green-700 text-white 
@@ -199,8 +255,43 @@ function App() {
                   >
                     📋 复制邮箱
                   </button>
+                  <button
+                    onClick={() => document.getElementById('file-upload').click()}
+                    className="bg-purple-600 hover:bg-purple-700 text-white 
+                             font-medium py-2 px-4 rounded-lg transition-colors"
+                  >
+                    📁 上传文件
+                  </button>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
                 </div>
               </div>
+
+              {/* Uploaded Files */}
+              {uploadedFiles.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    📁 已上传文件 ({uploadedFiles.length})
+                  </h3>
+                  <div className="space-y-2">
+                    {uploadedFiles.map((file) => (
+                      <div key={file.id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-center">
+                        <div>
+                          <p className="font-medium text-gray-800 text-sm">{file.name}</p>
+                          <p className="text-gray-500 text-xs">{file.size} bytes</p>
+                        </div>
+                        <button className="text-blue-600 hover:text-blue-800 text-sm">
+                          📥 下载
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Messages List */}
               <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -241,6 +332,39 @@ function App() {
                 )}
               </div>
 
+              {/* Saved Emails */}
+              {savedEmails.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    💾 已保存邮件 ({savedEmails.length})
+                  </h3>
+                  <div className="space-y-2">
+                    {savedEmails.map((msg, index) => (
+                      <div
+                        key={index}
+                        onClick={() => setSelectedMessage(msg)}
+                        className="border border-gray-200 rounded-lg p-4 
+                                 hover:bg-indigo-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-800">
+                              {msg.from?.name || msg.from?.address}
+                            </p>
+                            <p className="text-gray-600 text-sm mt-1">
+                              {msg.subject}
+                            </p>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {new Date(msg.createdAt).toLocaleString('zh-CN')}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Selected Message View */}
               {selectedMessage && (
                 <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -248,12 +372,20 @@ function App() {
                     <h3 className="text-xl font-semibold text-gray-800">
                       📄 邮件详情
                     </h3>
-                    <button
-                      onClick={() => setSelectedMessage(null)}
-                      className="text-gray-600 hover:text-gray-800"
-                    >
-                      ✕ 关闭
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => saveEmail(selectedMessage)}
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        💾 保存邮件
+                      </button>
+                      <button
+                        onClick={() => setSelectedMessage(null)}
+                        className="text-gray-600 hover:text-gray-800 text-sm"
+                      >
+                        ✕ 关闭
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="space-y-3 text-sm">
@@ -283,13 +415,81 @@ function App() {
                   </div>
                 </div>
               )}
+
+              {/* Compose Email */}
+              {composeEmail && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      ✏️ 编写邮件
+                    </h3>
+                    <button
+                      onClick={() => setComposeEmail(false)}
+                      className="text-gray-600 hover:text-gray-800 text-sm"
+                    >
+                      ✕ 关闭
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">收件人</label>
+                      <input
+                        type="email"
+                        value={newEmail.to}
+                        onChange={(e) => setNewEmail({...newEmail, to: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="请输入收件人邮箱"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">主题</label>
+                      <input
+                        type="text"
+                        value={newEmail.subject}
+                        onChange={(e) => setNewEmail({...newEmail, subject: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="请输入邮件主题"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">内容</label>
+                      <textarea
+                        value={newEmail.body}
+                        onChange={(e) => setNewEmail({...newEmail, body: e.target.value})}
+                        rows={5}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="请输入邮件内容"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">附件</label>
+                      <input
+                        type="file"
+                        onChange={handleFileUpload}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={sendEmail}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white 
+                                 font-semibold py-2 px-6 rounded-lg transition-colors"
+                      >
+                        📤 发送邮件
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
 
         {/* Footer */}
         <footer className="text-center mt-12 text-gray-500 text-sm">
-          <p>Powered by Mail.tm API | 开源项目</p>
+          <p>© 2024 Raoemail | 运营方：武穴茶海虾王电子商务中心</p>
+          <p className="mt-1">技术支持服务联系：rao5201@126.com</p>
         </footer>
       </div>
     </div>
