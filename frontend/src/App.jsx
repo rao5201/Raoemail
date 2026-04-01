@@ -133,7 +133,7 @@ function App() {
 
   // Generate QR code
   const generateQRCode = (email, password) => {
-    const data = `Raoemail Login\nWebsite: http://localhost:3000/\nEmail: ${email}\nPassword: ${password}`
+    const data = `Raoemail Login\nWebsite: https://rao5201.github.io/Raoemail/\nEmail: ${email}\nPassword: ${password}`
     setQrcodeData(data)
   }
 
