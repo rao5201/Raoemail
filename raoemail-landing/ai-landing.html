@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI助手 - 让每一封邮件都成为你的专业名片</title>
+    <style>
+        /* --- 基础样式重置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- 通用工具类 --- */
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 头部导航 --- */
+        header { background-color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .logo { font-size: 1.8rem; font-weight: 700; color: #007BFF; cursor: pointer; }
+        .nav-links a { margin-left: 20px; font-weight: 500; color: #555; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #007BFF; }
+
+        /* --- 英雄区域 --- */
+        .hero { background: linear-gradient(135deg, #007BFF, #0056b3); color: white; padding: 160px 0 100px; text-align: center; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
+        .cta-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .cta-button { display: inline-block; background-color: #ff9800; color: white; padding: 15px 40px; border-radius: 50px; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; cursor: pointer; border: none; }
+        .cta-button:hover { background-color: #f57c00; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3); }
+        .cta-button.secondary { background-color: rgba(255, 255, 255, 0.2); border: 2px solid white; }
+        .cta-button.secondary:hover { background-color: rgba(255, 255, 255, 0.3); }
+
+        /* --- 核心卖点 --- */
+        .features { padding: 80px 0; background-color: #fff; }
+        .features h2 { text-align: center; font-size: 2.2rem; margin-bottom: 60px; color: #333; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+        .feature-card { text-align: center; padding: 40px; border-radius: 15px; background-color: #f9f9f9; transition: transform 0.3s ease; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .feature-card:hover { transform: translateY(-10px); }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; color: #007BFF; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #333; }
+        .feature-card p { color: #666; line-height: 1.6; }
+
+        /* --- 版本选择器 --- */
+        .version-selector { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .version-btn { padding: 10px 20px; background-color: rgba(255, 255, 255, 0.2); border: 2px solid white; color: white; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-size: 0.9rem; }
+        .version-btn:hover { background-color: rgba(255, 255, 255, 0.3); }
+        .version-btn.active { background-color: white; color: #007BFF; font-weight: 600; }
+
+        /* --- 用户证言 --- */
+        .testimonial { padding: 80px 0; background-color: #f8f9fa; }
+        .testimonial-content { max-width: 800px; margin: 0 auto; text-align: center; }
+        .testimonial-quote { font-size: 1.2rem; line-height: 1.6; color: #555; margin-bottom: 30px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .author-avatar { width: 60px; height: 60px; border-radius: 50%; background-color: #007BFF; color: white; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold; }
+        .author-info h4 { font-size: 1.1rem; color: #333; margin-bottom: 5px; }
+        .author-info p { color: #666; font-size: 0.9rem; }
+
+        /* --- 页脚 --- */
+        footer { background-color: #333; color: #ddd; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
+        .footer-info p { margin: 5px 0; font-size: 0.95rem; }
+        .footer-info strong { color: #fff; }
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #555; font-size: 0.9rem; color: #aaa; }
+
+        /* --- 响应式 --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero { padding: 140px 0 80px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .features, .testimonial { padding: 60px 0; }
+            .features h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='index.html'">Raoemail</div>
+                <div class="nav-links">
+                    <a href="index.html#features">特性</a>
+                    <a href="index.html#faq">常见问题</a>
+                    <a href="ai-tutorial.html">AI教程</a>
+                    <a href="ai-feedback.html">AI反馈</a>
+                    <a href="index.html#footer">关于</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero fade-in">
+        <div class="container">
+            <div class="version-selector" style="margin-bottom: 30px;">
+                <button class="version-btn active" onclick="switchVersion(1)">场景化痛点直击版</button>
+                <button class="version-btn" onclick="switchVersion(2)">效率数据强化版</button>
+                <button class="version-btn" onclick="switchVersion(3)">情感共鸣版</button>
+            </div>
+            
+            <div id="version-1" class="version-content">
+                <h1>还在为写邮件熬夜？让AI帮你3秒搞定</h1>
+                <p>Raoemail AI助手，免费智能代笔，告别措辞焦虑，把时间留给更重要的事。</p>
+                <div class="features-grid" style="margin: 40px 0;">
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">💼</div>
+                        <h3>回复客户询价</h3>
+                        <p>输入“单价50美元，交期15天”，AI生成专业商务邮件。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">📄</div>
+                        <h3>撰写求职信</h3>
+                        <p>输入“应聘运营岗，3年经验”，AI生成得体的自我介绍。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">🎨</div>
+                        <h3>润色日常问候</h3>
+                        <p>输入“祝客户节日快乐”，AI调整为亲切温暖的语气。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto;">
+                        <div class="feature-icon">🔒</div>
+                        <h3>隐私承诺</h3>
+                        <p>对话内容实时加密，不存储、不训练，你的商业机密绝对安全。</p>
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                    <button class="cta-button" onclick="window.location.href='index.html'">立即免费使用</button>
+                </div>
+            </div>
+            
+            <div id="version-2" class="version-content" style="display: none;">
+                <h1>效率提升300%的秘密，藏在Raoemail AI助手里</h1>
+                <p>每日50次免费生成，Pro用户无限次使用，让高效沟通零成本。</p>
+                <div class="features-grid" style="margin: 40px 0;">
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">⚡</div>
+                        <h3>3秒生成</h3>
+                        <p>从输入指令到获得草稿，平均耗时仅2.8秒。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">🎯</div>
+                        <h3>92%准确率</h3>
+                        <p>多语言支持（中/英/日/法/西），识别准确率行业领先。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">📋</div>
+                        <h3>12个预设模板</h3>
+                        <p>商务沟通、日常问候、求职申请，点击即可快速生成。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto;">
+                        <div class="feature-icon">👤</div>
+                        <h3>用户证言</h3>
+                        <p>"以前写英文邮件要花半小时，现在3分钟搞定！"——林薇，跨境电商运营主管</p>
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                    <button class="cta-button" onclick="window.location.href='ai-tutorial.html'">查看使用教程</button>
+                </div>
+            </div>
+            
+            <div id="version-3" class="version-content" style="display: none;">
+                <h1>你的时间很贵，不该浪费在写邮件上</h1>
+                <p>Raoemail AI助手，懂你的措辞焦虑，更懂如何帮你节省时间。</p>
+                <div class="features-grid" style="margin: 40px 0;">
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">✍️</div>
+                        <h3>智能代笔</h3>
+                        <p>输入一句话，AI生成完整草稿，你只需确认发送。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto 20px;">
+                        <div class="feature-icon">🎨</div>
+                        <h3>语气精调</h3>
+                        <p>正式、亲切、简洁、委婉，一键切换风格，让文字更懂人心。</p>
+                    </div>
+                    <div class="feature-card" style="max-width: 300px; margin: 0 auto;">
+                        <div class="feature-icon">🔒</div>
+                        <h3>隐私守护</h3>
+                        <p>对话内容实时加密，不存储、不训练，你的商业机密绝对安全。</p>
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                    <button class="cta-button" onclick="window.location.href='index.html'">立即免费使用</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心卖点 -->
+    <section class="features fade-in">
+        <div class="container">
+            <h2>核心卖点</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>智能代笔</h3>
+                    <p>回复客户、撰写报告、商务邀约，输入一句话，AI生成完整草稿。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>语气精调</h3>
+                    <p>正式、亲切、简洁、委婉，一键切换风格，让文字更懂人心。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>隐私守护</h3>
+                    <p>对话内容实时加密，不存储、不训练，你的商业机密绝对安全。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>完全免费</h3>
+                    <p>每日50次免费生成，Pro用户无限次使用，高效沟通零成本。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户证言 -->
+    <section class="testimonial fade-in">
+        <div class="container">
+            <div class="testimonial-content">
+                <p class="testimonial-quote">"以前写英文邮件要花半小时查词典，现在用AI助手，3分钟搞定，老板都说我效率变高了！"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">林</div>
+                    <div class="author-info">
+                        <h4>林薇</h4>
+                        <p>跨境电商运营主管</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-info">
+                <p>运营方：武穴茶海虾王电子商务中心</p>
+                <p><strong>技术支持服务联系：</strong><a href="mailto:rao5201@126.com">rao5201@126.com</a></p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Raoemail. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.fade-in').forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 版本切换功能
+        function switchVersion(version) {
+            // 隐藏所有版本内容
+            document.querySelectorAll('.version-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            // 显示选中的版本内容
+            document.getElementById('version-' + version).style.display = 'block';
+            // 更新按钮状态
+            document.querySelectorAll('.version-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail AI助手 - 智能邮件服务</title>
+    <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; min-height: 100vh; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* 头部 */
+        header { background: rgba(255,255,255,0.95); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; color: #667eea; cursor: pointer; }
+        .back-btn { color: #667eea; text-decoration: none; padding: 8px 20px; border: 2px solid #667eea; border-radius: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: #667eea; color: white; }
+        
+        /* 英雄区域 */
+        .hero { text-align: center; padding: 80px 0; color: white; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.3rem; opacity: 0.9; margin-bottom: 30px; }
+        .cta-btn { background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        
+        /* AI功能卡片 */
+        .features { background: white; padding: 80px 0; }
+        .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 50px; color: #333; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 40px; border-radius: 20px; text-align: center; transition: all 0.3s; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .feature-icon { font-size: 4rem; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #333; }
+        .feature-card p { color: #666; line-height: 1.6; }
+        
+        /* AI聊天界面 */
+        .chat-section { background: #f8f9fa; padding: 80px 0; }
+        .chat-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .chat-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; }
+        .chat-messages { height: 400px; overflow-y: auto; padding: 20px; }
+        .message { margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
+        .message.user { flex-direction: row-reverse; }
+        .message-bubble { max-width: 70%; padding: 15px 20px; border-radius: 20px; }
+        .message.ai .message-bubble { background: #f0f0f0; color: #333; }
+        .message.user .message-bubble { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .chat-input { display: flex; padding: 20px; border-top: 1px solid #eee; }
+        .chat-input input { flex: 1; padding: 15px; border: 2px solid #eee; border-radius: 30px; font-size: 1rem; outline: none; }
+        .chat-input button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; border-radius: 30px; margin-left: 10px; cursor: pointer; font-weight: 600; }
+        
+        /* 页脚 */
+        footer { background: #333; color: white; text-align: center; padding: 40px 0; }
+        footer p { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='../../raoemail-landing/index.html'">
+                    <span>🤖</span> Raoemail AI
+                </div>
+                <a href="../../raoemail-landing/index.html" class="back-btn">← 返回首页</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>AI 智能邮件助手</h1>
+            <p>让AI帮您写邮件、回复邮件、翻译邮件，提升工作效率</p>
+            <button class="cta-btn" onclick="document.querySelector('.chat-section').scrollIntoView({behavior: 'smooth'})">立即体验</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>AI 核心功能</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>智能写作</h3>
+                    <p>输入关键词，AI自动生成专业邮件内容，支持商务、日常、求职等多种场景</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>智能回复</h3>
+                    <p>根据邮件内容自动生成回复建议，支持正式、友好、简洁等多种语气</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>多语言翻译</h3>
+                    <p>支持50+种语言的实时翻译，让跨国沟通无障碍，支持中文、英文、日文、韩文等</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>内容润色</h3>
+                    <p>优化邮件内容，提升表达专业度，让您的邮件更加得体、专业</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>邮件摘要</h3>
+                    <p>自动提取邮件要点，快速了解邮件内容，节省阅读时间</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>智能推荐</h3>
+                    <p>根据邮件内容推荐相关模板和回复建议，提高邮件处理效率</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chat-section">
+        <div class="container">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3>🤖 AI 邮件助手</h3>
+                    <p>免费使用，无需注册</p>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-bubble">您好！我是Raoemail AI助手，可以帮助您写邮件、回复邮件、翻译邮件等。请问有什么可以帮您的？</div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="输入您的问题，例如：帮我写一封感谢客户的邮件" onkeypress="if(event.key==='Enter')sendMessage()">
+                    <button onclick="sendMessage()">发送</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Raoemail. 运营方：武穴茶海虾王电子商务中心 | 技术支持：rao5201@126.com</p>
+        </div>
+    </footer>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // 添加用户消息
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML += `
+                <div class="message user">
+                    <div class="message-bubble">${message}</div>
+                </div>
+            `;
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 模拟AI回复
+            setTimeout(() => {
+                const responses = [
+                    '我理解您的需求，让我为您生成一封专业的邮件...',
+                    '好的，我来帮您处理这个邮件任务...',
+                    '收到！我正在为您准备最佳的邮件方案...',
+                    '明白了，让我用AI为您优化这封邮件...'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                messagesContainer.innerHTML += `
+                    <div class="message ai">
+                        <div class="message-bubble">${randomResponse}</div>
+                    </div>
+                `;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

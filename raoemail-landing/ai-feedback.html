@@ -87,7 +87,10 @@
                 <div class="nav-links">
                     <a href="index.html#features">特性</a>
                     <a href="index.html#faq">常见问题</a>
+                    <a href="ai-landing.html">AI助手</a>
                     <a href="ai-tutorial.html">AI教程</a>
+                    <a href="ai-feedback.html">AI反馈</a>
+                    <a href="ai-video.html">视频脚本</a>
                     <a href="index.html#footer">关于</a>
                 </div>
             </nav>
@@ -102,7 +105,323 @@
                 <p>帮助我们改进AI功能，为您提供更好的邮件体验</p>
             </div>
 
-            <!-- 反馈问卷 -->
+            <!-- NPS调研问卷 -->
+            <div class="survey-section fade-in">
+                <h2>AI助手NPS调研</h2>
+                <div class="container">
+                    <p>亲爱的用户，为了了解你对Raoemail AI助手的真实体验，我们想邀请你完成这份1分钟问卷。你的评分将直接帮助我们优化AI功能，让沟通更高效。</p>
+                    <form class="survey-form">
+                        <div class="form-group">
+                            <label>核心问题：你有多大可能向朋友或同事推荐Raoemail的AI助手？（0-10分，0分=完全不可能，10分=极有可能）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="0" id="nps-0">
+                                    <label for="nps-0">0分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="1" id="nps-1">
+                                    <label for="nps-1">1分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="2" id="nps-2">
+                                    <label for="nps-2">2分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="3" id="nps-3">
+                                    <label for="nps-3">3分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="4" id="nps-4">
+                                    <label for="nps-4">4分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="5" id="nps-5">
+                                    <label for="nps-5">5分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="6" id="nps-6">
+                                    <label for="nps-6">6分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="7" id="nps-7">
+                                    <label for="nps-7">7分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="8" id="nps-8">
+                                    <label for="nps-8">8分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="9" id="nps-9">
+                                    <label for="nps-9">9分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="nps" value="10" id="nps-10">
+                                    <label for="nps-10">10分</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>补充问题：你给出这个分数的主要原因是？（选填，如生成速度快、内容准确、隐私放心等）</label>
+                            <textarea placeholder="请输入你的原因..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">提交调研</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 深度体验反馈问卷 -->
+            <div class="survey-section fade-in">
+                <h2>深度体验反馈</h2>
+                <div class="container">
+                    <form class="survey-form">
+                        <div class="form-group">
+                            <label>你在使用AI助手时，最常使用的指令类型是？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="command-type" value="generate" id="command-generate">
+                                    <label for="command-generate">生成全新邮件</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="command-type" value="polish" id="command-polish">
+                                    <label for="command-polish">润色已有内容</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="command-type" value="tone" id="command-tone">
+                                    <label for="command-tone">调整语气风格</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="command-type" value="expand" id="command-expand">
+                                    <label for="command-expand">扩写或缩写内容</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="command-type" value="translate" id="command-translate">
+                                    <label for="command-translate">翻译多语言邮件</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你认为AI生成内容的“专业度”如何？（1-5分，1分=非常不专业，5分=非常专业）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="professionalism" value="1" id="pro-1">
+                                    <label for="pro-1">1分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="professionalism" value="2" id="pro-2">
+                                    <label for="pro-2">2分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="professionalism" value="3" id="pro-3">
+                                    <label for="pro-3">3分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="professionalism" value="4" id="pro-4">
+                                    <label for="pro-4">4分</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="professionalism" value="5" id="pro-5">
+                                    <label for="pro-5">5分</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你是否遇到过AI生成内容不符合预期的情况？如有，请简要描述场景：</label>
+                            <textarea placeholder="请输入你的描述..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>你对AI助手的“提示词模板库”使用频率如何？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="template-use" value="often" id="template-often">
+                                    <label for="template-often">经常使用</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="template-use" value="sometimes" id="template-sometimes">
+                                    <label for="template-sometimes">偶尔使用</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="template-use" value="never" id="template-never">
+                                    <label for="template-never">从未使用</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你希望AI助手新增哪些功能？（多选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="checkbox" name="new-features" value="attachment" id="feature-attachment">
+                                    <label for="feature-attachment">自动添加附件说明</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="new-features" value="reminder" id="feature-reminder">
+                                    <label for="feature-reminder">日程提醒生成</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="new-features" value="style" id="feature-style">
+                                    <label for="feature-style">邮件风格模仿</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="new-features" value="translation" id="feature-translation">
+                                    <label for="feature-translation">多语言实时翻译</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="new-features" value="other" id="feature-other">
+                                    <label for="feature-other">其他</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">提交反馈</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 隐私与安全感知问卷 -->
+            <div class="survey-section fade-in">
+                <h2>隐私与安全感知</h2>
+                <div class="container">
+                    <form class="survey-form">
+                        <div class="form-group">
+                            <label>你对AI助手的隐私保护机制是否放心？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-trust" value="very" id="privacy-very">
+                                    <label for="privacy-very">非常放心</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-trust" value="somewhat" id="privacy-somewhat">
+                                    <label for="privacy-somewhat">比较放心</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-trust" value="neutral" id="privacy-neutral">
+                                    <label for="privacy-neutral">一般</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-trust" value="not" id="privacy-not">
+                                    <label for="privacy-not">不太放心</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-trust" value="never" id="privacy-never">
+                                    <label for="privacy-never">完全不放心</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你是否愿意让AI助手访问你的邮件内容以生成回复？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="content-access" value="yes" id="access-yes">
+                                    <label for="access-yes">愿意</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="content-access" value="no" id="access-no">
+                                    <label for="access-no">不愿意</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="content-access" value="specific" id="access-specific">
+                                    <label for="access-specific">仅愿意在特定场景下（如商务邮件）</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你对“AI对话内容实时加密，不存储、不训练”的说明是否清晰理解？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-understanding" value="very" id="understand-very">
+                                    <label for="understand-very">非常清晰</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-understanding" value="somewhat" id="understand-somewhat">
+                                    <label for="understand-somewhat">比较清晰</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-understanding" value="neutral" id="understand-neutral">
+                                    <label for="understand-neutral">一般</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-understanding" value="not" id="understand-not">
+                                    <label for="understand-not">不太清晰</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="privacy-understanding" value="never" id="understand-never">
+                                    <label for="understand-never">完全不清晰</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">提交反馈</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 付费意愿与升级动机问卷 -->
+            <div class="survey-section fade-in">
+                <h2>付费意愿与升级动机</h2>
+                <div class="container">
+                    <form class="survey-form">
+                        <div class="form-group">
+                            <label>如果推出AI助手Pro版本，你愿意为以下哪些权益付费？（多选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="checkbox" name="pro-features" value="unlimited" id="pro-unlimited">
+                                    <label for="pro-unlimited">无限次AI生成</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="pro-features" value="templates" id="pro-templates">
+                                    <label for="pro-templates">高级提示词模板库</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="pro-features" value="support" id="pro-support">
+                                    <label for="pro-support">专属客服支持</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="pro-features" value="speed" id="pro-speed">
+                                    <label for="pro-speed">更快的响应速度</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="checkbox" name="pro-features" value="other" id="pro-other">
+                                    <label for="pro-other">其他</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你认为Pro版本的合理定价是？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="pricing" value="9" id="price-9">
+                                    <label for="price-9">9元/月</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="pricing" value="19" id="price-19">
+                                    <label for="price-19">19元/月</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="pricing" value="29" id="price-29">
+                                    <label for="price-29">29元/月</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="pricing" value="higher" id="price-higher">
+                                    <label for="price-higher">更高</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>你目前是否已经是Pro用户？（单选）</label>
+                            <div class="form-options">
+                                <div class="form-option">
+                                    <input type="radio" name="is-pro" value="yes" id="is-pro-yes">
+                                    <label for="is-pro-yes">是</label>
+                                </div>
+                                <div class="form-option">
+                                    <input type="radio" name="is-pro" value="no" id="is-pro-no">
+                                    <label for="is-pro-no">否</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">提交反馈</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 体验反馈问卷 -->
             <div class="survey-section fade-in">
                 <h2>Raoemail AI助手体验反馈</h2>
                 <div class="container">
@@ -259,6 +578,103 @@
                             <li>用户首次点击写信按钮时，AI悬浮按钮旁出现气泡提示：“点击这里，用AI快速生成邮件”，持续3秒后自动消失。</li>
                             <li>用户当日使用次数达到45次时，弹出配额提醒弹窗，引导用户了解Pro版本的无限次使用特权，搭配“免费试用3天”按钮。</li>
                         </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户激励方案 -->
+            <div class="guide-section fade-in">
+                <h2>AI功能用户激励方案</h2>
+                <div class="container">
+                    <div class="guide-item">
+                        <h3>新手体验激励</h3>
+                        <p>新用户首次使用AI助手生成邮件，即可获得“AI体验达人”虚拟勋章，并解锁3天Pro版本试用资格，享受无限次AI生成和高级模板库。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>活跃使用激励</h3>
+                        <p>每周使用AI助手超过20次的用户，可参与“效率之星”抽奖，奖品包括1个月Pro会员、定制商务笔记本等；每月生成内容被标记为“优质草稿”（用户手动发送且未修改超过3处）超过50次的用户，可直接获得“AI深度用户”认证，永久享受每日100次免费生成配额。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>反馈贡献激励</h3>
+                        <p>提交有效功能建议（如新增提示词模板、优化多语言支持）并被采纳的用户，可获得“产品共建者”称号，其邮箱账号将显示专属标识，同时赠送6个月Pro会员。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>兑换规则</h3>
+                        <p><strong>虚拟勋章与试用资格（自动发放）</strong><br>触发条件：系统检测到用户首次成功生成并填充AI内容。<br>兑换方式：无需手动兑换。系统自动在用户个人中心点亮“AI体验达人”勋章，并自动激活3天Pro会员权益，用户将在登录时收到“权益已到账”的站内信通知。</p>
+                        <p style="margin-top: 15px;"><strong>“效率之星”抽奖（积分兑换制）</strong><br>触发条件：每周日系统结算，当周AI生成次数≥20次的用户获得“100效率积分”。<br>兑换方式：用户需进入“会员中心”>“积分商城”，使用积分点击“参与抽奖”。<br>奖品发放：实物奖品（如笔记本）需用户填写收货地址，虚拟会员权益将在中奖后24小时内自动充值到账户。</p>
+                        <p style="margin-top: 15px;"><strong>“产品共建者”称号（人工审核制）</strong><br>触发条件：用户通过“意见反馈”入口提交建议，并被产品团队标记为“已采纳”。<br>兑换方式：产品经理将通过邮件联系用户，确认账号信息。<br>权益生效：专属标识将在3个工作日内上线，Pro会员时长将直接叠加至用户当前会员有效期中。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 灰度发布方案 -->
+            <div class="guide-section fade-in">
+                <h2>AI功能灰度发布方案</h2>
+                <div class="container">
+                    <p>灰度发布周期为4周，分三个阶段推进：</p>
+                    <div class="guide-item">
+                        <h3>第一周：内部测试阶段</h3>
+                        <p>仅对开发团队和内部员工开放AI功能，重点验证核心功能稳定性、隐私加密机制和配额限制逻辑，每日收集内部反馈并修复紧急bug。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>第二周至第三周：小范围灰度阶段</h3>
+                        <p>随机抽取5%的活跃用户开放功能，同时设置“AI体验官”专属通道，允许主动申请的用户提前使用。此阶段重点监控服务器负载、AI生成响应时间和用户使用频次，每日分析用户行为数据和反馈问卷，每周迭代一次模型优化版本。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>第四周：全量发布阶段</h3>
+                        <p>向所有用户开放AI功能，同步上线FAQ教程、引导弹窗和客服专项支持。发布后持续监控一周的核心指标，包括每日使用次数、用户留存率和负面反馈占比，根据数据表现调整免费配额和Pro版本权益。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 灰度发布风险预案 -->
+            <div class="guide-section fade-in">
+                <h2>灰度发布方案风险预案</h2>
+                <div class="container">
+                    <div class="guide-item">
+                        <h3>服务器过载风险</h3>
+                        <p>若灰度阶段服务器CPU使用率持续超过85%，立即启动限流措施，将免费用户的每日配额临时下调至30次，同时通过站内信通知用户“因使用人数较多，AI服务暂时限流，预计2小时内恢复”。若限流后仍无法缓解，暂停5%灰度范围，回滚至内部测试阶段，扩容服务器集群后再重新启动灰度。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>AI生成内容违规风险</h3>
+                        <p>若监测到AI生成包含敏感词或不当内容的邮件，立即触发“内容安全熔断”机制，暂停该用户的AI使用权限，并通过短信通知用户“检测到异常使用行为，请联系客服解封”。同时，技术团队在1小时内更新敏感词过滤库，对全量灰度用户进行内容安全扫描，排查潜在风险。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>用户隐私投诉风险</h3>
+                        <p>若收到用户关于“AI存储邮件内容”的投诉，客服团队需在30分钟内响应，向用户提供《AI隐私保护白皮书》和技术团队出具的“数据实时加密证明”。若投诉涉及数据泄露，立即启动隐私安全应急响应，冻结相关账号的AI功能，配合用户进行数据溯源，并在24小时内发布官方声明说明情况。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>监控指标</h3>
+                        <p><strong>性能监控指标</strong><br>API响应延迟：AI生成接口的平均响应时间。若P95延迟超过5秒，触发“性能预警”。<br>错误率：API请求返回5xx错误的比例。若错误率超过1%，立即触发“服务熔断”。<br>服务器负载：CPU和内存使用率。若连续5分钟超过85%，触发“限流机制”。</p>
+                        <p style="margin-top: 15px;"><strong>内容安全指标</strong><br>敏感词拦截率：AI生成内容中被安全过滤器拦截的比例。若拦截率突增（如超过5%），说明模型可能受到攻击或出现偏差。<br>用户举报量：用户手动标记“AI生成内容不当”的次数。若单小时内举报量超过10次，触发“人工复审”。</p>
+                        <p style="margin-top: 15px;"><strong>业务体验指标</strong><br>功能渗透率：每日使用AI功能的用户数占总活跃用户的比例。若灰度期间渗透率异常低（低于1%），需检查引导流程是否顺畅。<br>用户留存率：使用过AI功能的用户在次日的留存情况。若留存率低于20%，说明功能未能解决用户痛点，需重新评估产品方向。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 隐私说明的用户常见问答 -->
+            <div class="guide-section fade-in">
+                <h2>隐私说明的用户常见问答</h2>
+                <div class="container">
+                    <div class="guide-item">
+                        <h3>问题1：AI会偷看我的邮件内容吗？</h3>
+                        <p>不会哦！AI助手只会读取你当前正在编辑的邮件内容，帮你生成回复。生成完成后，相关内容会立即从服务器清除，不会存储、不会偷看，更不会拿你的邮件去训练AI模型，你可以把它当成一个“阅后即焚”的智能助手，绝对放心！</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>问题2：我的商业机密会被泄露吗？</h3>
+                        <p>完全不会！我们采用了银行级的端到端加密技术，你的邮件内容在传输过程中会被加密成“乱码”，只有你和收件人能看懂。而且AI模型不会记住任何商业信息，比如你输入“产品单价50美元”，生成完邮件后，这个价格信息就会彻底消失，不会泄露给任何人。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>问题3：AI会拿我的数据去训练吗？</h3>
+                        <p>绝对不会！我们承诺“零存储、零训练”。你的每一次AI对话都是独立的，生成完内容后，相关数据会立即从服务器缓存中清除，不会用于任何AI模型的训练或优化。你可以把它当成一个“一次性”的智能助手，用完就走，不留痕迹。</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>问题4：我怎么能知道我的数据是安全的？</h3>
+                        <p>你可以在“设置-隐私中心”里查看AI功能的详细数据处理流程，里面会明确告诉你哪些数据被加密、哪些数据被清除。如果你还是不放心，也可以随时联系客服，我们会给你发送《AI隐私保护白皮书》，里面全是技术细节，保证让你明明白白！</p>
+                    </div>
+                    <div class="guide-item">
+                        <h3>问题5：如果我不想用AI了，能删除我的数据吗？</h3>
+                        <p>当然可以！你可以在“设置-隐私中心”里点击“清除AI使用记录”，所有和你的AI对话相关的数据都会被彻底删除，不会留下任何痕迹。而且删除后，AI助手也不会再读取你的任何邮件内容，完全尊重你的选择！</p>
                     </div>
                 </div>
             </div>

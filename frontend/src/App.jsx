@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import QRCode from 'qrcode'
 
 function App() {
   const [emailData, setEmailData] = useState(null)
@@ -11,6 +12,8 @@ function App() {
   const [savedEmails, setSavedEmails] = useState([])
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [fileToUpload, setFileToUpload] = useState(null)
+  const [qrcodeData, setQrcodeData] = useState('')
+  const qrcodeRef = useRef(null)
 
   // Create new email
   const createEmail = async () => {
@@ -128,6 +131,37 @@ function App() {
     setComposeEmail(false)
   }
 
+  // Generate QR code
+  const generateQRCode = (email, password) => {
+    const data = `Raoemail Login\nWebsite: http://localhost:3000/\nEmail: ${email}\nPassword: ${password}`
+    setQrcodeData(data)
+  }
+
+  // Update QR code when email data changes
+  useEffect(() => {
+    if (emailData) {
+      generateQRCode(emailData.email, emailData.password)
+    }
+  }, [emailData])
+
+  // Generate QR code on canvas when qrcodeData changes
+  useEffect(() => {
+    if (qrcodeData && qrcodeRef.current) {
+      QRCode.toCanvas(qrcodeRef.current, qrcodeData, {
+        width: 128,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      }, (error) => {
+        if (error) {
+          console.error('Failed to generate QR code:', error)
+        }
+      })
+    }
+  }, [qrcodeData])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
@@ -205,11 +239,11 @@ function App() {
               {/* Email Info Card */}
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <div>
+                  <div className="flex-1">
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">
                       您的邮箱地址
                     </h2>
-                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                    <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-4">
                       <p className="text-2xl font-mono text-indigo-900 break-all">
                         {emailData.email}
                       </p>
@@ -217,8 +251,25 @@ function App() {
                         密码：{emailData.password}
                       </p>
                     </div>
+                    
+                    {/* QR Code */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                        📱 扫码登录
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-shrink-0">
+                          <canvas ref={qrcodeRef} className="w-32 h-32" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs text-gray-600">
+                            扫描二维码获取邮箱信息，方便在手机上登录
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 ml-4">
                     <button
                       onClick={() => setComposeEmail(true)}
                       className="bg-blue-600 hover:bg-blue-700 text-white 
