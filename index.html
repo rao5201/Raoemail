@@ -177,13 +177,13 @@
                 </div>
                 <div class="nav-links">
                     <a href="#features">功能特性</a>
-                    <a href="../sites/vip-service/index.html">VIP服务</a>
-                    <a href="../sites/ai-assistant/index.html">AI助手</a>
+                    <a href="vip-service/index.html">VIP服务</a>
+                    <a href="ai-assistant/index.html">AI助手</a>
                     <a href="#share">分享</a>
                     <a href="#footer">关于我们</a>
                 </div>
                 <div class="user-account">
-                    <a href="../sites/vip-service/index.html" class="vip-badge">VIP</a>
+                    <a href="vip-service/index.html" class="vip-badge">VIP</a>
                     <a href="#" class="login-btn" onclick="openModal('login'); return false;">登录 / 注册</a>
                 </div>
             </nav>
@@ -206,12 +206,12 @@
     <section class="quick-access">
         <div class="container">
             <div class="quick-access-grid">
-                <div class="quick-access-item" onclick="window.location.href='../frontend/'">
+                <div class="quick-access-item" onclick="window.location.href='frontend/'">
                     <div class="icon">📧</div>
                     <h3>免费邮箱</h3>
                     <p>立即创建免费邮箱</p>
                 </div>
-                <div class="quick-access-item" onclick="window.location.href='ai-landing.html'">
+                <div class="quick-access-item" onclick="window.location.href='ai-assistant/index.html'">
                     <div class="icon">🤖</div>
                     <h3>AI助手</h3>
                     <p>智能邮件助手</p>
@@ -221,7 +221,7 @@
                     <h3>VIP服务</h3>
                     <p>升级尊享特权</p>
                 </div>
-                <div class="quick-access-item" onclick="window.location.href='ai-tutorial.html'">
+                <div class="quick-access-item" onclick="window.location.href='ai-assistant/index.html'">
                     <div class="icon">📚</div>
                     <h3>使用教程</h3>
                     <p>快速上手指南</p>
@@ -383,7 +383,7 @@
     </footer>
 
     <!-- 悬浮AI助手 -->
-    <div class="ai-float-btn" onclick="window.location.href='ai-landing.html'" title="AI助手">
+    <div class="ai-float-btn" onclick="window.location.href='ai-assistant/index.html'" title="AI助手">
         <div class="pulse"></div>
         <span>🤖</span>
     </div>
@@ -540,24 +540,24 @@
 
         // 搜索功能
         const searchData = [
-            { title: '免费邮箱', desc: '创建免费邮箱账户', url: '../frontend/', tag: '功能' },
-            { title: 'VIP服务', desc: '升级VIP享受更多特权', url: '../sites/vip-service/index.html', tag: '服务' },
-            { title: 'AI助手', desc: '智能邮件写作助手', url: '../sites/ai-assistant/index.html', tag: 'AI' },
-            { title: '财务管理', desc: '查看交易记录和支付方式', url: '../sites/finance/index.html', tag: '管理' },
+            { title: '免费邮箱', desc: '创建免费邮箱账户', url: 'frontend/', tag: '功能' },
+            { title: 'VIP服务', desc: '升级VIP享受更多特权', url: 'vip-service/index.html', tag: '服务' },
+            { title: 'AI助手', desc: '智能邮件写作助手', url: 'ai-assistant/index.html', tag: 'AI' },
+            { title: '财务管理', desc: '查看交易记录和支付方式', url: 'finance/index.html', tag: '管理' },
             { title: '登录', desc: '登录您的账户', url: '#', tag: '账户', action: () => openModal('login') },
             { title: '注册', desc: '创建新账户', url: '#', tag: '账户', action: () => openModal('register') },
             { title: '分享', desc: '分享Raoemail给朋友', url: '#share', tag: '功能' },
             { title: '帮助中心', desc: '常见问题解答', url: '#', tag: '帮助' },
             { title: '联系我们', desc: '技术支持联系方式', url: '#footer', tag: '联系' },
-            { title: 'VIP基础版', desc: '¥9.9/月 - 10GB存储', url: '../sites/vip-service/index.html', tag: 'VIP' },
-            { title: 'VIP专业版', desc: '¥29.9/月 - 50GB存储', url: '../sites/vip-service/index.html', tag: 'VIP' },
-            { title: 'VIP企业版', desc: '¥99.9/月 - 无限存储', url: '../sites/vip-service/index.html', tag: 'VIP' },
-            { title: '智能写作', desc: 'AI自动生成邮件内容', url: '../sites/ai-assistant/index.html', tag: 'AI' },
-            { title: '智能回复', desc: '自动生成回复建议', url: '../sites/ai-assistant/index.html', tag: 'AI' },
-            { title: '多语言翻译', desc: '支持50+种语言', url: '../sites/ai-assistant/index.html', tag: 'AI' },
-            { title: '微信支付', desc: '使用微信支付', url: '../sites/finance/index.html', tag: '支付' },
-            { title: '支付宝', desc: '使用支付宝支付', url: '../sites/finance/index.html', tag: '支付' },
-            { title: '银行卡', desc: '使用银行卡支付', url: '../sites/finance/index.html', tag: '支付' }
+            { title: 'VIP基础版', desc: '¥9.9/月 - 10GB存储', url: 'vip-service/index.html', tag: 'VIP' },
+            { title: 'VIP专业版', desc: '¥29.9/月 - 50GB存储', url: 'vip-service/index.html', tag: 'VIP' },
+            { title: 'VIP企业版', desc: '¥99.9/月 - 无限存储', url: 'vip-service/index.html', tag: 'VIP' },
+            { title: '智能写作', desc: 'AI自动生成邮件内容', url: 'ai-assistant/index.html', tag: 'AI' },
+            { title: '智能回复', desc: '自动生成回复建议', url: 'ai-assistant/index.html', tag: 'AI' },
+            { title: '多语言翻译', desc: '支持50+种语言', url: 'ai-assistant/index.html', tag: 'AI' },
+            { title: '微信支付', desc: '使用微信支付', url: 'finance/index.html', tag: '支付' },
+            { title: '支付宝', desc: '使用支付宝支付', url: 'finance/index.html', tag: '支付' },
+            { title: '银行卡', desc: '使用银行卡支付', url: 'finance/index.html', tag: '支付' }
         ];
 
         function handleSearch(query) {
