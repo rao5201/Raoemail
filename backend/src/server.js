@@ -3,6 +3,15 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
+// 导入VIP邮箱生成模块
+const { generateVIPEmail, generateVIPEmails, VIP_TYPES } = require('./vip-email');
+
+// 导入拍卖系统模块
+const { AuctionSystem, AUCTION_STATUS } = require('./auction');
+
+// 初始化拍卖系统
+const auctionSystem = new AuctionSystem();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -139,6 +148,108 @@ app.delete('/api/delete-email/:email', async (req, res) => {
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// VIP邮箱生成路由
+
+// 创建单个VIP邮箱
+app.post('/api/create-vip-email', async (req, res) => {
+  try {
+    const { type } = req.body;
+    const result = await generateVIPEmail(type || Object.values(VIP_TYPES)[0]);
+    
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(500).json(result);
+    }
+  } catch (error) {
+    console.error('Error creating VIP email:', error);
+    res.status(500).json({ success: false, error: 'Failed to create VIP email' });
+  }
+});
+
+// 生成多个VIP邮箱
+app.post('/api/generate-vip-emails', async (req, res) => {
+  try {
+    const { count } = req.body;
+    const emails = await generateVIPEmails(count || 10);
+    res.json({ success: true, emails });
+  } catch (error) {
+    console.error('Error generating VIP emails:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate VIP emails' });
+  }
+});
+
+// 拍卖交易路由
+
+// 创建拍卖
+app.post('/api/auction/create', (req, res) => {
+  try {
+    const { email, type, startingPrice, durationHours } = req.body;
+    const item = auctionSystem.createAuction(email, type, startingPrice, durationHours);
+    res.json({ success: true, auction: item });
+  } catch (error) {
+    console.error('Error creating auction:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 出价
+app.post('/api/auction/bid', (req, res) => {
+  try {
+    const { auctionId, bidder, amount } = req.body;
+    const item = auctionSystem.placeBid(auctionId, bidder, amount);
+    res.json({ success: true, auction: item });
+  } catch (error) {
+    console.error('Error placing bid:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 结束拍卖
+app.post('/api/auction/end', (req, res) => {
+  try {
+    const { auctionId } = req.body;
+    const item = auctionSystem.endAuction(auctionId);
+    res.json({ success: true, auction: item });
+  } catch (error) {
+    console.error('Error ending auction:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 获取所有拍卖
+app.get('/api/auction/all', (req, res) => {
+  try {
+    const auctions = auctionSystem.getAllAuctions();
+    res.json({ success: true, auctions });
+  } catch (error) {
+    console.error('Error getting auctions:', error);
+    res.status(500).json({ success: false, error: 'Failed to get auctions' });
+  }
+});
+
+// 获取活跃拍卖
+app.get('/api/auction/active', (req, res) => {
+  try {
+    const auctions = auctionSystem.getActiveAuctions();
+    res.json({ success: true, auctions });
+  } catch (error) {
+    console.error('Error getting active auctions:', error);
+    res.status(500).json({ success: false, error: 'Failed to get active auctions' });
+  }
+});
+
+// 获取已结束拍卖
+app.get('/api/auction/ended', (req, res) => {
+  try {
+    const auctions = auctionSystem.getEndedAuctions();
+    res.json({ success: true, auctions });
+  } catch (error) {
+    console.error('Error getting ended auctions:', error);
+    res.status(500).json({ success: false, error: 'Failed to get ended auctions' });
+  }
 });
 
 app.listen(PORT, () => {

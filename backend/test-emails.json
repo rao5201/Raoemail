@@ -1,0 +1,12 @@
+[
+  {
+    "success": true,
+    "email": "test1@example.com",
+    "password": "000000"
+  },
+  {
+    "success": true,
+    "email": "test2@example.com",
+    "password": "000000"
+  }
+]
