@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail VIP管理系统</title>
+    <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #333; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* 头部 */
+        header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; cursor: pointer; }
+        .back-btn { color: white; text-decoration: none; padding: 8px 20px; border: 2px solid white; border-radius: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: white; color: #667eea; }
+        
+        /* 导航栏 */
+        .nav-tabs { background: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-tabs ul { display: flex; gap: 20px; justify-content: center; }
+        .nav-tabs li { list-style: none; }
+        .nav-tabs a { padding: 10px 25px; border-radius: 30px; text-decoration: none; color: #666; font-weight: 500; transition: all 0.3s; }
+        .nav-tabs a.active, .nav-tabs a:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        /* 统计卡片 */
+        .stats { padding: 40px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; }
+        .stat-card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .stat-card h3 { font-size: 1rem; color: #666; margin-bottom: 10px; }
+        .stat-card .value { font-size: 2.5rem; font-weight: 700; color: #667eea; }
+        
+        /* 内容区域 */
+        .content { background: white; border-radius: 20px; padding: 40px; margin: 40px 0; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .content h2 { margin-bottom: 30px; color: #333; display: flex; align-items: center; gap: 10px; }
+        .content h2 .icon { font-size: 1.5rem; }
+        
+        /* 表格 */
+        .data-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .data-table th { text-align: left; padding: 15px; background: #f8f9fa; border-bottom: 2px solid #e9ecef; color: #495057; font-weight: 600; }
+        .data-table td { padding: 15px; border-bottom: 1px solid #e9ecef; }
+        .data-table tr:hover { background: #f8f9fa; }
+        .data-table .status { padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status.active { background: #d4edda; color: #155724; }
+        .status.expiring { background: #fff3cd; color: #856404; }
+        .status.expired { background: #f8d7da; color: #721c24; }
+        
+        /* 表单 */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #495057; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        
+        /* 提醒设置 */
+        .reminder-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .reminder-item { background: #f8f9fa; padding: 20px; border-radius: 10px; }
+        .reminder-item h4 { margin-bottom: 10px; color: #495057; }
+        .reminder-item label { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .reminder-item input[type="checkbox"] { width: auto; }
+        
+        /* 页脚 */
+        footer { background: #343a40; color: white; text-align: center; padding: 40px 0; margin-top: 60px; }
+        footer p { opacity: 0.8; }
+        
+        /* 模态框 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #6c757d; }
+        .modal h3 { margin-bottom: 20px; color: #333; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" onclick="window.location.href='../../raoemail-landing/index.html'">
+                    <span>👑</span> VIP管理系统
+                </div>
+                <a href="../../raoemail-landing/index.html" class="back-btn">← 返回首页</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="nav-tabs">
+        <div class="container">
+            <ul>
+                <li><a href="#dashboard" class="active" onclick="showTab('dashboard')">📊 仪表盘</a></li>
+                <li><a href="#vip-list" onclick="showTab('vip-list')">👥 VIP列表</a></li>
+                <li><a href="#payment" onclick="showTab('payment')">💳 收费管理</a></li>
+                <li><a href="#reminders" onclick="showTab('reminders')">🔔 到期提醒</a></li>
+                <li><a href="#settings" onclick="showTab('settings')">⚙️ 系统设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 仪表盘 -->
+        <div id="dashboard" class="tab-content">
+            <div class="stats">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon">👑</div>
+                        <h3>总VIP用户</h3>
+                        <div class="value">1,248</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💼</div>
+                        <h3>企业版</h3>
+                        <div class="value">156</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">⭐</div>
+                        <h3>专业版</h3>
+                        <div class="value">423</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">📈</div>
+                        <h3>本月新增</h3>
+                        <div class="value">89</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">⚠️</div>
+                        <h3>即将到期</h3>
+                        <div class="value">23</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💰</div>
+                        <h3>本月收入</h3>
+                        <div class="value">¥15,680</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <h2><span class="icon">📅</span> 近期到期VIP</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>邮箱</th>
+                            <th>套餐</th>
+                            <th>到期日期</th>
+                            <th>剩余天数</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>VIP001</td>
+                            <td>user1@raoemail.com</td>
+                            <td>专业版</td>
+                            <td>2026-04-05</td>
+                            <td>4</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td><button class="btn btn-secondary" onclick="sendReminder('user1@raoemail.com')">发送提醒</button></td>
+                        </tr>
+                        <tr>
+                            <td>VIP002</td>
+                            <td>user2@raoemail.com</td>
+                            <td>企业版</td>
+                            <td>2026-04-03</td>
+                            <td>2</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td><button class="btn btn-secondary" onclick="sendReminder('user2@raoemail.com')">发送提醒</button></td>
+                        </tr>
+                        <tr>
+                            <td>VIP003</td>
+                            <td>user3@raoemail.com</td>
+                            <td>基础版</td>
+                            <td>2026-04-02</td>
+                            <td>1</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td><button class="btn btn-secondary" onclick="sendReminder('user3@raoemail.com')">发送提醒</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VIP列表 -->
+        <div id="vip-list" class="tab-content" style="display: none;">
+            <div class="content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h2><span class="icon">👥</span> VIP用户列表</h2>
+                    <button class="btn btn-primary" onclick="openModal('add-vip')">+ 添加VIP用户</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>邮箱</th>
+                            <th>套餐类型</th>
+                            <th>开通日期</th>
+                            <th>到期日期</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>VIP001</td>
+                            <td>user1@raoemail.com</td>
+                            <td>专业版</td>
+                            <td>2026-03-05</td>
+                            <td>2026-04-05</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="editVIP('VIP001')">编辑</button>
+                                <button class="btn btn-secondary" onclick="viewDetails('VIP001')">详情</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VIP002</td>
+                            <td>user2@raoemail.com</td>
+                            <td>企业版</td>
+                            <td>2026-03-03</td>
+                            <td>2026-04-03</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="editVIP('VIP002')">编辑</button>
+                                <button class="btn btn-secondary" onclick="viewDetails('VIP002')">详情</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VIP003</td>
+                            <td>user3@raoemail.com</td>
+                            <td>基础版</td>
+                            <td>2026-03-02</td>
+                            <td>2026-04-02</td>
+                            <td><span class="status expiring">即将到期</span></td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="editVIP('VIP003')">编辑</button>
+                                <button class="btn btn-secondary" onclick="viewDetails('VIP003')">详情</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VIP004</td>
+                            <td>user4@raoemail.com</td>
+                            <td>专业版</td>
+                            <td>2026-03-15</td>
+                            <td>2026-04-15</td>
+                            <td><span class="status active">正常</span></td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="editVIP('VIP004')">编辑</button>
+                                <button class="btn btn-secondary" onclick="viewDetails('VIP004')">详情</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 收费管理 -->
+        <div id="payment" class="tab-content" style="display: none;">
+            <div class="content">
+                <h2><span class="icon">💳</span> 收费管理</h2>
+                <div style="margin-bottom: 30px;">
+                    <h3>收费记录</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>交易ID</th>
+                                <th>用户ID</th>
+                                <th>邮箱</th>
+                                <th>套餐</th>
+                                <th>金额</th>
+                                <th>支付方式</th>
+                                <th>交易时间</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TRX20260401001</td>
+                                <td>VIP001</td>
+                                <td>user1@raoemail.com</td>
+                                <td>专业版</td>
+                                <td>¥29.90</td>
+                                <td>微信支付</td>
+                                <td>2026-04-01 14:30:25</td>
+                                <td><span class="status active">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>TRX20260401002</td>
+                                <td>VIP002</td>
+                                <td>user2@raoemail.com</td>
+                                <td>企业版</td>
+                                <td>¥99.90</td>
+                                <td>支付宝</td>
+                                <td>2026-04-01 13:15:42</td>
+                                <td><span class="status active">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>TRX20260401003</td>
+                                <td>VIP003</td>
+                                <td>user3@raoemail.com</td>
+                                <td>基础版</td>
+                                <td>¥9.90</td>
+                                <td>银行卡</td>
+                                <td>2026-04-01 11:22:18</td>
+                                <td><span class="status active">成功</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div>
+                    <h3>收费标准</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4>基础版</h4>
+                            <p>¥9.90/月</p>
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                <li>10GB 存储空间</li>
+                                <li>每日100次AI生成</li>
+                                <li>优先客服支持</li>
+                                <li>无广告体验</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4>专业版</h4>
+                            <p>¥29.90/月</p>
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                <li>50GB 存储空间</li>
+                                <li>无限次AI生成</li>
+                                <li>24/7专属客服</li>
+                                <li>高级安全保护</li>
+                                <li>自定义域名</li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4>企业版</h4>
+                            <p>¥99.90/月</p>
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                <li>无限存储空间</li>
+                                <li>无限次AI生成</li>
+                                <li>企业级安全保障</li>
+                                <li>多用户管理</li>
+                                <li>API接口访问</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 到期提醒 -->
+        <div id="reminders" class="tab-content" style="display: none;">
+            <div class="content">
+                <h2><span class="icon">🔔</span> 到期提醒设置</h2>
+                <div class="reminder-settings">
+                    <div class="reminder-item">
+                        <h4>提醒时间</h4>
+                        <label><input type="checkbox" checked> 到期前15天</label>
+                        <label><input type="checkbox" checked> 到期前10天</label>
+                        <label><input type="checkbox" checked> 到期前5天</label>
+                        <label><input type="checkbox" checked> 到期前3天</label>
+                        <label><input type="checkbox" checked> 到期前2天</label>
+                        <label><input type="checkbox" checked> 到期前1天</label>
+                    </div>
+                    <div class="reminder-item">
+                        <h4>提醒方式</h4>
+                        <label><input type="checkbox" checked> 邮件提醒</label>
+                        <label><input type="checkbox" checked> 站内信提醒</label>
+                        <label><input type="checkbox"> 短信提醒</label>
+                        <label><input type="checkbox"> 微信提醒</label>
+                    </div>
+                    <div class="reminder-item">
+                        <h4>提醒内容</h4>
+                        <p style="margin-bottom: 10px; font-size: 0.9rem; color: #666;">选择提醒模板：</p>
+                        <select style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            <option>标准提醒模板</option>
+                            <option>促销提醒模板</option>
+                            <option>企业用户模板</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 20px;">保存设置</button>
+            </div>
+        </div>
+
+        <!-- 系统设置 -->
+        <div id="settings" class="tab-content" style="display: none;">
+            <div class="content">
+                <h2><span class="icon">⚙️</span> 系统设置</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                    <div>
+                        <h3>上传服务设置</h3>
+                        <div class="form-group">
+                            <label>非会员上传限制</label>
+                            <input type="number" placeholder="0" value="0" disabled>
+                            <small style="color: #666; display: block; margin-top: 5px;">非会员上传服务已关闭</small>
+                        </div>
+                        <div class="form-group">
+                            <label>基础版上传限制 (MB)</label>
+                            <input type="number" placeholder="10" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label>专业版上传限制 (MB)</label>
+                            <input type="number" placeholder="50" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label>企业版上传限制 (MB)</label>
+                            <input type="number" placeholder="200" value="200">
+                        </div>
+                    </div>
+                    <div>
+                        <h3>备份设置</h3>
+                        <div class="form-group">
+                            <label>备份频率</label>
+                            <select>
+                                <option>每天</option>
+                                <option selected>每周</option>
+                                <option>每月</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备份保留时间</label>
+                            <select>
+                                <option>30天</option>
+                                <option selected>90天</option>
+                                <option>180天</option>
+                                <option>365天</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备份路径</label>
+                            <input type="text" placeholder="/backup/vip-data" value="/backup/vip-data">
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 10px;">立即备份</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 30px;">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加VIP模态框 -->
+    <div id="add-vip" class="modal-overlay">
+        <div class="modal">
+            <span class="modal-close" onclick="closeModal('add-vip')">&times;</span>
+            <h3>添加VIP用户</h3>
+            <form onsubmit="addVIP(event)">
+                <div class="form-group">
+                    <label>邮箱地址</label>
+                    <input type="email" placeholder="请输入邮箱地址" required>
+                </div>
+                <div class="form-group">
+                    <label>套餐类型</label>
+                    <select required>
+                        <option value="">请选择</option>
+                        <option value="basic">基础版</option>
+                        <option value="pro">专业版</option>
+                        <option value="enterprise">企业版</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>开通日期</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>到期日期</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea placeholder="请输入备注信息"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">保存</button>
+                    <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeModal('add-vip')">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Raoemail. 运营方：武穴茶海虾王电子商务中心 | 技术支持：rao5201@126.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // 标签页切换
+        function showTab(tabId) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            // 显示选中的标签页
+            document.getElementById(tabId).style.display = 'block';
+            // 更新导航状态
+            document.querySelectorAll('.nav-tabs a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // 模态框控制
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // 发送提醒
+        function sendReminder(email) {
+            alert(`已发送到期提醒至 ${email}`);
+        }
+
+        // 添加VIP
+        function addVIP(e) {
+            e.preventDefault();
+            alert('VIP用户添加成功！');
+            closeModal('add-vip');
+        }
+
+        // 编辑VIP
+        function editVIP(vipId) {
+            alert(`编辑VIP用户 ${vipId}`);
+        }
+
+        // 查看详情
+        function viewDetails(vipId) {
+            alert(`查看VIP用户 ${vipId} 详情`);
+        }
+
+        // 点击模态框外部关闭
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
