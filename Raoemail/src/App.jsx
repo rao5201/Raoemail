@@ -16,8 +16,6 @@ function App() {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [showLogin, setShowLogin] = useState(false)
   const [loginError, setLoginError] = useState('')
-  const [sending, setSending] = useState(false)
-  const [sendError, setSendError] = useState('')
   const qrcodeRef = useRef(null)
 
   // Create new email
@@ -129,6 +127,9 @@ function App() {
   }
 
   // Send email
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
+
   const sendEmail = async () => {
     if (!newEmail.to || !newEmail.subject || !newEmail.body) {
       alert('请填写所有必填字段')
