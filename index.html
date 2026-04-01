@@ -176,7 +176,7 @@
                     <div class="search-results" id="searchResults"></div>
                 </div>
                 <div class="nav-links">
-                    <a href="#features">功能特性</a>
+                    <a href="#ai">功能特性</a>
                     <a href="vip-service/index.html">VIP服务</a>
                     <a href="ai-assistant/index.html">AI助手</a>
                     <a href="#share">分享</a>
@@ -281,19 +281,19 @@
             <h2>🤖 AI 智能助手</h2>
             <p class="subtitle">免费使用AI大模型，让邮件处理更智能</p>
             <div class="ai-grid">
-                <div class="ai-card">
+                <div class="ai-card" onclick="window.location.href='ai-assistant/index.html'">
                     <div class="icon">✍️</div>
                     <h3>智能写作</h3>
                     <p>输入关键词，AI自动生成专业邮件内容，支持多种场景和语气</p>
                     <span class="tag">免费使用</span>
                 </div>
-                <div class="ai-card">
+                <div class="ai-card" onclick="window.location.href='ai-assistant/index.html'">
                     <div class="icon">🔄</div>
                     <h3>智能回复</h3>
                     <p>根据邮件内容自动生成回复建议，节省您的宝贵时间</p>
                     <span class="tag">免费使用</span>
                 </div>
-                <div class="ai-card">
+                <div class="ai-card" onclick="window.location.href='ai-assistant/index.html'">
                     <div class="icon">🌐</div>
                     <h3>多语言翻译</h3>
                     <p>支持50+种语言的实时翻译，让跨国沟通无障碍</p>
@@ -343,28 +343,28 @@
                 <div class="footer-column">
                     <h4>关于 Raoemail</h4>
                     <ul>
-                        <li><a href="#">公司介绍</a></li>
-                        <li><a href="#">联系我们</a></li>
-                        <li><a href="#">加入我们</a></li>
-                        <li><a href="#">新闻动态</a></li>
+                        <li><a href="admin/index.html">公司介绍</a></li>
+                        <li><a href="admin/index.html">联系我们</a></li>
+                        <li><a href="admin/index.html">加入我们</a></li>
+                        <li><a href="admin/index.html">新闻动态</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>产品服务</h4>
                     <ul>
-                        <li><a href="#">免费邮箱</a></li>
-                        <li><a href="#">VIP服务</a></li>
-                        <li><a href="#">AI助手</a></li>
-                        <li><a href="#">企业邮箱</a></li>
+                        <li><a href="frontend/">免费邮箱</a></li>
+                        <li><a href="vip-service/index.html">VIP服务</a></li>
+                        <li><a href="ai-assistant/index.html">AI助手</a></li>
+                        <li><a href="vip-service/index.html">企业邮箱</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>帮助支持</h4>
                     <ul>
-                        <li><a href="#">帮助中心</a></li>
-                        <li><a href="#">使用教程</a></li>
-                        <li><a href="#">常见问题</a></li>
-                        <li><a href="#">意见反馈</a></li>
+                        <li><a href="ai-assistant/index.html">帮助中心</a></li>
+                        <li><a href="ai-assistant/index.html">使用教程</a></li>
+                        <li><a href="ai-assistant/index.html">常见问题</a></li>
+                        <li><a href="ai-assistant/index.html">意见反馈</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -507,7 +507,7 @@
             const display = document.getElementById('qrcode-display');
             display.style.display = 'block';
             
-            QRCode.toCanvas(document.getElementById('share-qrcode'), 'https://raoemail.com', {
+            QRCode.toCanvas(document.getElementById('share-qrcode'), 'https://rao5201.github.io/Raoemail/', {
                 width: 250,
                 margin: 2,
                 color: {
@@ -521,7 +521,7 @@
 
         // 复制分享链接
         function copyShareLink() {
-            const link = 'https://raoemail.com';
+            const link = 'https://rao5201.github.io/Raoemail/';
             navigator.clipboard.writeText(link).then(() => {
                 alert('分享链接已复制到剪贴板！');
             });
