@@ -35,6 +35,12 @@ function App() {
     autoSend: false,
     aiAssistant: true
   })
+  // 用户认证状态
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState(null)
+  const [showRegister, setShowRegister] = useState(false)
+  const [registerForm, setRegisterForm] = useState({ email: '', password: '', name: '' })
+  const [registerError, setRegisterError] = useState('')
   const qrcodeRef = useRef(null)
 
   // Create new email
@@ -116,6 +122,73 @@ function App() {
       console.error('Failed to delete email:', err)
     }
   }
+
+  // 用户注册
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    if (!registerForm.email || !registerForm.password || !registerForm.name) {
+      setRegisterError('请填写所有必填字段')
+      return
+    }
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(registerForm)
+      })
+      const data = await response.json()
+      if (data.success) {
+        setShowRegister(false)
+        setRegisterForm({ email: '', password: '', name: '' })
+        setRegisterError('')
+        alert('注册成功，请登录')
+        setShowLogin(true)
+      } else {
+        setRegisterError(data.error || '注册失败')
+      }
+    } catch (err) {
+      setRegisterError('网络错误，请稍后重试')
+    }
+  }
+
+  // 用户登录
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    if (!loginForm.email || !loginForm.password) {
+      setLoginError('请填写邮箱和密码')
+      return
+    }
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginForm)
+      })
+      const data = await response.json()
+      if (data.success) {
+        setIsLoggedIn(true)
+        setUser(data.user)
+        setShowLogin(false)
+        setLoginForm({ email: '', password: '' })
+        setLoginError('')
+        alert('登录成功')
+      } else {
+        setLoginError(data.error || '登录失败')
+      }
+    } catch (err) {
+      setLoginError('网络错误，请稍后重试')
+    }
+  }
+
+  // 用户登出
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    setUser(null)
+    alert('登出成功')
+  }
+
+  // 支付独立模块状态
+  const [showPaymentModule, setShowPaymentModule] = useState(false)
 
   // Refresh messages
   const refreshMessages = () => {
@@ -240,7 +313,7 @@ function App() {
     setLoading(true)
     setLoginError('')
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/login-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -470,6 +543,15 @@ function App() {
                     <li>✅ 支持上传和保存资料</li>
                     <li>✅ 支持保存重要邮件</li>
                   </ul>
+                </div>
+                
+                <div className="mt-6">
+                  <button
+                    onClick={() => setShowPaymentModule(true)}
+                    className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                  >
+                    💰 支付独立模块
+                  </button>
                 </div>
               </div>
             )
@@ -2183,14 +2265,35 @@ function App() {
                                       基本API访问
                                     </li>
                                   </ul>
-                                  <button
-                                    onClick={() => {
-                                      alert('跳转到支付页面');
-                                    }}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
-                                  >
-                                    立即购买
-                                  </button>
+                                  <div className="space-y-2">
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到支付宝支付页面');
+                                      }}
+                                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">💰</span>
+                                      支付宝支付
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到微信支付页面');
+                                      }}
+                                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">💚</span>
+                                      微信支付
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到银行转账页面');
+                                      }}
+                                      className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">🏦</span>
+                                      银行转账
+                                    </button>
+                                  </div>
                                 </div>
                                 
                                 <div className="border-2 border-blue-500 rounded-lg p-4 bg-blue-50">
@@ -2227,14 +2330,35 @@ function App() {
                                       优先技术支持
                                     </li>
                                   </ul>
-                                  <button
-                                    onClick={() => {
-                                      alert('跳转到支付页面');
-                                    }}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
-                                  >
-                                    立即购买
-                                  </button>
+                                  <div className="space-y-2">
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到支付宝支付页面');
+                                      }}
+                                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">💰</span>
+                                      支付宝支付
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到微信支付页面');
+                                      }}
+                                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">💚</span>
+                                      微信支付
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        alert('跳转到银行转账页面');
+                                      }}
+                                      className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                                    >
+                                      <span className="mr-2">🏦</span>
+                                      银行转账
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                               

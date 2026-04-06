@@ -255,8 +255,90 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-// Login to existing email account
+// User registration API
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, password, name } = req.body;
+
+    if (!email || !password || !name) {
+      return res.status(400).json({ success: false, error: 'Email, password, and name are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: 'Email already registered' });
+    }
+
+    // Create new user
+    const user = await User.create({
+      email,
+      password,
+      name,
+      role: 'user'
+    });
+
+    // Log operation
+    await OperationLog.create({
+      operation: 'register',
+      userType: 'user',
+      userEmail: email,
+      details: '用户注册',
+      ipAddress: req.ip
+    });
+
+    res.json({ success: true, message: 'Registration successful' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ success: false, error: 'Failed to register user' });
+  }
+});
+
+// User login API
 app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required' });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ where: { email, password } });
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid email or password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+
+    // Log operation
+    await OperationLog.create({
+      operation: 'login',
+      userType: 'user',
+      userEmail: email,
+      details: '用户登录',
+      ipAddress: req.ip
+    });
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      },
+      token
+    });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ success: false, error: 'Failed to login' });
+  }
+});
+
+// Login to existing email account (temporary email)
+app.post('/api/login-email', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -278,10 +360,10 @@ app.post('/api/login', async (req, res) => {
 
     // Log operation
     await OperationLog.create({
-      operation: 'login',
+      operation: 'login_email',
       userType: 'customer',
       userEmail: email,
-      details: '登录邮箱',
+      details: '登录临时邮箱',
       ipAddress: req.ip
     });
 
@@ -291,7 +373,7 @@ app.post('/api/login', async (req, res) => {
       token: tokenRes.data.token
     });
   } catch (error) {
-    console.error('Error logging in:', error.response?.data || error.message);
+    console.error('Error logging in to email:', error.response?.data || error.message);
     res.status(401).json({
       success: false,
       error: error.response?.data?.detail || 'Invalid email or password'
@@ -811,6 +893,413 @@ app.get('/api/mcp/config', async (req, res) => {
   } catch (error) {
     console.error('Error getting MCP config:', error);
     res.status(500).json({ success: false, error: 'Failed to get MCP config' });
+  }
+});
+
+// Payment API
+app.post('/api/payment/process', async (req, res) => {
+  try {
+    const { userId, serviceType, amount, paymentMethod, platform, isInternational } = req.body;
+    
+    // Validate input
+    if (!userId || !serviceType || !amount || !paymentMethod) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+    
+    // Calculate service fee (3-5%)
+    const serviceFeeRate = isInternational ? 0.05 : 0.03; // 5% for international, 3% for domestic
+    const serviceFee = amount * serviceFeeRate;
+    const totalAmount = amount + serviceFee;
+    
+    // Process payment based on platform and international status
+    let paymentResult;
+    if (isInternational) {
+      // Process international payment
+      paymentResult = await processInternationalPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod, platform);
+    } else if (platform === 'third-party') {
+      // Process through third-party payment platform
+      paymentResult = await processThirdPartyPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod);
+    } else if (platform === 'bank') {
+      // Process through bank settlement platform
+      paymentResult = await processBankSettlement(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod);
+    } else {
+      // Default payment processing
+      paymentResult = await processDefaultPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod);
+    }
+    
+    // Log payment
+    await OperationLog.create({
+      operation: 'payment',
+      userType: 'user',
+      userEmail: `user_${userId}`,
+      details: `通过 ${platform || '默认'} 平台${isInternational ? '跨国' : ''}支付 ${amount} 元，服务费 ${serviceFee.toFixed(2)} 元，总计 ${totalAmount.toFixed(2)} 元购买 ${serviceType} 服务`,
+      ipAddress: req.ip
+    });
+    
+    // Auto activate service
+    await activateService(userId, serviceType);
+    
+    res.json({
+      success: true,
+      paymentId: paymentResult.paymentId,
+      paymentStatus: paymentResult.paymentStatus,
+      serviceFee: serviceFee,
+      totalAmount: totalAmount,
+      message: paymentResult.message || 'Payment processed successfully and service activated'
+    });
+  } catch (error) {
+    console.error('Error processing payment:', error);
+    res.status(500).json({ success: false, error: 'Failed to process payment' });
+  }
+});
+
+// Process international payment
+async function processInternationalPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod, platform) {
+  try {
+    // Simulate international payment processing
+    console.log(`Processing international payment for user ${userId}: ${amount}元 (service fee: ${serviceFee.toFixed(2)}元, total: ${totalAmount.toFixed(2)}元) via ${paymentMethod}`);
+    
+    // Simulate international payment methods
+    let paymentUrl;
+    switch (paymentMethod) {
+      case 'paypal':
+        paymentUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amount=${totalAmount}&currency_code=CNY`;
+        break;
+      case 'stripe':
+        paymentUrl = `https://checkout.stripe.com/pay/${Date.now()}?amount=${Math.round(totalAmount * 100)}&currency=cny`;
+        break;
+      case 'westernunion':
+        paymentUrl = `https://www.westernunion.com/cn/en/send-money.html?amount=${totalAmount}&currency=CNY`;
+        break;
+      case 'international-bank':
+        paymentUrl = `https://international-banking.example.com/transfer?amount=${totalAmount}&currency=CNY`;
+        break;
+      default:
+        paymentUrl = `https://international-payment.example.com/pay?amount=${totalAmount}&currency=CNY`;
+    }
+    
+    // Simulate international payment delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    return {
+      paymentId: `INTL${Date.now()}`,
+      paymentStatus: 'completed',
+      paymentUrl: paymentUrl,
+      currency: 'CNY',
+      exchangeRate: 1.0, // Assuming CNY for simplicity
+      message: 'International payment processed successfully with 5% service fee'
+    };
+  } catch (error) {
+    console.error('Error processing international payment:', error);
+    throw error;
+  }
+}
+
+// Process third-party payment
+async function processThirdPartyPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod) {
+  try {
+    // Simulate third-party payment processing
+    // In a real implementation, you would integrate with actual payment gateways
+    console.log(`Processing third-party payment for user ${userId}: ${amount}元 (service fee: ${serviceFee.toFixed(2)}元, total: ${totalAmount.toFixed(2)}元) via ${paymentMethod}`);
+    
+    // Simulate different payment methods
+    let paymentUrl;
+    switch (paymentMethod) {
+      case 'alipay':
+        paymentUrl = `https://openapi.alipay.com/gateway.do?order=${Date.now()}&amount=${totalAmount}`;
+        break;
+      case 'wechat':
+        paymentUrl = `https://api.mch.weixin.qq.com/pay/unifiedorder?order=${Date.now()}&amount=${totalAmount}`;
+        break;
+      case 'unionpay':
+        paymentUrl = `https://gateway.95516.com/gateway/api/frontTransReq.do?order=${Date.now()}&amount=${totalAmount}`;
+        break;
+      default:
+        paymentUrl = `https://payment.example.com/pay?order=${Date.now()}&amount=${totalAmount}`;
+    }
+    
+    // Simulate payment delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return {
+      paymentId: `THIRD${Date.now()}`,
+      paymentStatus: 'completed',
+      paymentUrl: paymentUrl,
+      message: 'Third-party payment processed successfully with 3% service fee'
+    };
+  } catch (error) {
+    console.error('Error processing third-party payment:', error);
+    throw error;
+  }
+}
+
+// Process bank settlement payment
+async function processBankSettlement(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod) {
+  try {
+    // Simulate bank settlement processing
+    console.log(`Processing bank settlement for user ${userId}: ${amount}元 (service fee: ${serviceFee.toFixed(2)}元, total: ${totalAmount.toFixed(2)}元) via ${paymentMethod}`);
+    
+    // Bank settlement details
+    const bankDetails = {
+      bankName: '中国农业银行',
+      accountNumber: '6228480089304669172',
+      accountName: '饶思义',
+      branch: '中国农业银行股份有限公司广州林安物流园支行',
+      swiftCode: 'ABOCCNBJ190'
+    };
+    
+    // Simulate settlement process
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    return {
+      paymentId: `BANK${Date.now()}`,
+      paymentStatus: 'pending', // Bank transfers typically take time to settle
+      bankDetails: bankDetails,
+      message: 'Bank settlement initiated successfully. Please transfer the total amount to the provided bank account.'
+    };
+  } catch (error) {
+    console.error('Error processing bank settlement:', error);
+    throw error;
+  }
+}
+
+// Process default payment
+async function processDefaultPayment(userId, serviceType, amount, serviceFee, totalAmount, paymentMethod) {
+  try {
+    // Simulate default payment processing
+    console.log(`Processing default payment for user ${userId}: ${amount}元 (service fee: ${serviceFee.toFixed(2)}元, total: ${totalAmount.toFixed(2)}元) via ${paymentMethod}`);
+    
+    // Simulate payment delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return {
+      paymentId: `PAY${Date.now()}`,
+      paymentStatus: 'completed',
+      message: 'Payment processed successfully with 3% service fee'
+    };
+  } catch (error) {
+    console.error('Error processing default payment:', error);
+    throw error;
+  }
+}
+
+// Payment status check API
+app.get('/api/payment/status/:paymentId', async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+    
+    // Simulate payment status check
+    // In a real implementation, you would check with the actual payment gateway
+    let status = 'completed';
+    if (paymentId.startsWith('BANK')) {
+      // Bank transfers take time to settle
+      status = 'pending';
+    }
+    
+    res.json({
+      success: true,
+      paymentId,
+      status,
+      message: `Payment ${paymentId} is ${status}`
+    });
+  } catch (error) {
+    console.error('Error checking payment status:', error);
+    res.status(500).json({ success: false, error: 'Failed to check payment status' });
+  }
+});
+
+// Bank settlement confirmation API
+app.post('/api/payment/bank/confirm', async (req, res) => {
+  try {
+    const { paymentId, transactionId, amount } = req.body;
+    
+    if (!paymentId || !transactionId || !amount) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+    
+    // Simulate bank settlement confirmation
+    console.log(`Confirming bank settlement for payment ${paymentId} with transaction ${transactionId}`);
+    
+    // Log bank settlement confirmation
+    await OperationLog.create({
+      operation: 'bank_settlement_confirm',
+      userType: 'admin',
+      userEmail: 'admin@example.com',
+      details: `确认银行结算：支付ID ${paymentId}，交易ID ${transactionId}，金额 ${amount} 元`,
+      ipAddress: req.ip
+    });
+    
+    res.json({
+      success: true,
+      paymentId,
+      transactionId,
+      message: 'Bank settlement confirmed successfully'
+    });
+  } catch (error) {
+    console.error('Error confirming bank settlement:', error);
+    res.status(500).json({ success: false, error: 'Failed to confirm bank settlement' });
+  }
+});
+
+// Service activation function
+async function activateService(userId, serviceType) {
+  try {
+    // Here you would implement the logic to activate the service for the user
+    // This could involve updating a database record, sending a confirmation email, etc.
+    
+    // Log service activation
+    await OperationLog.create({
+      operation: 'service_activation',
+      userType: 'user',
+      userEmail: `user_${userId}`,
+      details: `激活 ${serviceType} 服务`,
+      ipAddress: 'system'
+    });
+    
+    console.log(`Service ${serviceType} activated for user ${userId}`);
+  } catch (error) {
+    console.error('Error activating service:', error);
+  }
+}
+
+// Tool usage tracking API
+app.post('/api/tools/usage', async (req, res) => {
+  try {
+    const { userId, toolName, usageTime } = req.body;
+    
+    // Validate input
+    if (!userId || !toolName) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+    
+    // Log tool usage
+    await OperationLog.create({
+      operation: 'tool_usage',
+      userType: 'user',
+      userEmail: `user_${userId}`,
+      details: `使用 ${toolName} 工具，时长 ${usageTime || 0} 秒`,
+      ipAddress: req.ip
+    });
+    
+    res.json({ success: true, message: 'Tool usage logged successfully' });
+  } catch (error) {
+    console.error('Error logging tool usage:', error);
+    res.status(500).json({ success: false, error: 'Failed to log tool usage' });
+  }
+});
+
+// Tool usage analysis API
+app.get('/api/tools/usage/analysis', authenticateAdmin, async (req, res) => {
+  try {
+    // Get tool usage data from operation logs
+    const usageLogs = await OperationLog.findAll({
+      where: {
+        operation: 'tool_usage'
+      },
+      order: [['createdAt', 'DESC']]
+    });
+    
+    // Analyze usage data
+    const usageAnalysis = {};
+    usageLogs.forEach(log => {
+      const toolName = log.details.match(/使用 (.*?) 工具/)[1];
+      if (!usageAnalysis[toolName]) {
+        usageAnalysis[toolName] = 0;
+      }
+      usageAnalysis[toolName]++;
+    });
+    
+    res.json({
+      success: true,
+      analysis: usageAnalysis,
+      totalUsage: usageLogs.length
+    });
+  } catch (error) {
+    console.error('Error analyzing tool usage:', error);
+    res.status(500).json({ success: false, error: 'Failed to analyze tool usage' });
+  }
+});
+
+// API integration examples API
+app.get('/api/api/integration/examples', async (req, res) => {
+  try {
+    const examples = {
+      javascript: {
+        description: 'JavaScript API integration example',
+        code: `// JavaScript API integration example
+const axios = require('axios');
+
+async function createEmail() {
+  try {
+    const response = await axios.post('https://your-api.com/api/create-email');
+    console.log('Email created:', response.data);
+  } catch (error) {
+    console.error('Error creating email:', error);
+  }
+}
+
+createEmail();`
+      },
+      python: {
+        description: 'Python API integration example',
+        code: `# Python API integration example
+import requests
+
+response = requests.post('https://your-api.com/api/create-email')
+print('Email created:', response.json())`
+      },
+      curl: {
+        description: 'cURL API integration example',
+        code: `# cURL API integration example
+curl -X POST https://your-api.com/api/create-email`
+      }
+    };
+    
+    res.json({ success: true, examples });
+  } catch (error) {
+    console.error('Error getting API examples:', error);
+    res.status(500).json({ success: false, error: 'Failed to get API examples' });
+  }
+});
+
+// Multi-language support API
+app.get('/api/languages', async (req, res) => {
+  try {
+    const languages = [
+      { code: 'zh', name: '中文' },
+      { code: 'en', name: 'English' },
+      { code: 'ja', name: '日本語' },
+      { code: 'ko', name: '한국어' },
+      { code: 'fr', name: 'Français' },
+      { code: 'de', name: 'Deutsch' }
+    ];
+    
+    res.json({ success: true, languages });
+  } catch (error) {
+    console.error('Error getting languages:', error);
+    res.status(500).json({ success: false, error: 'Failed to get languages' });
+  }
+});
+
+// Mobile app API
+app.get('/api/mobile/app/config', async (req, res) => {
+  try {
+    const config = {
+      version: '1.0.0',
+      apiBaseUrl: 'https://your-api.com/api',
+      features: {
+        emailCreation: true,
+        messageChecking: true,
+        toolAccess: true,
+        paymentProcessing: true
+      },
+      supportedPlatforms: ['iOS', 'Android']
+    };
+    
+    res.json({ success: true, config });
+  } catch (error) {
+    console.error('Error getting mobile app config:', error);
+    res.status(500).json({ success: false, error: 'Failed to get mobile app config' });
   }
 });
 
