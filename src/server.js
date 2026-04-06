@@ -1375,7 +1375,7 @@ app.get('/api/languages', async (req, res) => {
 app.get('/api/mobile/app/config', async (req, res) => {
   try {
     const config = {
-      version: '1.1.0',
+      version: '1.2.0',
       apiBaseUrl: 'https://your-api.com/api',
       features: {
         emailCreation: true,
