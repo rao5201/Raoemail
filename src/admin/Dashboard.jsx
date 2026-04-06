@@ -55,6 +55,8 @@ function AdminDashboard() {
         return <UsersContent />
       case 'customer-emails':
         return <CustomerEmailsContent />
+      case 'operation-logs':
+        return <OperationLogsContent />
       case 'articles':
         return <ArticlesContent />
       case 'files':
@@ -130,6 +132,13 @@ function AdminDashboard() {
                 icon="📧" 
                 active={activeTab === 'customer-emails'}
                 onClick={() => setActiveTab('customer-emails')}
+                show={user?.role === 'admin'}
+              />
+              <NavItem 
+                label="操作日志" 
+                icon="📋" 
+                active={activeTab === 'operation-logs'}
+                onClick={() => setActiveTab('operation-logs')}
                 show={user?.role === 'admin'}
               />
               <NavItem 
@@ -2384,6 +2393,102 @@ function CustomerEmailsContent() {
                       </td>
                       <td className="py-3 px-4 border-b">
                         {new Date(email.createdAt).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Operation Logs Content
+function OperationLogsContent() {
+  const [operationLogs, setOperationLogs] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    fetchOperationLogs()
+  }, [])
+
+  const fetchOperationLogs = async () => {
+    setLoading(true)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/admin/operation-logs', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      const data = await response.json()
+      if (data.success) {
+        setOperationLogs(data.operationLogs)
+      }
+    } catch (err) {
+      console.error('Failed to fetch operation logs:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">操作日志</h2>
+        <button
+          onClick={fetchOperationLogs}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors"
+        >
+          刷新日志
+        </button>
+      </div>
+      
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="animate-spin h-8 w-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p>加载操作日志中...</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {operationLogs.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <div className="text-4xl mb-2">📋</div>
+              <p>暂无操作日志</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white border border-gray-200">
+                <thead>
+                  <tr>
+                    <th className="py-3 px-4 border-b">ID</th>
+                    <th className="py-3 px-4 border-b">操作类型</th>
+                    <th className="py-3 px-4 border-b">用户类型</th>
+                    <th className="py-3 px-4 border-b">用户邮箱</th>
+                    <th className="py-3 px-4 border-b">操作详情</th>
+                    <th className="py-3 px-4 border-b">IP地址</th>
+                    <th className="py-3 px-4 border-b">操作时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {operationLogs.map((log) => (
+                    <tr key={log.id} className="hover:bg-gray-50">
+                      <td className="py-3 px-4 border-b">{log.id}</td>
+                      <td className="py-3 px-4 border-b">
+                        {log.operation === 'create_email' && '创建邮箱'}
+                        {log.operation === 'login' && '登录'}
+                        {log.operation === 'send_email' && '发送邮件'}
+                        {log.operation === 'delete_email' && '删除邮箱'}
+                      </td>
+                      <td className="py-3 px-4 border-b">{log.userType === 'customer' ? '客户' : '管理员'}</td>
+                      <td className="py-3 px-4 border-b font-mono">{log.userEmail}</td>
+                      <td className="py-3 px-4 border-b">{log.details}</td>
+                      <td className="py-3 px-4 border-b">{log.ipAddress || '未知'}</td>
+                      <td className="py-3 px-4 border-b">
+                        {new Date(log.createdAt).toLocaleString()}
                       </td>
                     </tr>
                   ))}

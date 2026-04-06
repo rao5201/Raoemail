@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { User, Article, File, Supplier, Product, Sale, Expense, CustomerEmail } = require('./models');
+const { User, Article, File, Supplier, Product, Sale, Expense, CustomerEmail, OperationLog } = require('./models');
 require('dotenv').config();
 
 const app = express();
@@ -79,6 +79,15 @@ app.post('/api/create-email', async (req, res) => {
       email: fullEmail,
       password: password,
       token: tokenRes.data.token
+    });
+
+    // Log operation
+    await OperationLog.create({
+      operation: 'create_email',
+      userType: 'customer',
+      userEmail: fullEmail,
+      details: '创建临时邮箱',
+      ipAddress: req.ip
     });
 
     res.json({
@@ -170,6 +179,15 @@ app.delete('/api/delete-email/:email', async (req, res) => {
       }
     });
 
+    // Log operation
+    await OperationLog.create({
+      operation: 'delete_email',
+      userType: 'customer',
+      userEmail: email,
+      details: '删除邮箱账户',
+      ipAddress: req.ip
+    });
+
     res.json({ success: true, message: 'Account deleted successfully' });
   } catch (error) {
     console.error('Error deleting account:', error.response?.data || error.message);
@@ -218,6 +236,15 @@ app.post('/api/send-email', async (req, res) => {
       }
     });
 
+    // Log operation
+    await OperationLog.create({
+      operation: 'send_email',
+      userType: 'customer',
+      userEmail: from,
+      details: `发送邮件至 ${to}，主题：${subject}`,
+      ipAddress: req.ip
+    });
+
     res.json({ success: true, message: 'Email sent successfully', messageId: messageRes.data.id });
   } catch (error) {
     console.error('Error sending email:', error.response?.data || error.message);
@@ -248,6 +275,15 @@ app.post('/api/login', async (req, res) => {
       { lastAccessed: new Date(), token: tokenRes.data.token },
       { where: { email: email } }
     );
+
+    // Log operation
+    await OperationLog.create({
+      operation: 'login',
+      userType: 'customer',
+      userEmail: email,
+      details: '登录邮箱',
+      ipAddress: req.ip
+    });
 
     res.json({
       success: true,
@@ -315,6 +351,24 @@ app.get('/api/admin/customer-emails/count', authenticateAdmin, async (req, res) 
     const count = await CustomerEmail.count();
     
     res.json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Get operation logs API
+app.get('/api/admin/operation-logs', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const operationLogs = await OperationLog.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: 100
+    });
+    
+    res.json({ success: true, operationLogs });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Internal server error' });
   }

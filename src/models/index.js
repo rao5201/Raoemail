@@ -20,6 +20,7 @@ const Product = require('./Product');
 const Sale = require('./Sale');
 const Expense = require('./Expense');
 const CustomerEmail = require('./CustomerEmail');
+const OperationLog = require('./OperationLog');
 
 // Initialize models
 const models = {
@@ -30,7 +31,8 @@ const models = {
   Product: Product(sequelize, Sequelize),
   Sale: Sale(sequelize, Sequelize),
   Expense: Expense(sequelize, Sequelize),
-  CustomerEmail: CustomerEmail(sequelize, Sequelize)
+  CustomerEmail: CustomerEmail(sequelize, Sequelize),
+  OperationLog: OperationLog(sequelize, Sequelize)
 };
 
 // Define associations
