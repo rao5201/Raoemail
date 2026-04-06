@@ -24,6 +24,7 @@ function App() {
   const [savedEmails, setSavedEmails] = useState([])
   const [uploadedFiles, setUploadedFiles] = useState([])
   const [fileToUpload, setFileToUpload] = useState(null)
+  const [emailNotes, setEmailNotes] = useState({})
   const [qrcodeData, setQrcodeData] = useState('')
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [showLogin, setShowLogin] = useState(false)
@@ -66,7 +67,11 @@ function App() {
       const response = await fetch(`/api/messages/${encodeURIComponent(emailData.email)}?token=${token}`)
       const data = await response.json()
       if (data.success) {
-        setMessages(data.messages)
+        // Sort messages by createdAt in descending order
+        const sortedMessages = data.messages.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt)
+        })
+        setMessages(sortedMessages)
       }
     } catch (err) {
       console.error('Failed to fetch messages:', err)
@@ -117,6 +122,15 @@ function App() {
   const saveEmail = (message) => {
     setSavedEmails([...savedEmails, message])
     alert('邮件已保存')
+  }
+
+  // Add note to email
+  const addNoteToEmail = (messageId, note) => {
+    setEmailNotes(prev => ({
+      ...prev,
+      [messageId]: note
+    }))
+    alert('备注已添加')
   }
 
   // Handle file upload
@@ -636,6 +650,31 @@ function App() {
                         className="prose max-w-none"
                         dangerouslySetInnerHTML={{ __html: selectedMessage.html || selectedMessage.text }}
                       />
+                    </div>
+                    
+                    <div className="border-t pt-4 mt-4">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-2">备注</h4>
+                      <textarea
+                        value={emailNotes[selectedMessage.id] || ''}
+                        onChange={(e) => setEmailNotes(prev => ({
+                          ...prev,
+                          [selectedMessage.id]: e.target.value
+                        }))}
+                        placeholder="添加备注..."
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        rows="3"
+                      />
+                      <button
+                        onClick={() => addNoteToEmail(selectedMessage.id, emailNotes[selectedMessage.id] || '')}
+                        className="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition-colors"
+                      >
+                        保存备注
+                      </button>
+                      {emailNotes[selectedMessage.id] && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          已添加备注: {emailNotes[selectedMessage.id]}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
