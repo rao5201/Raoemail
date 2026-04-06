@@ -1269,6 +1269,22 @@ function App() {
                                   使用工具
                                 </button>
                               </div>
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">💰</div>
+                                <h6 className="font-medium text-gray-800 mb-1">Premium工具集</h6>
+                                <p className="text-xs text-gray-600">高级工具集，需要购买服务才能使用</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到Premium工具集页面
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('premium-tools');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  查看工具
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1843,6 +1859,193 @@ function App() {
                                         使用工具
                                       </button>
                                     </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : activeAITool === 'premium-tools' ? (
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3"> premium 工具集</h5>
+                            
+                            <div className="border border-gray-200 rounded-lg p-4">
+                              <p className="text-sm text-gray-600 mb-6">
+                                💰 高级工具集，需要购买我们的产品服务/咨询服务费用才能使用。
+                              </p>
+                              
+                              <div className="space-y-4 mb-6">
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">PDF Candy</h6>
+                                  <p className="text-xs text-gray-600 mb-2">PDF处理工具，支持PDF转换、编辑、压缩等功能</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://pdfcandy.com/cn/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">123APPS</h6>
+                                  <p className="text-xs text-gray-600 mb-2">在线音频、视频、图像处理工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://123apps.com/cn/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">AI智能文本纠错润色</h6>
+                                  <p className="text-xs text-gray-600 mb-2">智能文本纠错、润色和优化工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://www.text-well.com/zh
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">合同模板</h6>
+                                  <p className="text-xs text-gray-600 mb-2">各种合同模板下载</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://mubanxiazai.cn/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">VirScan</h6>
+                                  <p className="text-xs text-gray-600 mb-2">在线病毒扫描工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://www.virscan.org/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">在线PS</h6>
+                                  <p className="text-xs text-gray-600 mb-2">在线图片编辑工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://www.zaixianps.net/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">PDF to Link</h6>
+                                  <p className="text-xs text-gray-600 mb-2">PDF转链接工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://pdftolink.app/zh-hans
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">FilePost</h6>
+                                  <p className="text-xs text-gray-600 mb-2">文件上传和分享工具</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://file-post.net/zc/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">在线证件照制作</h6>
+                                  <p className="text-xs text-gray-600 mb-2">在线制作证件照片</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://app.xiaoqiyun.cn/idphoto/page1/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-1">CodeBox</h6>
+                                  <p className="text-xs text-gray-600 mb-2">在线代码编辑器</p>
+                                  <div className="bg-gray-100 p-2 rounded-lg text-xs font-mono mb-2">
+                                    官网：https://www.codebox.club/
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('需要购买我们的产品服务才能使用此工具');
+                                    }}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    使用工具
+                                  </button>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                <div className="flex">
+                                  <div className="flex-shrink-0">
+                                    <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                  <div className="ml-3">
+                                    <p className="text-sm text-yellow-700">
+                                      注意：使用以上工具需要购买我们的产品服务/咨询服务费用，否则无法连接和使用。
+                                    </p>
                                   </div>
                                 </div>
                               </div>
