@@ -1303,6 +1303,66 @@ app.get('/api/mobile/app/config', async (req, res) => {
   }
 });
 
+// App update check API
+app.get('/api/mobile/app/update-check', async (req, res) => {
+  try {
+    const { currentVersion, platform } = req.query;
+    
+    if (!currentVersion) {
+      return res.status(400).json({ success: false, error: 'Current version is required' });
+    }
+    
+    // Define latest version information
+    const latestVersion = '1.1.0';
+    const appStoreUrl = 'https://apps.apple.com/app/your-app/id123456789';
+    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.yourapp';
+    
+    // Check if update is needed
+    const isUpdateNeeded = compareVersions(currentVersion, latestVersion) < 0;
+    
+    // Update information
+    const updateInfo = {
+      latestVersion: latestVersion,
+      isUpdateNeeded: isUpdateNeeded,
+      isForceUpdate: false, // Set to true if force update is required
+      updateMessage: '发现新版本 v1.1.0，包含以下更新：\n\n• 新增在线支付功能\n• 新增用户注册和登录系统\n• 新增服务自动开通功能\n• 新增工具使用分析\n• 新增API集成示例\n• 新增多语言支持\n• 新增跨国支付结算\n• 修复已知问题\n\n建议您立即更新以获得最佳体验。',
+      updateUrl: platform === 'iOS' ? appStoreUrl : playStoreUrl,
+      releaseDate: '2026-04-06',
+      releaseNotes: [
+        '新增在线支付功能，支持支付宝、微信支付和银行转账',
+        '新增用户注册和登录系统，实现完整的用户认证',
+        '新增服务自动开通功能，支付后自动开通服务',
+        '新增工具使用分析，提供详细的使用报告',
+        '新增API集成示例，提供示例代码和文档',
+        '新增多语言支持，提升国际用户体验',
+        '新增跨国支付结算，支持国际支付方式',
+        '修复已知问题，优化应用性能'
+      ]
+    };
+    
+    res.json({ success: true, updateInfo });
+  } catch (error) {
+    console.error('Error checking app update:', error);
+    res.status(500).json({ success: false, error: 'Failed to check app update' });
+  }
+});
+
+// Helper function to compare version strings
+function compareVersions(version1, version2) {
+  const v1 = version1.split('.').map(Number);
+  const v2 = version2.split('.').map(Number);
+  
+  for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
+    const num1 = v1[i] || 0;
+    const num2 = v2[i] || 0;
+    
+    if (num1 > num2) return 1;
+    if (num1 < num2) return -1;
+  }
+  
+  return 0;
+}
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
