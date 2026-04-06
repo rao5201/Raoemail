@@ -755,6 +755,26 @@ app.get('/api/mcp/config', async (req, res) => {
         'playwright': {
           type: 'http',
           url: 'https://playwright-mcp.example.com/mcp'
+        },
+        'mobile-mcp': {
+          type: 'http',
+          url: 'https://mobile-mcp.example.com/mcp'
+        },
+        'mcp-mobile-server': {
+          type: 'http',
+          url: 'https://mcp-mobile-server.example.com/mcp'
+        },
+        'ios-simulator': {
+          type: 'http',
+          url: 'https://ios-simulator-mcp.example.com/mcp'
+        },
+        'executeautomation-playwright': {
+          type: 'http',
+          url: 'https://executeautomation-playwright-mcp.example.com/mcp'
+        },
+        'browser-tools': {
+          type: 'http',
+          url: 'https://browser-tools-mcp.example.com/mcp'
         }
       }
     };

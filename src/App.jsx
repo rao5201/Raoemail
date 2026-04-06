@@ -1972,6 +1972,86 @@ function App() {
                                     连接服务器
                                   </button>
                                 </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">移动自动化开发平台MCP</h6>
+                                  <p className="text-xs text-gray-600 mb-2">通过平台无关的界面实现可扩展的移动自动化开发，消除了对不同iOS或Android知识的需求。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://mobile-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到移动自动化开发平台MCP');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">MCP移动服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">AI驱动的移动开发引擎，提供36个移动开发工具和10个智能超级工具，支持Flutter、iOS和Android开发。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://mcp-mobile-server.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到MCP移动服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">iOS模拟器MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">用于与iOS模拟器交互的模型上下文协议服务器，允许通过获取有关iOS模拟器的信息、控制UI交互和检查UI元素来与它们进行交互。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://ios-simulator-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到iOS模拟器MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">ExecuteAutomation Playwright MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">使用Playwright提供浏览器自动化功能的模型上下文协议服务器，支持143个真实设备预设的设备仿真。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://executeautomation-playwright-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到ExecuteAutomation Playwright MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">BrowserTools MCP</h6>
+                                  <p className="text-xs text-gray-600 mb-2">浏览器监控与AI交互工具，使AI工具能够与浏览器进行交互，提供SEO、性能、可访问性和最佳实践分析工具。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://browser-tools-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到BrowserTools MCP');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
                               </div>
                               
                               <div className="flex gap-3 justify-center">
