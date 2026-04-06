@@ -374,6 +374,53 @@ app.get('/api/admin/operation-logs', authenticateAdmin, async (req, res) => {
   }
 });
 
+// AI API endpoints
+app.post('/api/ai/generate-email', async (req, res) => {
+  try {
+    const { subject, to, style, language } = req.body;
+    
+    // 模拟AI邮件生成
+    const generatedContent = `您好，
+
+我希望您一切安好。关于${subject || '我们的合作'}，我想提供一些更新信息。
+
+[邮件内容]
+
+如果您有任何问题，请随时联系我。
+
+此致，
+[您的姓名]`;
+    
+    res.json({ success: true, content: generatedContent });
+  } catch (error) {
+    console.error('Error generating email:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate email' });
+  }
+});
+
+app.post('/api/ai/generate-reply', async (req, res) => {
+  try {
+    const { originalEmail, style, language } = req.body;
+    
+    // 模拟AI回复生成
+    const generatedReply = `您好，
+
+感谢您的邮件。
+
+[AI 生成的回复内容]
+
+如果您有任何其他问题，请随时告知我。
+
+此致，
+[您的姓名]`;
+    
+    res.json({ success: true, content: generatedReply });
+  } catch (error) {
+    console.error('Error generating reply:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate reply' });
+  }
+});
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);

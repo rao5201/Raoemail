@@ -633,6 +633,40 @@ function App() {
                         💾 保存邮件
                       </button>
                       <button
+                        onClick={async () => {
+                          alert('AI 正在生成回复内容...');
+                          try {
+                            const response = await fetch('/api/ai/generate-reply', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                originalEmail: selectedMessage,
+                                style: 'professional',
+                                language: 'zh'
+                              })
+                            });
+                            const data = await response.json();
+                            if (data.success) {
+                              setNewEmail({
+                                to: selectedMessage.from?.address || '',
+                                subject: `Re: ${selectedMessage.subject || ''}`,
+                                body: data.content
+                              });
+                              setComposeEmail(true);
+                              alert('AI 回复内容生成完成！');
+                            } else {
+                              alert('AI 回复生成失败：' + data.error);
+                            }
+                          } catch (error) {
+                            console.error('Error generating reply:', error);
+                            alert('网络错误，请稍后重试');
+                          }
+                        }}
+                        className="text-green-600 hover:text-green-800 text-sm"
+                      >
+                        🤖 AI 回复
+                      </button>
+                      <button
                         onClick={() => setSelectedMessage(null)}
                         className="text-gray-600 hover:text-gray-800 text-sm"
                       >
@@ -731,7 +765,42 @@ function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">内容</label>
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="block text-sm font-medium text-gray-700">内容</label>
+                        <button
+                          onClick={async () => {
+                            alert('AI 正在生成邮件内容...');
+                            try {
+                              const response = await fetch('/api/ai/generate-email', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  subject: newEmail.subject,
+                                  to: newEmail.to,
+                                  style: 'professional',
+                                  language: 'zh'
+                                })
+                              });
+                              const data = await response.json();
+                              if (data.success) {
+                                setNewEmail({
+                                  ...newEmail,
+                                  body: data.content
+                                });
+                                alert('AI 邮件内容生成完成！');
+                              } else {
+                                alert('AI 邮件生成失败：' + data.error);
+                              }
+                            } catch (error) {
+                              console.error('Error generating email:', error);
+                              alert('网络错误，请稍后重试');
+                            }
+                          }}
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          🤖 AI 生成
+                        </button>
+                      </div>
                       <textarea
                         value={newEmail.body}
                         onChange={(e) => setNewEmail({...newEmail, body: e.target.value})}
@@ -878,6 +947,35 @@ function App() {
                         <p className="text-sm text-gray-600 mb-4">
                           AI 助手可以帮你自动回复邮件、发送新邮件等。启用 AI 功能后，AI 助手会根据你的指令自动完成这些操作。
                         </p>
+                        
+                        <div className="space-y-4 mb-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">邮件风格</label>
+                            <select
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            >
+                              <option value="auto">自动</option>
+                              <option value="professional">专业</option>
+                              <option value="friendly">友好</option>
+                              <option value="formal">正式</option>
+                              <option value="casual">随意</option>
+                            </select>
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">语言</label>
+                            <select
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            >
+                              <option value="zh">中文</option>
+                              <option value="en">英语</option>
+                              <option value="ja">日语</option>
+                              <option value="ko">韩语</option>
+                              <option value="fr">法语</option>
+                              <option value="de">德语</option>
+                            </select>
+                          </div>
+                        </div>
                         
                         <div className="flex justify-center">
                           <button
