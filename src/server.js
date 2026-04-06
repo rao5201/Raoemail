@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { User, Article, File, Supplier, Product, Sale, Expense, CustomerEmail, OperationLog } = require('./models');
 require('dotenv').config();
 
@@ -18,10 +19,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const initAdminUsers = async () => {
   const existingUsers = await User.count();
   if (existingUsers === 0) {
+    // Hash passwords
+    const adminPassword = await bcrypt.hash('admin123', 10);
+    const servicePassword = await bcrypt.hash('service123', 10);
+    const financePassword = await bcrypt.hash('finance123', 10);
+    
     await User.bulkCreate([
-      { email: 'admin@example.com', password: 'admin123', role: 'admin', name: '管理员' },
-      { email: 'service@example.com', password: 'service123', role: '客服', name: '客服人员' },
-      { email: 'finance@example.com', password: 'finance123', role: '财务', name: '财务人员' }
+      { email: 'admin@example.com', password: adminPassword, role: 'admin', name: '管理员' },
+      { email: 'service@example.com', password: servicePassword, role: '客服', name: '客服人员' },
+      { email: 'finance@example.com', password: financePassword, role: '财务', name: '财务人员' }
     ]);
     console.log('Admin users initialized');
   }
@@ -256,12 +262,48 @@ app.post('/api/send-email', async (req, res) => {
 });
 
 // User registration API
+// Input validation function
+function validateInput(input) {
+  if (typeof input !== 'string') {
+    return false;
+  }
+  // Remove potentially dangerous characters
+  const sanitized = input.replace(/[<>"'&]/g, '');
+  return sanitized;
+}
+
+// Email validation function
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Password validation function
+function validatePassword(password) {
+  return password.length >= 6;
+}
+
 app.post('/api/register', async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    let { email, password, name } = req.body;
 
+    // Validate input
     if (!email || !password || !name) {
       return res.status(400).json({ success: false, error: 'Email, password, and name are required' });
+    }
+
+    // Sanitize input
+    email = validateInput(email);
+    name = validateInput(name);
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
+    }
+
+    // Validate password strength
+    if (!validatePassword(password)) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long' });
     }
 
     // Check if user already exists
@@ -270,10 +312,13 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Email already registered' });
     }
 
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Create new user
     const user = await User.create({
       email,
-      password,
+      password: hashedPassword,
       name,
       role: 'user'
     });
@@ -297,15 +342,30 @@ app.post('/api/register', async (req, res) => {
 // User login API
 app.post('/api/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
 
+    // Validate input
     if (!email || !password) {
       return res.status(400).json({ success: false, error: 'Email and password are required' });
     }
 
+    // Sanitize input
+    email = validateInput(email);
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
+    }
+
     // Check if user exists
-    const user = await User.findOne({ where: { email, password } });
+    const user = await User.findOne({ where: { email } });
     if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid email or password' });
+    }
+
+    // Verify password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
       return res.status(401).json({ success: false, error: 'Invalid email or password' });
     }
 
@@ -388,19 +448,49 @@ app.get('/api/health', (req, res) => {
 
 // Admin API routes
 app.post('/api/admin/login', async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
   
   try {
-    const user = await User.findOne({ where: { email, password } });
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required' });
+    }
+
+    // Sanitize input
+    email = validateInput(email);
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ success: false, error: 'Invalid email format' });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ where: { email } });
     
-    if (!user) {
+    if (!user || user.role !== 'admin') {
+      return res.status(401).json({ success: false, error: 'Invalid email or password' });
+    }
+
+    // Verify password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
       return res.status(401).json({ success: false, error: 'Invalid email or password' });
     }
     
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
     
-    res.json({ success: true, token, role: user.role });
+    // Log operation
+    await OperationLog.create({
+      operation: 'admin_login',
+      userType: 'admin',
+      userEmail: email,
+      details: '管理员登录',
+      ipAddress: req.ip
+    });
+    
+    res.json({ success: true, token, role: user.role, user: { id: user.id, email: user.email, name: user.name } });
   } catch (error) {
+    console.error('Error logging in:', error);
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
