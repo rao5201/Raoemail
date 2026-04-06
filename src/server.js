@@ -617,6 +617,139 @@ app.post('/api/submit-product', async (req, res) => {
   }
 });
 
+// MCP服务器API
+app.post('/api/mcp/email', async (req, res) => {
+  try {
+    const { action, params } = req.body;
+    
+    // 模拟MCP服务器响应
+    let response;
+    
+    switch (action) {
+      case 'messages:search':
+        response = {
+          success: true,
+          data: [
+            {
+              id: '1',
+              subject: '测试邮件',
+              from: 'sender@example.com',
+              to: 'recipient@example.com',
+              date: new Date().toISOString(),
+              body: '这是一封测试邮件',
+              unread: true
+            }
+          ]
+        };
+        break;
+      case 'messages:read':
+        response = {
+          success: true,
+          data: {
+            id: params.id,
+            subject: '测试邮件',
+            from: 'sender@example.com',
+            to: 'recipient@example.com',
+            date: new Date().toISOString(),
+            body: '这是一封测试邮件',
+            unread: false
+          }
+        };
+        break;
+      case 'send:new':
+        response = {
+          success: true,
+          data: {
+            id: '2',
+            subject: params.subject,
+            from: 'recipient@example.com',
+            to: params.to,
+            date: new Date().toISOString(),
+            body: params.body
+          }
+        };
+        break;
+      default:
+        response = {
+          success: false,
+          error: 'Unsupported action'
+        };
+    }
+    
+    res.json(response);
+  } catch (error) {
+    console.error('Error processing MCP request:', error);
+    res.status(500).json({ success: false, error: 'Failed to process MCP request' });
+  }
+});
+
+// MCP服务器配置API
+app.get('/api/mcp/config', async (req, res) => {
+  try {
+    const config = {
+      mcpServers: {
+        'better-email': {
+          type: 'http',
+          url: 'https://better-email-mcp.n24q02m.com/mcp'
+        },
+        'imap': {
+          type: 'http',
+          url: 'https://imap-mcp.example.com/mcp'
+        },
+        'email-filter': {
+          type: 'http',
+          url: 'https://email-filter-mcp.example.com/mcp'
+        },
+        'zabbix': {
+          type: 'http',
+          url: 'https://zabbix-mcp.example.com/mcp'
+        },
+        'unified': {
+          type: 'http',
+          url: 'https://unified-mcp.example.com/mcp'
+        },
+        'chatgpt': {
+          type: 'http',
+          url: 'https://chatgpt-mcp.example.com/mcp'
+        },
+        'godot': {
+          type: 'http',
+          url: 'https://godot-mcp-docs.example.com/mcp'
+        },
+        'antv': {
+          type: 'http',
+          url: 'https://mcp-server-antv.example.com/mcp'
+        },
+        'context7': {
+          type: 'http',
+          url: 'https://mcp.context7.com/mcp'
+        },
+        'figma': {
+          type: 'http',
+          url: 'https://framelink-figma-mcp.example.com/mcp'
+        },
+        'f2c': {
+          type: 'http',
+          url: 'https://f2c-mcp.example.com/mcp'
+        },
+        'image-tools': {
+          type: 'http',
+          url: 'https://image-tools-mcp.example.com/mcp'
+        },
+        'pandoc': {
+          type: 'http',
+          url: 'https://mcp-pandoc.example.com/mcp'
+        }
+      }
+    };
+    
+    res.json({ success: true, config });
+  } catch (error) {
+    console.error('Error getting MCP config:', error);
+    res.status(500).json({ success: false, error: 'Failed to get MCP config' });
+  }
+});
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
