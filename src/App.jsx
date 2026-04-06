@@ -282,17 +282,63 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <header className="text-center mb-8">
+        <header className="text-center mb-12">
           <h1 className="text-4xl font-bold text-indigo-900 mb-2">
-            📧 Raoemail
+            🤖 AI 邮件工具平台
           </h1>
           <p className="text-gray-600">
-            免费注册电子邮件，保护您的隐私
+            智能邮件解决方案，提升您的邮件处理效率
           </p>
           <p className="text-gray-500 text-sm mt-1">
             运营方：武穴茶海虾王电子商务中心 | 技术支持：rao5201@126.com
           </p>
         </header>
+        
+        {/* AI邮件设计工具展示 */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-8">
+            🔥 热门 AI 邮件工具
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">📧</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">AI 邮件写作器</h3>
+              <p className="text-gray-600 text-sm mb-4">为任何场景撰写专业邮件，具有适当的语调和结构</p>
+              <button
+                onClick={() => setShowAITools(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+              >
+                立即使用
+              </button>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">📋</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">AI 邮件模板创建器</h3>
+              <p className="text-gray-600 text-sm mb-4">设计可重复使用的邮件模板，用于一致的沟通</p>
+              <button
+                onClick={() => {
+                  setShowAITools(true);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+              >
+                立即使用
+              </button>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">✍️</div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">AI 签名生成器</h3>
+              <p className="text-gray-600 text-sm mb-4">生成专业的电子签名，用于邮件签名和文档签署</p>
+              <button
+                onClick={() => {
+                  setShowAITools(true);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+              >
+                立即使用
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Main Content */}
         <div className="max-w-4xl mx-auto">
@@ -972,7 +1018,10 @@ function App() {
                                 <p className="text-xs text-gray-600">设计可重复使用的邮件模板，用于一致的沟通</p>
                                 <button
                                   onClick={() => {
-                                    alert('AI 邮件模板创建器功能即将推出！');
+                                    // 切换到邮件模板创建器
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('email-template');
                                   }}
                                   className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
                                 >
@@ -1069,6 +1118,28 @@ function App() {
                                 <button
                                   onClick={() => {
                                     alert('AI 流程图生成器功能即将推出！');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  使用工具
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3">签名工具</h5>
+                            <div className="space-y-3">
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">✍️</div>
+                                <h6 className="font-medium text-gray-800 mb-1">AI 签名生成器</h6>
+                                <p className="text-xs text-gray-600">生成专业的电子签名，用于邮件签名和文档签署</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到签名生成器
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('signature');
                                   }}
                                   className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
                                 >
@@ -1252,9 +1323,41 @@ function App() {
         </div>
 
         {/* Footer */}
-        <footer className="text-center mt-12 text-gray-500 text-sm">
-          <p>© 2024 Raoemail | 运营方：武穴茶海虾王电子商务中心</p>
-          <p className="mt-1">技术支持服务联系：rao5201@126.com</p>
+        <footer className="text-center mt-16 text-gray-500 text-sm">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">AI 邮件工具平台</h3>
+            <p className="text-gray-600">智能邮件解决方案，提升您的邮件处理效率</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 mb-6">
+            <div>
+              <h4 className="font-medium text-gray-700 mb-2">工具</h4>
+              <ul className="space-y-1">
+                <li><a href="#" onClick={() => setShowAITools(true)} className="hover:text-blue-600 transition-colors">AI 邮件写作器</a></li>
+                <li><a href="#" onClick={() => setShowAITools(true)} className="hover:text-blue-600 transition-colors">AI 邮件模板创建器</a></li>
+                <li><a href="#" onClick={() => setShowAITools(true)} className="hover:text-blue-600 transition-colors">AI 签名生成器</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-700 mb-2">资源</h4>
+              <ul className="space-y-1">
+                <li><a href="#" className="hover:text-blue-600 transition-colors">使用指南</a></li>
+                <li><a href="#" className="hover:text-blue-600 transition-colors">常见问题</a></li>
+                <li><a href="#" className="hover:text-blue-600 transition-colors">API 文档</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-700 mb-2">关于我们</h4>
+              <ul className="space-y-1">
+                <li><a href="#" className="hover:text-blue-600 transition-colors">公司简介</a></li>
+                <li><a href="#" className="hover:text-blue-600 transition-colors">联系我们</a></li>
+                <li><a href="#" className="hover:text-blue-600 transition-colors">隐私政策</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-200 pt-4">
+            <p>© 2024 AI 邮件工具平台 | 运营方：武穴茶海虾王电子商务中心</p>
+            <p className="mt-1">技术支持服务联系：rao5201@126.com</p>
+          </div>
         </footer>
       </div>
     </div>
