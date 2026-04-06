@@ -421,6 +421,57 @@ app.post('/api/ai/generate-reply', async (req, res) => {
   }
 });
 
+app.post('/api/ai/optimize-email', async (req, res) => {
+  try {
+    const { content, style, language } = req.body;
+    
+    // 模拟AI邮件内容优化
+    const optimizedContent = `[优化后的邮件内容]\n\n${content}`;
+    
+    res.json({ success: true, content: optimizedContent });
+  } catch (error) {
+    console.error('Error optimizing email:', error);
+    res.status(500).json({ success: false, error: 'Failed to optimize email' });
+  }
+});
+
+app.post('/api/ai/translate-email', async (req, res) => {
+  try {
+    const { content, targetLanguage } = req.body;
+    
+    // 模拟AI邮件翻译
+    const translatedContent = `[${targetLanguage} 翻译]\n\n${content}`;
+    
+    res.json({ success: true, content: translatedContent });
+  } catch (error) {
+    console.error('Error translating email:', error);
+    res.status(500).json({ success: false, error: 'Failed to translate email' });
+  }
+});
+
+app.post('/api/ai/write-email', async (req, res) => {
+  try {
+    const { emailType, recipient, sender, subject, purpose, tone, additionalInfo } = req.body;
+    
+    // 模拟AI邮件生成
+    const generatedEmail = `尊敬的${recipient}，
+
+${purpose}
+
+[AI 生成的邮件内容]
+
+${additionalInfo ? `\n${additionalInfo}` : ''}
+
+此致，
+${sender || '您的姓名'}`;
+    
+    res.json({ success: true, content: generatedEmail });
+  } catch (error) {
+    console.error('Error writing email:', error);
+    res.status(500).json({ success: false, error: 'Failed to write email' });
+  }
+});
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);

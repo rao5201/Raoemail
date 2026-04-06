@@ -940,52 +940,196 @@ function App() {
                     
                     <div>
                       <h4 className="text-lg font-semibold text-gray-700 mb-4">
-                        🤖 AI 助手
+                        🤖 AI 邮件写作工具
                       </h4>
                       
                       <div className="border border-gray-200 rounded-lg p-4">
                         <p className="text-sm text-gray-600 mb-4">
-                          AI 助手可以帮你自动回复邮件、发送新邮件等。启用 AI 功能后，AI 助手会根据你的指令自动完成这些操作。
+                          使用 AI 即时生成专业邮件 - 适用于商务、个人和营销邮件
                         </p>
                         
-                        <div className="space-y-4 mb-4">
+                        <div className="space-y-4 mb-6">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">邮件风格</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">邮件类型 *</label>
                             <select
+                              id="email-type"
                               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             >
-                              <option value="auto">自动</option>
-                              <option value="professional">专业</option>
-                              <option value="friendly">友好</option>
-                              <option value="formal">正式</option>
-                              <option value="casual">随意</option>
+                              <option value="business">商务邮件</option>
+                              <option value="personal">个人邮件</option>
+                              <option value="marketing">营销邮件</option>
+                              <option value="inquiry">询问邮件</option>
+                              <option value="follow-up">跟进邮件</option>
+                              <option value="introduction">介绍邮件</option>
+                              <option value="thank-you">感谢信</option>
+                              <option value="apology">道歉信</option>
+                              <option value="announcement">公告邮件</option>
+                              <option value="invitation">邀请邮件</option>
+                              <option value="complaint">投诉邮件</option>
+                              <option value="job-application">求职申请</option>
+                              <option value="newsletter">电子报</option>
+                              <option value="cold-outreach">冷启动开发邮件</option>
                             </select>
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">语言</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">收件人 *</label>
+                            <input
+                              id="recipient"
+                              type="text"
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="输入收件人姓名（例如：张三）"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">发件人（可选）</label>
+                            <input
+                              id="sender"
+                              type="text"
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="输入你的姓名"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">邮件主题 *</label>
+                            <input
+                              id="email-subject"
+                              type="text"
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="输入邮件主题"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">邮件目的 *</label>
+                            <textarea
+                              id="email-purpose"
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="描述你的邮件目的（例如：请求会议、跟进提案）"
+                              rows={3}
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">语气</label>
                             <select
+                              id="email-tone"
                               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             >
-                              <option value="zh">中文</option>
-                              <option value="en">英语</option>
-                              <option value="ja">日语</option>
-                              <option value="ko">韩语</option>
-                              <option value="fr">法语</option>
-                              <option value="de">德语</option>
+                              <option value="formal">正式</option>
+                              <option value="professional">专业</option>
+                              <option value="friendly">友好</option>
+                              <option value="casual">随意</option>
+                              <option value="enthusiastic">热情</option>
+                              <option value="persuasive">说服性</option>
+                              <option value="empathetic">同理心</option>
+                              <option value="direct">直接</option>
                             </select>
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">附加信息（可选）</label>
+                            <textarea
+                              id="additional-info"
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                              placeholder="添加任何具体细节、要求或背景信息"
+                              rows={3}
+                            />
                           </div>
                         </div>
                         
-                        <div className="flex justify-center">
+                        <div className="flex gap-3 justify-center">
+                          <button
+                            onClick={async () => {
+                              alert('AI 正在生成邮件...');
+                              try {
+                                // 获取表单数据
+                                const emailType = document.getElementById('email-type')?.value || 'business';
+                                const recipient = document.getElementById('recipient')?.value || '收件人';
+                                const sender = document.getElementById('sender')?.value || '';
+                                const subject = document.getElementById('email-subject')?.value || '邮件主题';
+                                const purpose = document.getElementById('email-purpose')?.value || '邮件目的';
+                                const tone = document.getElementById('email-tone')?.value || 'professional';
+                                const additionalInfo = document.getElementById('additional-info')?.value || '';
+                                
+                                const response = await fetch('/api/ai/write-email', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({
+                                    emailType,
+                                    recipient,
+                                    sender,
+                                    subject,
+                                    purpose,
+                                    tone,
+                                    additionalInfo
+                                  })
+                                });
+                                
+                                const data = await response.json();
+                                if (data.success) {
+                                  // 将生成的邮件内容填充到邮件编写页面
+                                  setNewEmail({
+                                    to: '',
+                                    subject: subject,
+                                    body: data.content
+                                  });
+                                  setComposeEmail(true);
+                                  alert('AI 邮件生成完成！');
+                                } else {
+                                  alert('AI 邮件生成失败：' + data.error);
+                                }
+                              } catch (error) {
+                                console.error('Error generating email:', error);
+                                alert('网络错误，请稍后重试');
+                              }
+                            }}
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                          >
+                            生成邮件
+                          </button>
                           <button
                             onClick={() => {
-                              alert('AI 助手已启用！它会帮你自动回复邮件、发送新邮件等。');
+                              // 清空表单
+                              document.querySelectorAll('input, textarea, select').forEach(element => {
+                                if (element.type !== 'submit' && element.type !== 'button') {
+                                  element.value = '';
+                                }
+                              });
+                              alert('表单已清空');
                             }}
-                            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                            className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
                           >
-                            启用 AI 助手
+                            清空表单
                           </button>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-6">
+                        <h5 className="font-medium text-gray-800 mb-3">强大的AI邮件写作功能</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="border border-gray-200 rounded-lg p-3">
+                            <div className="text-xl mb-2">🤖</div>
+                            <h6 className="font-medium text-gray-800 mb-1">AI驱动生成</h6>
+                            <p className="text-xs text-gray-600">先进的AI技术创建专业、符合情境的邮件，满足你的需求</p>
+                          </div>
+                          <div className="border border-gray-200 rounded-lg p-3">
+                            <div className="text-xl mb-2">📧</div>
+                            <h6 className="font-medium text-gray-800 mb-1">多种邮件类型</h6>
+                            <p className="text-xs text-gray-600">支持商务、个人、营销、询问、跟进等多种邮件类型</p>
+                          </div>
+                          <div className="border border-gray-200 rounded-lg p-3">
+                            <div className="text-xl mb-2">🎭</div>
+                            <h6 className="font-medium text-gray-800 mb-1">可定制语气</h6>
+                            <p className="text-xs text-gray-600">从正式、专业、友好、随意等多种语气中选择，匹配你的沟通风格</p>
+                          </div>
+                          <div className="border border-gray-200 rounded-lg p-3">
+                            <div className="text-xl mb-2">⚡</div>
+                            <h6 className="font-medium text-gray-800 mb-1">即时生成</h6>
+                            <p className="text-xs text-gray-600">几秒钟内创建专业邮件，节省你的时间和精力</p>
+                          </div>
                         </div>
                       </div>
                     </div>
