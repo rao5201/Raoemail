@@ -1908,6 +1908,70 @@ function App() {
                                     连接服务器
                                   </button>
                                 </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">Deepwiki文档转换服务</h6>
+                                  <p className="text-xs text-gray-600 mb-2">通过MCP获取Deepwiki URL，抓取所有相关页面，将其转换为Markdown，并按页面返回一个文档或列表。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://deepwiki-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到Deepwiki文档转换服务');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">网页内容抓取服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">提供web内容获取功能的模型上下文协议服务器，使LLM能够从网页中检索和处理内容，将HTML转换为markdown。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://mcp-server-fetch.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到网页内容抓取服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">Firecrawl网页抓取服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">与Firecrawl集成的模型上下文协议服务器，用于网络抓取、爬行和发现，支持搜索和内容提取。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://firecrawl-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到Firecrawl网页抓取服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">Playwright浏览器自动化服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">使用Playwright提供浏览器自动化功能的模型上下文协议服务器，使LLM能够通过结构化的可访问性快照与网页交互。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://playwright-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到Playwright浏览器自动化服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
                               </div>
                               
                               <div className="flex gap-3 justify-center">

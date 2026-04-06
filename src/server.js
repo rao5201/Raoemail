@@ -739,6 +739,22 @@ app.get('/api/mcp/config', async (req, res) => {
         'pandoc': {
           type: 'http',
           url: 'https://mcp-pandoc.example.com/mcp'
+        },
+        'deepwiki': {
+          type: 'http',
+          url: 'https://deepwiki-mcp.example.com/mcp'
+        },
+        'fetch': {
+          type: 'http',
+          url: 'https://mcp-server-fetch.example.com/mcp'
+        },
+        'firecrawl': {
+          type: 'http',
+          url: 'https://firecrawl-mcp.example.com/mcp'
+        },
+        'playwright': {
+          type: 'http',
+          url: 'https://playwright-mcp.example.com/mcp'
         }
       }
     };
