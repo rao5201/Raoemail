@@ -775,6 +775,34 @@ app.get('/api/mcp/config', async (req, res) => {
         'browser-tools': {
           type: 'http',
           url: 'https://browser-tools-mcp.example.com/mcp'
+        },
+        'mysql': {
+          type: 'http',
+          url: 'https://mysql-mcp.example.com/mcp'
+        },
+        'mysql-pro': {
+          type: 'http',
+          url: 'https://mysql-mcp-pro.example.com/mcp'
+        },
+        'dbhub': {
+          type: 'http',
+          url: 'https://dbhub-mcp.example.com/mcp'
+        },
+        'ppt': {
+          type: 'http',
+          url: 'https://ppt-mcp.example.com/mcp'
+        },
+        'excel': {
+          type: 'http',
+          url: 'https://excel-mcp.example.com/mcp'
+        },
+        'duckdb': {
+          type: 'http',
+          url: 'https://duckdb-mcp.example.com/mcp'
+        },
+        'cryo': {
+          type: 'http',
+          url: 'https://cryo-mcp.example.com/mcp'
         }
       }
     };

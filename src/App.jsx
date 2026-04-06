@@ -2052,6 +2052,118 @@ function App() {
                                     连接服务器
                                   </button>
                                 </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">MySQL MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">MySQL数据库操作的模型上下文协议服务器，提供执行SQL查询、列出数据库、列表表格和描述表格等功能。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://mysql-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到MySQL MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">MySQL MCP服务器 Pro</h6>
+                                  <p className="text-xs text-gray-600 mb-2">增强版MySQL MCP服务器，支持数据库异常分析、SQL执行计划分析、表锁分析和数据库健康状态分析。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://mysql-mcp-pro.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到MySQL MCP服务器 Pro');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">DBHub MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">多数据库MCP服务器，支持PostgreSQL、MySQL、MariaDB、SQL Server和SQLite，提供零依赖、令牌高效的数据库操作。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://dbhub-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到DBHub MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">PowerPoint MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">使用python pptx进行PowerPoint操作的综合MCP服务器，提供32个强大的工具，分为11个专业模块。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://ppt-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到PowerPoint MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">Excel MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">允许在不安装Microsoft Excel的情况下操作Excel文件的MCP服务器，支持创建、读取和修改Excel工作簿。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://excel-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到Excel MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">DuckDB MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">DuckDB的模型上下文协议服务器实现，通过MCP工具提供数据库交互功能，适用于本地分析。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://duckdb-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到DuckDB MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                  <h6 className="font-medium text-gray-800 mb-2">Cryo-MCP服务器</h6>
+                                  <p className="text-xs text-gray-600 mb-2">区块链数据提取工具的MCP服务器，允许通过实现MCP协议的API服务器访问Cryo强大的区块链数据提取功能。</p>
+                                  <div className="bg-gray-100 p-3 rounded-lg text-xs font-mono mb-2">
+                                    URL: https://cryo-mcp.example.com/mcp
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      alert('连接到Cryo-MCP服务器');
+                                    }}
+                                    className="text-blue-600 hover:text-blue-800 text-sm"
+                                  >
+                                    连接服务器
+                                  </button>
+                                </div>
                               </div>
                               
                               <div className="flex gap-3 justify-center">
