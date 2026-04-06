@@ -472,6 +472,105 @@ ${sender || '您的姓名'}`;
   }
 });
 
+app.post('/api/ai/create-email-template', async (req, res) => {
+  try {
+    const { templateName, emailType, tone, content } = req.body;
+    
+    // 模拟AI邮件模板创建
+    const template = {
+      id: Date.now(),
+      name: templateName,
+      type: emailType,
+      tone: tone,
+      content: content || '[AI 生成的邮件模板内容]',
+      createdAt: new Date()
+    };
+    
+    res.json({ success: true, template });
+  } catch (error) {
+    console.error('Error creating email template:', error);
+    res.status(500).json({ success: false, error: 'Failed to create email template' });
+  }
+});
+
+app.post('/api/ai/rewrite-paragraph', async (req, res) => {
+  try {
+    const { content, tone, style } = req.body;
+    
+    // 模拟AI段落重写
+    const rewrittenContent = `[${tone || '专业'}风格重写]\n\n${content}`;
+    
+    res.json({ success: true, content: rewrittenContent });
+  } catch (error) {
+    console.error('Error rewriting paragraph:', error);
+    res.status(500).json({ success: false, error: 'Failed to rewrite paragraph' });
+  }
+});
+
+app.post('/api/ai/generate-paragraph', async (req, res) => {
+  try {
+    const { topic, length, tone } = req.body;
+    
+    // 模拟AI段落生成
+    const generatedContent = `关于${topic}的${tone || '专业'}段落：\n\n[AI 生成的段落内容]`;
+    
+    res.json({ success: true, content: generatedContent });
+  } catch (error) {
+    console.error('Error generating paragraph:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate paragraph' });
+  }
+});
+
+app.post('/api/ai/summarize-pdf', async (req, res) => {
+  try {
+    const { pdfContent } = req.body;
+    
+    // 模拟AI PDF摘要
+    const summary = `[PDF 摘要]\n\n${pdfContent ? pdfContent.substring(0, 500) + '...' : 'PDF 内容摘要'}`;
+    
+    res.json({ success: true, summary });
+  } catch (error) {
+    console.error('Error summarizing PDF:', error);
+    res.status(500).json({ success: false, error: 'Failed to summarize PDF' });
+  }
+});
+
+app.post('/api/ai/generate-mindmap', async (req, res) => {
+  try {
+    const { topic, nodes } = req.body;
+    
+    // 模拟AI思维导图生成
+    const mindmap = {
+      topic: topic || '中心主题',
+      nodes: nodes || ['节点1', '节点2', '节点3'],
+      structure: '层级结构'
+    };
+    
+    res.json({ success: true, mindmap });
+  } catch (error) {
+    console.error('Error generating mindmap:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate mindmap' });
+  }
+});
+
+app.post('/api/ai/generate-flowchart', async (req, res) => {
+  try {
+    const { process, steps } = req.body;
+    
+    // 模拟AI流程图生成
+    const flowchart = {
+      process: process || '流程名称',
+      steps: steps || ['步骤1', '步骤2', '步骤3'],
+      structure: '线性流程'
+    };
+    
+    res.json({ success: true, flowchart });
+  } catch (error) {
+    console.error('Error generating flowchart:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate flowchart' });
+  }
+});
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
