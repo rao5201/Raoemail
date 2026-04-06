@@ -571,6 +571,52 @@ app.post('/api/ai/generate-flowchart', async (req, res) => {
   }
 });
 
+// 产品提交API
+app.post('/api/submit-product', async (req, res) => {
+  try {
+    const { 
+      productUrl, 
+      productName, 
+      productDescription, 
+      productCategory, 
+      speed, 
+      seoLink, 
+      spotlight 
+    } = req.body;
+    
+    // 模拟产品提交
+    const product = {
+      id: Date.now(),
+      url: productUrl,
+      name: productName,
+      description: productDescription,
+      category: productCategory,
+      speed: speed,
+      seoLink: seoLink,
+      spotlight: spotlight,
+      status: 'pending',
+      submittedAt: new Date()
+    };
+    
+    // 计算价格
+    let totalPrice = 0;
+    if (speed === 'fast-track') totalPrice += 10;
+    if (seoLink) totalPrice += 79;
+    if (spotlight === '7days') totalPrice += 29;
+    if (spotlight === '30days') totalPrice += 99;
+    
+    res.json({ 
+      success: true, 
+      product, 
+      totalPrice, 
+      message: '产品提交成功！我们将在24小时内审核你的产品。' 
+    });
+  } catch (error) {
+    console.error('Error submitting product:', error);
+    res.status(500).json({ success: false, error: 'Failed to submit product' });
+  }
+});
+
 app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
