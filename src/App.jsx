@@ -1253,6 +1253,22 @@ function App() {
                                   管理服务器
                                 </button>
                               </div>
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">🛠️</div>
+                                <h6 className="font-medium text-gray-800 mb-1">ToolsZone工具集</h6>
+                                <p className="text-xs text-gray-600">融合ToolsZone的在线工具集合，简化日常任务</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到ToolsZone工具集页面
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('toolszone');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  使用工具
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1687,6 +1703,147 @@ function App() {
                                   >
                                     了解更多
                                   </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : activeAITool === 'toolszone' ? (
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3">ToolsZone工具集</h5>
+                            
+                            <div className="border border-gray-200 rounded-lg p-4">
+                              <p className="text-sm text-gray-600 mb-6">
+                                🛠️ 融合ToolsZone的在线工具集合，简化日常任务。无需注册，直接使用。
+                              </p>
+                              
+                              <div className="space-y-6 mb-6">
+                                <div>
+                                  <h6 className="font-medium text-gray-800 mb-3">文本工具 (93 个工具)</h6>
+                                  <p className="text-xs text-gray-600 mb-4">转换、分析和操作文本的强大工具集合。这些工具使格式化、转换、计数和处理各种目的的文本数据变得容易。</p>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">文本转换器</h7>
+                                      <p className="text-xs text-gray-600">转换文本格式、编码和大小写</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用文本转换器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">文本分析器</h7>
+                                      <p className="text-xs text-gray-600">分析文本长度、词频和情感</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用文本分析器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">文本处理器</h7>
+                                      <p className="text-xs text-gray-600">处理文本，如去除空白、替换内容</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用文本处理器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div>
+                                  <h6 className="font-medium text-gray-800 mb-3">内容创建工具 (9 个工具)</h6>
+                                  <p className="text-xs text-gray-600 mb-4">使用这些AI驱动和基于浏览器的实用程序简化您的内容创建工作流程。快速生成YouTube脚本、社交媒体帖子、标签和其他内容格式。</p>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">YouTube脚本生成器</h7>
+                                      <p className="text-xs text-gray-600">生成专业的YouTube视频脚本</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用YouTube脚本生成器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">社交媒体帖子生成器</h7>
+                                      <p className="text-xs text-gray-600">生成吸引人的社交媒体内容</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用社交媒体帖子生成器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">标签生成器</h7>
+                                      <p className="text-xs text-gray-600">为社交媒体生成相关标签</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用标签生成器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div>
+                                  <h6 className="font-medium text-gray-800 mb-3">文本处理工具 (6 个工具)</h6>
+                                  <p className="text-xs text-gray-600 mb-4">使用这些专门的处理实用程序处理高级文本操作任务。将文本分割成块，合并多个输入，删除近似重复项，提取关键点等。</p>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">文本分割器</h7>
+                                      <p className="text-xs text-gray-600">将文本分割成指定大小的块</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用文本分割器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">文本合并器</h7>
+                                      <p className="text-xs text-gray-600">合并多个文本输入</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用文本合并器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                    <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                      <h7 className="font-medium text-gray-800 mb-1">关键点提取器</h7>
+                                      <p className="text-xs text-gray-600">从文本中提取关键信息</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('使用关键点提取器');
+                                        }}
+                                        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        使用工具
+                                      </button>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
