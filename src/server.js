@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
+const { User, Article, File, Supplier, Product, Sale, Expense, CustomerEmail } = require('./models');
 require('dotenv').config();
 
 const app = express();
@@ -9,8 +11,43 @@ const PORT = process.env.PORT || 3001;
 // Mail.tm API base URL
 const MAIL_TM_API = 'https://api.mail.tm';
 
+// Secret key for JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+// Initialize admin users if not exists
+const initAdminUsers = async () => {
+  const existingUsers = await User.count();
+  if (existingUsers === 0) {
+    await User.bulkCreate([
+      { email: 'admin@example.com', password: 'admin123', role: 'admin', name: '管理员' },
+      { email: 'service@example.com', password: 'service123', role: '客服', name: '客服人员' },
+      { email: 'finance@example.com', password: 'finance123', role: '财务', name: '财务人员' }
+    ]);
+    console.log('Admin users initialized');
+  }
+};
+
+// Call initialization
+initAdminUsers();
+
 app.use(cors());
 app.use(express.json());
+
+// Authentication middleware
+const authenticateAdmin = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ success: false, error: 'Token required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, error: 'Invalid token' });
+  }
+};
 
 // Create a new email account
 app.post('/api/create-email', async (req, res) => {
@@ -35,6 +72,13 @@ app.post('/api/create-email', async (req, res) => {
     const tokenRes = await axios.post(`${MAIL_TM_API}/token`, {
       address: fullEmail,
       password: password
+    });
+
+    // Save customer email to database
+    await CustomerEmail.create({
+      email: fullEmail,
+      password: password,
+      token: tokenRes.data.token
     });
 
     res.json({
@@ -199,6 +243,12 @@ app.post('/api/login', async (req, res) => {
       password: password
     });
 
+    // Update last accessed time in database
+    await CustomerEmail.update(
+      { lastAccessed: new Date(), token: tokenRes.data.token },
+      { where: { email: email } }
+    );
+
     res.json({
       success: true,
       email: email,
@@ -216,6 +266,666 @@ app.post('/api/login', async (req, res) => {
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Admin API routes
+app.post('/api/admin/login', async (req, res) => {
+  const { email, password } = req.body;
+  
+  try {
+    const user = await User.findOne({ where: { email, password } });
+    
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid email or password' });
+    }
+    
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    
+    res.json({ success: true, token, role: user.role });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Get customer emails API
+app.get('/api/admin/customer-emails', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const customerEmails = await CustomerEmail.findAll({
+      attributes: ['id', 'email', 'lastAccessed', 'createdAt'],
+      order: [['createdAt', 'DESC']]
+    });
+    
+    res.json({ success: true, customerEmails });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Get customer email count API
+app.get('/api/admin/customer-emails/count', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const count = await CustomerEmail.count();
+    
+    res.json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+app.get('/api/admin/me', authenticateAdmin, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (user) {
+      res.json({ success: true, user: { id: user.id, email: user.email, role: user.role, name: user.name } });
+    } else {
+      res.status(404).json({ success: false, error: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Dashboard data API
+app.get('/api/admin/dashboard', authenticateAdmin, async (req, res) => {
+  try {
+    const totalUsers = await User.count();
+    const totalArticles = await Article.count();
+    const totalFiles = await File.count();
+    const totalSales = await Sale.sum('totalAmount') || 0;
+    
+    res.json({
+      success: true,
+      data: {
+        totalUsers,
+        totalArticles,
+        totalFiles,
+        totalSales
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Users API
+app.get('/api/admin/users', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'email', 'name', 'role', 'createdAt']
+    });
+    
+    res.json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add user API
+app.post('/api/admin/users', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { email, password, name, role } = req.body;
+    
+    const user = await User.create({
+      email,
+      password,
+      name,
+      role
+    });
+    
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Update user API
+app.put('/api/admin/users/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    const { email, name, role } = req.body;
+    
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    await user.update({ email, name, role });
+    
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Delete user API
+app.delete('/api/admin/users/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    await user.destroy();
+    
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Articles API
+app.get('/api/admin/articles', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '客服') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const articles = await Article.findAll({
+      attributes: ['id', 'title', 'content', 'status', 'category', 'userId', 'createdAt'],
+      include: [{
+        model: User,
+        attributes: ['id', 'name', 'email']
+      }]
+    });
+    
+    res.json({ success: true, articles });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Files API
+app.get('/api/admin/files', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '客服') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const files = await File.findAll({
+      attributes: ['id', 'name', 'path', 'size', 'type', 'userId', 'createdAt'],
+      include: [{
+        model: User,
+        attributes: ['id', 'name', 'email']
+      }]
+    });
+    
+    res.json({ success: true, files });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add article API
+app.post('/api/admin/articles', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '客服') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { title, content, category } = req.body;
+    
+    const article = await Article.create({
+      title,
+      content,
+      category,
+      status: 'draft',
+      userId: req.user.id
+    });
+    
+    res.json({ success: true, article });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Upload file API
+app.post('/api/admin/files', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '客服') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { name, path, size, type } = req.body;
+    
+    const file = await File.create({
+      name,
+      path,
+      size,
+      type,
+      userId: req.user.id
+    });
+    
+    res.json({ success: true, file });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Mock API for analytics
+app.get('/api/admin/analytics', authenticateAdmin, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  res.json({
+    success: true,
+    data: {
+      userTrends: [10, 20, 30, 40, 50],
+      userDistribution: [30, 40, 20, 10]
+    }
+  });
+});
+
+// Suppliers API
+app.get('/api/admin/suppliers', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const suppliers = await Supplier.findAll({
+      attributes: ['id', 'name', 'contact', 'email', 'phone', 'address', 'status', 'createdAt'],
+      include: [{
+        model: Product,
+        attributes: ['id', 'name']
+      }]
+    });
+    
+    res.json({ success: true, suppliers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add supplier API
+app.post('/api/admin/suppliers', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { name, contact, email, phone, address, status } = req.body;
+    
+    const supplier = await Supplier.create({
+      name,
+      contact,
+      email,
+      phone,
+      address,
+      status: status || 'active'
+    });
+    
+    res.json({ success: true, supplier });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Update supplier API
+app.put('/api/admin/suppliers/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    const { name, contact, email, phone, address, status } = req.body;
+    
+    const supplier = await Supplier.findByPk(id);
+    if (!supplier) {
+      return res.status(404).json({ success: false, error: 'Supplier not found' });
+    }
+    
+    await supplier.update({ name, contact, email, phone, address, status });
+    
+    res.json({ success: true, supplier });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Delete supplier API
+app.delete('/api/admin/suppliers/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    
+    const supplier = await Supplier.findByPk(id);
+    if (!supplier) {
+      return res.status(404).json({ success: false, error: 'Supplier not found' });
+    }
+    
+    await supplier.destroy();
+    
+    res.json({ success: true, message: 'Supplier deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Products API
+app.get('/api/admin/products', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const products = await Product.findAll({
+      attributes: ['id', 'name', 'description', 'price', 'stock', 'category', 'supplierId', 'createdAt'],
+      include: [{
+        model: Supplier,
+        attributes: ['id', 'name', 'contact']
+      }]
+    });
+    
+    res.json({ success: true, products });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add product API
+app.post('/api/admin/products', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { name, description, price, stock, category, supplierId } = req.body;
+    
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      stock,
+      category,
+      supplierId
+    });
+    
+    res.json({ success: true, product });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Update product API
+app.put('/api/admin/products/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    const { name, description, price, stock, category, supplierId } = req.body;
+    
+    const product = await Product.findByPk(id);
+    if (!product) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+    
+    await product.update({ name, description, price, stock, category, supplierId });
+    
+    res.json({ success: true, product });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Delete product API
+app.delete('/api/admin/products/:id', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { id } = req.params;
+    
+    const product = await Product.findByPk(id);
+    if (!product) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+    
+    await product.destroy();
+    
+    res.json({ success: true, message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Sales analysis API
+app.get('/api/admin/sales/analysis', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    // Total sales amount
+    const totalSales = await Sale.sum('totalAmount') || 0;
+    
+    // Sales by product
+    const salesByProduct = await Sale.findAll({
+      attributes: [
+        'productId',
+        [Sequelize.fn('SUM', Sequelize.col('quantity')), 'totalQuantity'],
+        [Sequelize.fn('SUM', Sequelize.col('totalAmount')), 'totalAmount']
+      ],
+      include: [{
+        model: Product,
+        attributes: ['name']
+      }],
+      group: ['productId', 'Product.id']
+    });
+    
+    // Sales by category
+    const salesByCategory = await Sale.findAll({
+      attributes: [
+        [Sequelize.fn('SUM', Sequelize.col('quantity')), 'totalQuantity'],
+        [Sequelize.fn('SUM', Sequelize.col('totalAmount')), 'totalAmount']
+      ],
+      include: [{
+        model: Product,
+        attributes: ['category']
+      }],
+      group: ['Product.category']
+    });
+    
+    // Sales by month
+    const salesByMonth = await Sale.findAll({
+      attributes: [
+        [Sequelize.fn('strftime', '%Y-%m', Sequelize.col('saleDate')), 'month'],
+        [Sequelize.fn('SUM', Sequelize.col('totalAmount')), 'totalAmount']
+      ],
+      group: [Sequelize.fn('strftime', '%Y-%m', Sequelize.col('saleDate'))],
+      order: [[Sequelize.fn('strftime', '%Y-%m', Sequelize.col('saleDate')), 'ASC']]
+    });
+    
+    // Expenses by category
+    const expensesByCategory = await Expense.findAll({
+      attributes: [
+        'category',
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'totalAmount']
+      ],
+      group: ['category']
+    });
+    
+    // Total expenses
+    const totalExpenses = await Expense.sum('amount') || 0;
+    
+    // Profit (sales - expenses)
+    const profit = totalSales - totalExpenses;
+    
+    res.json({ 
+      success: true, 
+      analysis: {
+        totalSales,
+        totalExpenses,
+        profit,
+        salesByProduct,
+        salesByCategory,
+        salesByMonth,
+        expensesByCategory
+      }
+    });
+  } catch (error) {
+    console.error('Sales analysis error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Finance API
+app.get('/api/admin/finance', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    // Get sales data
+    const sales = await Sale.findAll({
+      attributes: ['saleDate', 'totalAmount'],
+      order: [['saleDate', 'ASC']]
+    });
+    
+    // Get expenses data
+    const expenses = await Expense.findAll({
+      attributes: ['expenseDate', 'amount'],
+      order: [['expenseDate', 'ASC']]
+    });
+    
+    // Format data for frontend
+    const salesData = sales.map(sale => sale.totalAmount);
+    const expensesData = expenses.map(expense => expense.amount);
+    
+    res.json({
+      success: true,
+      data: {
+        sales: salesData.length > 0 ? salesData : [0, 0, 0, 0, 0],
+        expenses: expensesData.length > 0 ? expensesData : [0, 0, 0, 0, 0]
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Sales API
+app.get('/api/admin/sales', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const sales = await Sale.findAll({
+      attributes: ['id', 'productId', 'userId', 'quantity', 'totalAmount', 'saleDate'],
+      include: [{
+        model: Product,
+        attributes: ['id', 'name', 'price']
+      }, {
+        model: User,
+        attributes: ['id', 'name', 'email']
+      }]
+    });
+    
+    res.json({ success: true, sales });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add sale API
+app.post('/api/admin/sales', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { productId, quantity, totalAmount, saleDate } = req.body;
+    
+    const sale = await Sale.create({
+      productId,
+      userId: req.user.id,
+      quantity,
+      totalAmount,
+      saleDate: saleDate || new Date()
+    });
+    
+    res.json({ success: true, sale });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Expenses API
+app.get('/api/admin/expenses', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const expenses = await Expense.findAll({
+      attributes: ['id', 'userId', 'amount', 'category', 'description', 'expenseDate'],
+      include: [{
+        model: User,
+        attributes: ['id', 'name', 'email']
+      }]
+    });
+    
+    res.json({ success: true, expenses });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// Add expense API
+app.post('/api/admin/expenses', authenticateAdmin, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== '财务') {
+    return res.status(403).json({ success: false, error: 'Permission denied' });
+  }
+  
+  try {
+    const { amount, category, description, expenseDate } = req.body;
+    
+    const expense = await Expense.create({
+      userId: req.user.id,
+      amount,
+      category,
+      description,
+      expenseDate: expenseDate || new Date()
+    });
+    
+    res.json({ success: true, expense });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
 });
 
 app.listen(PORT, () => {

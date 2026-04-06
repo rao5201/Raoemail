@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import QRCode from 'qrcode'
+import AdminLogin from './admin/Login'
+import AdminDashboard from './admin/Dashboard'
 
 function App() {
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [adminPath, setAdminPath] = useState('')
+
+  useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/admin')) {
+      setIsAdmin(true)
+      setAdminPath(path)
+    }
+  }, [])
   const [emailData, setEmailData] = useState(null)
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
@@ -235,6 +247,14 @@ function App() {
       setLoginError('网络错误，请稍后重试')
     } finally {
       setLoading(false)
+    }
+  }
+
+  if (isAdmin) {
+    if (adminPath === '/admin/login') {
+      return <AdminLogin />
+    } else {
+      return <AdminDashboard />
     }
   }
 
