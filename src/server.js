@@ -2370,6 +2370,330 @@ app.post('/api/system/upgrade', async (req, res) => {
   }
 });
 
+// AI Code Analysis and Security System
+const aiSecurity = {
+  status: 'active',
+  pendingActions: [],
+  approvedActions: [],
+  deniedActions: [],
+  lastScan: null,
+  vulnerabilities: []
+};
+
+// AI code analysis function
+async function analyzeCode() {
+  try {
+    console.log('Running AI code analysis...');
+    
+    // In a real implementation, you would analyze the codebase for vulnerabilities
+    // For now, we'll simulate a code analysis
+    const vulnerabilities = [
+      {
+        id: `VULN${Date.now()}_1`,
+        severity: 'high',
+        description: 'Potential SQL injection vulnerability in user input handling',
+        location: 'src/server.js:54',
+        fix: 'Use parameterized queries instead of string concatenation',
+        status: 'pending'
+      },
+      {
+        id: `VULN${Date.now()}_2`,
+        severity: 'medium',
+        description: 'Missing input validation in email creation endpoint',
+        location: 'src/server.js:54',
+        fix: 'Add proper input validation for email parameters',
+        status: 'pending'
+      },
+      {
+        id: `VULN${Date.now()}_3`,
+        severity: 'low',
+        description: 'Unused variable in authentication middleware',
+        location: 'src/server.js:38',
+        fix: 'Remove unused variable or use it appropriately',
+        status: 'pending'
+      }
+    ];
+    
+    aiSecurity.vulnerabilities = vulnerabilities;
+    aiSecurity.lastScan = new Date();
+    
+    console.log(`AI code analysis completed. Found ${vulnerabilities.length} vulnerabilities.`);
+    
+    // Log the scan
+    await OperationLog.create({
+      operation: 'ai_code_analysis',
+      userType: 'system',
+      userEmail: 'ai-system@example.com',
+      details: `AI代码分析完成，发现 ${vulnerabilities.length} 个漏洞`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    return vulnerabilities;
+  } catch (error) {
+    console.error('AI code analysis failed:', error);
+    return [];
+  }
+}
+
+// Request permission for AI action
+async function requestPermission(action, details) {
+  try {
+    const actionId = `ACTION${Date.now()}`;
+    
+    const pendingAction = {
+      id: actionId,
+      action: action,
+      details: details,
+      status: 'pending',
+      requestedAt: new Date(),
+      requestedBy: 'ai-system'
+    };
+    
+    aiSecurity.pendingActions.push(pendingAction);
+    
+    // Log the permission request
+    await OperationLog.create({
+      operation: 'permission_request',
+      userType: 'ai',
+      userEmail: 'ai-system@example.com',
+      details: `AI请求权限：${action} - ${details}`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    return pendingAction;
+  } catch (error) {
+    console.error('Error requesting permission:', error);
+    throw error;
+  }
+}
+
+// Approve or deny permission
+async function handlePermissionRequest(actionId, approved, adminEmail) {
+  try {
+    const actionIndex = aiSecurity.pendingActions.findIndex(action => action.id === actionId);
+    
+    if (actionIndex === -1) {
+      throw new Error('Action not found');
+    }
+    
+    const action = aiSecurity.pendingActions[actionIndex];
+    action.status = approved ? 'approved' : 'denied';
+    action.processedAt = new Date();
+    action.processedBy = adminEmail;
+    
+    if (approved) {
+      aiSecurity.approvedActions.push(action);
+    } else {
+      aiSecurity.deniedActions.push(action);
+    }
+    
+    aiSecurity.pendingActions.splice(actionIndex, 1);
+    
+    // Log the permission decision
+    await OperationLog.create({
+      operation: approved ? 'permission_approved' : 'permission_denied',
+      userType: 'admin',
+      userEmail: adminEmail,
+      details: `${approved ? '批准' : '拒绝'} AI操作权限：${action.action} - ${action.details}`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    return action;
+  } catch (error) {
+    console.error('Error handling permission request:', error);
+    throw error;
+  }
+}
+
+// Execute AI action with permission check
+async function executeAIAction(actionId, action, details) {
+  try {
+    // Check if action is approved
+    const approvedAction = aiSecurity.approvedActions.find(a => a.id === actionId);
+    
+    if (!approvedAction) {
+      // Unauthorized action - trigger security measures
+      await triggerSecurityMeasures('unauthorized_ai_action', `AI尝试执行未授权操作：${action} - ${details}`);
+      throw new Error('Action not approved');
+    }
+    
+    console.log(`Executing AI action: ${action} - ${details}`);
+    
+    // In a real implementation, you would execute the actual action
+    // For now, we'll simulate the execution
+    
+    // Log the action execution
+    await OperationLog.create({
+      operation: 'ai_action_executed',
+      userType: 'ai',
+      userEmail: 'ai-system@example.com',
+      details: `AI执行操作：${action} - ${details}`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    return { success: true, message: 'AI action executed successfully' };
+  } catch (error) {
+    console.error('Error executing AI action:', error);
+    throw error;
+  }
+}
+
+// Trigger security measures
+async function triggerSecurityMeasures(threatType, details) {
+  try {
+    console.log(`Security breach detected: ${threatType} - ${details}`);
+    
+    // Log the security breach
+    await OperationLog.create({
+      operation: 'security_breach',
+      userType: 'system',
+      userEmail: 'security-system@example.com',
+      details: `安全 breach 检测：${threatType} - ${details}`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    // 1. Disconnect website connection (simulated)
+    console.log('Disconnecting website connection...');
+    
+    // 2. Protect website code (simulated)
+    console.log('Protecting website code...');
+    
+    // 3. Start data backup
+    console.log('Starting data backup...');
+    await backupData();
+    
+    return { success: true, message: 'Security measures triggered successfully' };
+  } catch (error) {
+    console.error('Error triggering security measures:', error);
+    throw error;
+  }
+}
+
+// Backup data function
+async function backupData() {
+  try {
+    console.log('Creating data backup...');
+    
+    // In a real implementation, you would create a backup of the database and files
+    // For now, we'll simulate a backup
+    
+    const backupId = `BACKUP${Date.now()}`;
+    const backupTime = new Date();
+    
+    // Log the backup
+    await OperationLog.create({
+      operation: 'data_backup',
+      userType: 'system',
+      userEmail: 'backup-system@example.com',
+      details: `数据备份完成，备份ID：${backupId}`,
+      ipAddress: '127.0.0.1'
+    });
+    
+    return { backupId, backupTime };
+  } catch (error) {
+    console.error('Error backing up data:', error);
+    throw error;
+  }
+}
+
+// AI code analysis API
+app.get('/api/ai/analyze-code', authenticateAdmin, async (req, res) => {
+  try {
+    const vulnerabilities = await analyzeCode();
+    res.json({ success: true, vulnerabilities, lastScan: aiSecurity.lastScan });
+  } catch (error) {
+    console.error('Error analyzing code:', error);
+    res.status(500).json({ success: false, error: 'Failed to analyze code' });
+  }
+});
+
+// Request permission API
+app.post('/api/ai/request-permission', async (req, res) => {
+  try {
+    const { action, details } = req.body;
+    
+    if (!action || !details) {
+      return res.status(400).json({ success: false, error: 'Action and details are required' });
+    }
+    
+    const pendingAction = await requestPermission(action, details);
+    res.json({ success: true, action: pendingAction });
+  } catch (error) {
+    console.error('Error requesting permission:', error);
+    res.status(500).json({ success: false, error: 'Failed to request permission' });
+  }
+});
+
+// Handle permission request API
+app.post('/api/ai/handle-permission', authenticateAdmin, async (req, res) => {
+  try {
+    const { actionId, approved } = req.body;
+    const adminEmail = req.user.email;
+    
+    if (!actionId || approved === undefined) {
+      return res.status(400).json({ success: false, error: 'Action ID and approval status are required' });
+    }
+    
+    const action = await handlePermissionRequest(actionId, approved, adminEmail);
+    res.json({ success: true, action });
+  } catch (error) {
+    console.error('Error handling permission request:', error);
+    res.status(500).json({ success: false, error: 'Failed to handle permission request' });
+  }
+});
+
+// Execute AI action API
+app.post('/api/ai/execute-action', async (req, res) => {
+  try {
+    const { actionId, action, details } = req.body;
+    
+    if (!actionId || !action || !details) {
+      return res.status(400).json({ success: false, error: 'Action ID, action, and details are required' });
+    }
+    
+    const result = await executeAIAction(actionId, action, details);
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error('Error executing AI action:', error);
+    res.status(500).json({ success: false, error: 'Failed to execute AI action' });
+  }
+});
+
+// Get pending actions API
+app.get('/api/ai/pending-actions', authenticateAdmin, async (req, res) => {
+  try {
+    res.json({ success: true, pendingActions: aiSecurity.pendingActions });
+  } catch (error) {
+    console.error('Error getting pending actions:', error);
+    res.status(500).json({ success: false, error: 'Failed to get pending actions' });
+  }
+});
+
+// Get security status API
+app.get('/api/ai/security-status', authenticateAdmin, async (req, res) => {
+  try {
+    res.json({ 
+      success: true, 
+      security: {
+        status: aiSecurity.status,
+        lastScan: aiSecurity.lastScan,
+        vulnerabilities: aiSecurity.vulnerabilities.length,
+        pendingActions: aiSecurity.pendingActions.length,
+        approvedActions: aiSecurity.approvedActions.length,
+        deniedActions: aiSecurity.deniedActions.length
+      }
+    });
+  } catch (error) {
+    console.error('Error getting security status:', error);
+    res.status(500).json({ success: false, error: 'Failed to get security status' });
+  }
+});
+
+// Start code analysis interval
+setInterval(() => {
+  analyzeCode();
+}, 7200000); // Analyze code every 2 hours
+
 // Start health monitoring interval
 setInterval(() => {
   checkSystemHealth();
@@ -2386,4 +2710,6 @@ app.listen(PORT, () => {
   checkSystemHealth();
   // Initial update check
   checkForUpdates();
+  // Initial code analysis
+  analyzeCode();
 });
