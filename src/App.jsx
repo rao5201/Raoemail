@@ -29,6 +29,12 @@ function App() {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [showLogin, setShowLogin] = useState(false)
   const [loginError, setLoginError] = useState('')
+  const [showSettings, setShowSettings] = useState(false)
+  const [aiSettings, setAiSettings] = useState({
+    autoReply: false,
+    autoSend: false,
+    aiAssistant: true
+  })
   const qrcodeRef = useRef(null)
 
   // Create new email
@@ -467,6 +473,14 @@ function App() {
                       ✏️ 编写邮件
                     </button>
                     <button
+                      onClick={() => setShowSettings(true)}
+                      className="bg-gray-600 hover:bg-gray-700 text-white 
+                               font-medium py-2 px-4 rounded-lg transition-colors
+                               text-sm"
+                    >
+                      ⚙️ 设置
+                    </button>
+                    <button
                       onClick={deleteEmail}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
@@ -750,6 +764,132 @@ function App() {
                           '📤 发送邮件'
                         )}
                       </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Settings */}
+              {showSettings && (
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      ⚙️ 设置
+                    </h3>
+                    <button
+                      onClick={() => setShowSettings(false)}
+                      className="text-gray-600 hover:text-gray-800 text-sm"
+                    >
+                      ✕ 关闭
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-700 mb-4">
+                        🤖 AI 功能
+                      </h4>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h5 className="font-medium text-gray-800">自动回复邮件</h5>
+                            <p className="text-sm text-gray-600">AI 会自动回复收到的邮件</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={aiSettings.autoReply}
+                              onChange={(e) => setAiSettings({...aiSettings, autoReply: e.target.checked})}
+                              className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h5 className="font-medium text-gray-800">自动发送邮件</h5>
+                            <p className="text-sm text-gray-600">AI 会根据你的指令自动发送邮件</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={aiSettings.autoSend}
+                              onChange={(e) => setAiSettings({...aiSettings, autoSend: e.target.checked})}
+                              className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h5 className="font-medium text-gray-800">AI 助手</h5>
+                            <p className="text-sm text-gray-600">启用 AI 助手帮助你管理邮箱</p>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={aiSettings.aiAssistant}
+                              onChange={(e) => setAiSettings({...aiSettings, aiAssistant: e.target.checked})}
+                              className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-700 mb-4">
+                        📧 邮箱设置
+                      </h4>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">邮箱地址</label>
+                          <input
+                            type="email"
+                            value={emailData?.email || ''}
+                            disabled
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                          <input
+                            type="password"
+                            value={emailData?.password || ''}
+                            disabled
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-700 mb-4">
+                        🤖 AI 助手
+                      </h4>
+                      
+                      <div className="border border-gray-200 rounded-lg p-4">
+                        <p className="text-sm text-gray-600 mb-4">
+                          AI 助手可以帮你自动回复邮件、发送新邮件等。启用 AI 功能后，AI 助手会根据你的指令自动完成这些操作。
+                        </p>
+                        
+                        <div className="flex justify-center">
+                          <button
+                            onClick={() => {
+                              alert('AI 助手已启用！它会帮你自动回复邮件、发送新邮件等。');
+                            }}
+                            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                          >
+                            启用 AI 助手
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
