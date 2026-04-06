@@ -1285,6 +1285,54 @@ function App() {
                                   查看工具
                                 </button>
                               </div>
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">❤️</div>
+                                <h6 className="font-medium text-gray-800 mb-1">恳请赞助</h6>
+                                <p className="text-xs text-gray-600">助力我们持续维护网站，提供更好的服务</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到恳请赞助页面
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('donation');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  赞助我们
+                                </button>
+                              </div>
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">💳</div>
+                                <h6 className="font-medium text-gray-800 mb-1">支付产品</h6>
+                                <p className="text-xs text-gray-600">购买我们的产品服务，解锁更多功能</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到支付产品页面
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('payment');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  购买服务
+                                </button>
+                              </div>
+                              <div className="border border-gray-200 rounded-lg p-3 hover:bg-blue-50 transition-colors">
+                                <div className="text-xl mb-2">👤</div>
+                                <h6 className="font-medium text-gray-800 mb-1">用户账户</h6>
+                                <p className="text-xs text-gray-600">管理您的账户和服务状态</p>
+                                <button
+                                  onClick={() => {
+                                    // 切换到用户账户页面
+                                    setShowSettings(false);
+                                    setShowAITools(true);
+                                    setActiveAITool('user-account');
+                                  }}
+                                  className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                  我的账户
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2048,6 +2096,276 @@ function App() {
                                     </p>
                                   </div>
                                 </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : activeAITool === 'donation' ? (
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3">恳请赞助</h5>
+                            
+                            <div className="border border-gray-200 rounded-lg p-4">
+                              <div className="text-center mb-6">
+                                <img src="恳请赞助.png" alt="恳请赞助" className="w-32 h-32 mx-auto mb-4" />
+                                <p className="text-lg font-medium text-gray-800 mb-2">恳请赞助，助力我们持续维护网站！</p>
+                                <p className="text-sm text-gray-600">感谢你了！</p>
+                              </div>
+                              
+                              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+                                <h6 className="font-medium text-gray-800 mb-3">赞助方式</h6>
+                                <div className="space-y-3">
+                                  <div className="flex items-center">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                      <span className="text-blue-600 font-medium">💰</span>
+                                    </div>
+                                    <div>
+                                      <h7 className="font-medium text-gray-800">银行转账</h7>
+                                      <div className="text-xs text-gray-600 mt-1">
+                                        <p>银行名称：中国农业银行</p>
+                                        <p>全国联行号：103581007051</p>
+                                        <p>账 号：6228480089304669172</p>
+                                        <p>开户行：中国农业银行股份有限公司广州林安物流园支行</p>
+                                        <p>收款人：饶思义</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <div className="flex">
+                                  <div className="flex-shrink-0">
+                                    <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                  <div className="ml-3">
+                                    <h6 className="font-medium text-blue-800">为什么需要赞助？</h6>
+                                    <p className="text-sm text-blue-700 mt-1">
+                                      我们需要资金来维护网站服务器、开发新功能、购买API服务等。您的赞助将帮助我们提供更好的服务，持续改进平台功能。
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : activeAITool === 'payment' ? (
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3">支付产品</h5>
+                            
+                            <div className="border border-gray-200 rounded-lg p-4">
+                              <p className="text-sm text-gray-600 mb-6">
+                                💳 购买我们的产品服务，解锁更多功能和工具。
+                              </p>
+                              
+                              <div className="space-y-4 mb-6">
+                                <div className="border border-gray-200 rounded-lg p-4 hover:bg-blue-50 transition-colors">
+                                  <div className="flex justify-between items-center mb-3">
+                                    <h6 className="font-medium text-gray-800">基础服务</h6>
+                                    <div className="text-blue-600 font-semibold">¥99.00/月</div>
+                                  </div>
+                                  <ul className="text-sm text-gray-600 space-y-2 mb-4">
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      访问所有Premium工具
+                                    </li>
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      每月500次工具使用次数
+                                    </li>
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      基本API访问
+                                    </li>
+                                  </ul>
+                                  <button
+                                    onClick={() => {
+                                      alert('跳转到支付页面');
+                                    }}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                                  >
+                                    立即购买
+                                  </button>
+                                </div>
+                                
+                                <div className="border-2 border-blue-500 rounded-lg p-4 bg-blue-50">
+                                  <div className="flex justify-between items-center mb-3">
+                                    <h6 className="font-medium text-gray-800">高级服务</h6>
+                                    <div className="text-blue-600 font-semibold">¥199.00/月</div>
+                                  </div>
+                                  <div className="bg-blue-100 text-blue-800 text-xs font-medium py-1 px-3 rounded-full inline-block mb-3">
+                                    推荐
+                                  </div>
+                                  <ul className="text-sm text-gray-600 space-y-2 mb-4">
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      访问所有Premium工具
+                                    </li>
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      每月2000次工具使用次数
+                                    </li>
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      完整API访问
+                                    </li>
+                                    <li className="flex items-center">
+                                      <svg className="h-4 w-4 text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                      </svg>
+                                      优先技术支持
+                                    </li>
+                                  </ul>
+                                  <button
+                                    onClick={() => {
+                                      alert('跳转到支付页面');
+                                    }}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                                  >
+                                    立即购买
+                                  </button>
+                                </div>
+                              </div>
+                              
+                              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                <div className="flex">
+                                  <div className="flex-shrink-0">
+                                    <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                  <div className="ml-3">
+                                    <p className="text-sm text-yellow-700">
+                                      支付方式：银行转账。购买后请联系我们确认，我们将为您开通相应的服务权限。
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : activeAITool === 'user-account' ? (
+                          <div>
+                            <h5 className="font-medium text-gray-800 mb-3">用户账户</h5>
+                            
+                            <div className="border border-gray-200 rounded-lg p-4">
+                              <div className="flex items-center mb-6">
+                                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                  <span className="text-blue-600 text-2xl">👤</span>
+                                </div>
+                                <div>
+                                  <h6 className="font-medium text-gray-800">用户账户</h6>
+                                  <p className="text-sm text-gray-600">管理您的账户信息和服务状态</p>
+                                </div>
+                              </div>
+                              
+                              <div className="space-y-4 mb-6">
+                                <div className="border border-gray-200 rounded-lg p-4">
+                                  <h6 className="font-medium text-gray-800 mb-3">账户信息</h6>
+                                  <div className="space-y-2">
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">用户名：</span>
+                                      <span className="text-sm font-medium">user@example.com</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">注册时间：</span>
+                                      <span className="text-sm">2026-04-06</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">服务状态：</span>
+                                      <span className="text-sm font-medium text-green-600">活跃</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">服务到期：</span>
+                                      <span className="text-sm">2026-05-06</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-4">
+                                  <h6 className="font-medium text-gray-800 mb-3">服务使用统计</h6>
+                                  <div className="space-y-2">
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">本月工具使用次数：</span>
+                                      <span className="text-sm font-medium">125/2000</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">API调用次数：</span>
+                                      <span className="text-sm font-medium">89/1000</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span className="text-sm text-gray-600">最常用工具：</span>
+                                      <span className="text-sm font-medium">PDF Candy</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div className="border border-gray-200 rounded-lg p-4">
+                                  <h6 className="font-medium text-gray-800 mb-3">API集成</h6>
+                                  <div className="space-y-3">
+                                    <div>
+                                      <label className="block text-sm font-medium text-gray-700 mb-1">API密钥</label>
+                                      <div className="flex">
+                                        <input
+                                          type="text"
+                                          value="sk-1234567890abcdef1234567890abcdef"
+                                          className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                          readOnly
+                                        />
+                                        <button
+                                          onClick={() => {
+                                            navigator.clipboard.writeText('sk-1234567890abcdef1234567890abcdef');
+                                            alert('API密钥已复制到剪贴板');
+                                          }}
+                                          className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-r-lg transition-colors"
+                                        >
+                                          复制
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label className="block text-sm font-medium text-gray-700 mb-1">API文档</label>
+                                      <p className="text-sm text-gray-600 mb-2">使用我们的API集成工具，提供更无缝的用户体验。</p>
+                                      <button
+                                        onClick={() => {
+                                          alert('查看API文档');
+                                        }}
+                                        className="text-blue-600 hover:text-blue-800 text-sm"
+                                      >
+                                        查看API文档
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex gap-3">
+                                <button
+                                  onClick={() => {
+                                    alert('更新账户信息');
+                                  }}
+                                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                                >
+                                  更新信息
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    alert('续订服务');
+                                  }}
+                                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                                >
+                                  续订服务
+                                </button>
                               </div>
                             </div>
                           </div>
