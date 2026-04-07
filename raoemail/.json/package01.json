@@ -1,0 +1,22 @@
+{
+  "name": "email-signup-app",
+  "version": "1.0.0",
+  "description": "Email signup application with security features",
+  "main": "check-links.js",
+  "scripts": {
+    "check-links": "node check-links.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "email",
+    "signup",
+    "security",
+    "link-check"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "jsdom": "^22.1.0"
+  }
+}
