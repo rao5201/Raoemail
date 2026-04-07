@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail - AI驱动专业邮件系统</title>
+    <link rel="icon" href="favicon512.ico" type="image/x-icon">
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
+        body {background:#0a192f; color:#e6f1ff; line-height:1.6;}
+        .container {max-width:1200px; margin:0 auto; padding:2rem 1rem;}
+        header {display:flex; justify-content:space-between; align-items:center; padding:1rem 0; border-bottom:1px solid #172a45;}
+        /* 优化：logo 对齐样式，确保图标和文字垂直居中且绑定 */
+        .logo {display:flex; align-items:center; gap:0.8rem; text-decoration:none;}
+        .logo img {height:40px; vertical-align:middle;}
+        .logo h1 {font-size:1.8rem; color:#64ffda; margin:0; vertical-align:middle;}
+        /* 新增：logo链接样式 */
+        .logo a {text-decoration:none; color:inherit; display:flex; align-items:center;}
+        .lang-switch {display:flex; gap:0.5rem;}
+        .lang-btn {background:transparent; border:1px solid #64ffda; color:#64ffda; padding:0.4rem 0.8rem; border-radius:4px; cursor:pointer;}
+        .lang-btn.active {background:#64ffda; color:#0a192f;}
+        .hero {text-align:center; padding:4rem 0;}
+        .hero h2 {font-size:2.8rem; margin-bottom:1rem; color:#ccd6f6;}
+        .hero p {font-size:1.2rem; color:#8892b0; max-width:700px; margin:0 auto 2rem;}
+        .btn-group {display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;}
+        .btn {padding:1rem 2.5rem; border-radius:6px; font-size:1.1rem; font-weight:500; text-decoration:none; transition:all 0.3s;}
+        .btn-primary {background:#64ffda; color:#0a192f; border:none;}
+        .btn-primary:hover {background:#4fdabb;}
+        .btn-secondary {background:transparent; border:1px solid #64ffda; color:#64ffda;}
+        .btn-secondary:hover {background:rgba(100,255,218,0.1);}
+        .features {padding:3rem 0;}
+        .features h3 {text-align:center; font-size:2rem; margin-bottom:2rem; color:#ccd6f6;}
+        .feature-grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;}
+        .feature-card {background:#172a45; padding:2rem; border-radius:8px;}
+        .feature-card h4 {font-size:1.4rem; margin-bottom:1rem; color:#64ffda;}
+        .feature-card p {color:#8892b0;}
+        footer {text-align:center; padding:2rem 0; border-top:1px solid #172a45; color:#8892b0; margin-top:3rem;}
+        [data-lang="en"] {display:none;}
+        .en [data-lang="zh"] {display:none;}
+        .en [data-lang="en"] {display:block;}
+        /* 新增：首页按钮样式 */
+        .header-actions {display:flex; align-items:center; gap:1rem;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- 优化：Raoemail 文字与图标对齐并绑定为一个链接 -->
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.svg" alt="Raoemail Logo">
+                    <h1>Raoemail</h1>
+                </a>
+            </div>
+            <!-- 新增：头部操作区（语言切换 + 首页按钮） -->
+            <div class="header-actions">
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="switchLang('zh', this)">中文</button>
+                    <button class="lang-btn" onclick="switchLang('en', this)">English</button>
+                </div>
+                <!-- 1. 前往首页 超链接到 index.html -->
+                <a href="index.html" class="btn btn-secondary" style="padding:0.4rem 0.8rem; font-size:0.9rem">
+                    <span data-lang="zh">前往首页</span>
+                    <span data-lang="en">Go to Home</span>
+                </a>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h2 data-lang="zh">AI驱动 · 专业高效 · 安全可靠</h2>
+            <h2 data-lang="en">AI-Powered · Professional · Secure</h2>
+            <p data-lang="zh">Raoemail 为企业与个人提供智能邮件管理、自动化营销、数据安全防护的一站式邮件服务平台</p>
+            <p data-lang="en">Raoemail provides a one-stop email service platform for enterprises and individuals with intelligent management, automated marketing, and data security</p>
+            <div class="btn-group">
+                <a href="raoemail/.html/auth.html" class="btn btn-primary" data-lang="zh">立即注册 / 登录</a>
+                <a href="raoemail/.html/auth.html" class="btn btn-primary" data-lang="en">Sign Up / Login</a>
+                <a href="#features" class="btn btn-secondary" data-lang="zh">了解功能</a>
+                <a href="#features" class="btn btn-secondary" data-lang="en">Learn More</a>
+                <!-- 2. 进入官网首页 超链接到 index.html -->
+                <a href="index.html" class="btn btn-secondary" data-lang="zh">进入官网首页</a>
+                <a href="index.html" class="btn btn-secondary" data-lang="en">Visit Main Homepage</a>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <h3 data-lang="zh">核心功能</h3>
+            <h3 data-lang="en">Core Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4 data-lang="zh">AI智能分拣</h4>
+                    <h4 data-lang="en">AI Smart Sorting</h4>
+                    <p data-lang="zh">自动分类邮件、过滤垃圾、智能标签，提升处理效率</p>
+                    <p data-lang="en">Auto categorize emails, filter spam, smart tags for better efficiency</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-lang="zh">企业级安全</h4>
+                    <h4 data-lang="en">Enterprise Security</h4>
+                    <p data-lang="zh">端到端加密、防钓鱼、数据备份，保障信息安全</p>
+                    <p data-lang="en">End-to-end encryption, anti-phishing, data backup for full security</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-lang="zh">自动化营销</h4>
+                    <h4 data-lang="en">Automated Marketing</h4>
+                    <p data-lang="zh">批量发送、定时推送、数据统计，助力业务增长</p>
+                    <p data-lang="en">Bulk send, scheduled delivery, analytics for business growth</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p data-lang="zh">© 2026 Raoemail - AI驱动专业邮件系统 | 联系我们：rao5201@126.com</p>
+            <p data-lang="en">© 2026 Raoemail - AI-Powered Professional Email System | Contact: rao5201@126.com</p>
+            <!-- 3. 官网首页 超链接到 index.html -->
+            <p style="margin-top:0.5rem">
+                <a href="index.html" style="color:#64ffda; text-decoration:none" data-lang="zh">官网首页</a>
+                <a href="index.html" style="color:#64ffda; text-decoration:none" data-lang="en">Main Homepage</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 修复语言切换逻辑（传入btn元素，避免event.target失效）
+        function switchLang(lang, btn) {
+            document.documentElement.className = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
