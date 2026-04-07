@@ -1,0 +1,47 @@
+name: Link Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日运行
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install link checker
+        run: npm install -g broken-link-checker
+
+      - name: Check links
+        run: blc http://localhost:3000 -ro
+
+      - name: Start development server
+        run: npm start &
+        working-directory: ./raoemail
+
+      - name: Wait for server to start
+        run: sleep 10
+
+      - name: Check API endpoints
+        run: |
+          curl -s http://localhost:3001/api/health
+          curl -s -X POST http://localhost:3001/api/register -H "Content-Type: application/json" -d '{"name":"test","email":"test@example.com","password":"password123"}'
+          curl -s -X POST http://localhost:3001/api/login -H "Content-Type: application/json" -d '{"email":"test@example.com","password":"password123"}'
+
+      - name: Stop development server
+        run: pkill -f "node src/server.js"
+        working-directory: ./raoemail
