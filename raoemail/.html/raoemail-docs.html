@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail 官方完整文档 | Official Full Documentation</title>
+    <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            background: #f7f9fc;
+            color: #222;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dbe4f3;
+        }
+        header h1 {
+            font-size: 2rem;
+            color: #1e40af;
+        }
+        header p {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 2rem;
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 0.75rem;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+        .cn {
+            color: #1e293b;
+        }
+        .en {
+            color: #475569;
+        }
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dbe4f3;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Raoemail 官方完整文档</h1>
+        <p>Raoemail Official Full Documentation</p>
+    </header>
+    <main>
+        <div class="card">
+            <h2>一、项目概述 | Project Overview</h2>
+            <div class="row">
+                <div class="cn">Raoemail 是一款 AI 驱动的安全、高效、轻量化电子邮件服务系统，支持临时邮箱、智能收发、AI 辅助、多端同步，面向个人与企业提供一站式稳定邮件解决方案。</div>
+                <div class="en">Raoemail is an AI-powered, secure, efficient, lightweight email service system that supports temporary emails, intelligent sending/receiving, AI assistance, and multi-device synchronization, providing one-stop stable email solutions for individuals and enterprises.</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>二、核心功能 | Core Features</h2>
+            <div class="row"><div class="cn">临时邮箱生成与销毁</div><div class="en">Temporary Email Generation & Destruction</div></div>
+            <div class="row"><div class="cn">邮件收发、附件上传、邮件分类、多端同步</div><div class="en">Email Send/Receive, Attachments Upload, Email Classification, Multi-device Sync</div></div>
+            <div class="row"><div class="cn">AI 智能摘要、翻译、自动回复、内容分析</div><div class="en">AI Summary, Translation, Auto-Reply, Content Analysis</div></div>
+            <div class="row"><div class="cn">账号安全、加密存储、访问日志</div><div class="en">Account Security, Encrypted Storage, Access Logs</div></div>
+        </div>
+
+        <div class="card">
+            <h2>三、技术架构 | Technical Architecture</h2>
+            <div class="row"><div class="cn">前端：HTML、CSS、JavaScript、React、Vite、Tailwind CSS</div><div class="en">Frontend: HTML, CSS, JavaScript, React, Vite, Tailwind CSS</div></div>
+            <div class="row"><div class="cn">后端：Node.js、Express、安全中间件、加密算法</div><div class="en">Backend: Node.js, Express, Security Middleware, Encryption Algorithms</div></div>
+            <div class="row"><div class="cn">部署：支持 Vercel、Docker、服务器部署</div><div class="en">Deployment: Vercel, Docker, Server Deployment Supported</div></div>
+        </div>
+
+        <div class="card">
+            <h2>四、使用场景 | Usage Scenarios</h2>
+            <div class="row"><div class="cn">个人隐私保护、临时注册、防垃圾邮件</div><div class="en">Personal Privacy Protection, Temporary Registration, Anti-Spam</div></div>
+            <div class="row"><div class="cn">企业内部通信、客户服务、安全邮件</div><div class="en">Enterprise Internal Communication, Customer Service, Secure Email</div></div>
+            <div class="row"><div class="cn">开发测试、演示环境、自动化邮件</div><div class="en">Development Testing, Demo Environment, Automated Emails</div></div>
+        </div>
+
+        <div class="card">
+            <h2>五、安全特性 | Security Features</h2>
+            <div class="row"><div class="cn">密码加密存储、输入过滤、XSS 防护、SQL 注入防护</div><div class="en">Encrypted Password Storage, Input Filtering, XSS Protection, SQL Injection Protection</div></div>
+            <div class="row"><div class="cn">访问限制、请求频率限制、日志审计、权限管理</div><div class="en">Access Control, Rate Limiting, Log Audit, Permission Control</div></div>
+            <div class="row"><div class="cn">数据自动清理、隐私保护、防泄露</div><div class="en">Auto Data Cleanup, Privacy Protection, Anti-Leakage</div></div>
+        </div>
+
+        <div class="card">
+            <h2>六、安装与部署 | Install & Deploy</h2>
+            <div class="row"><div class="cn">下载源码 → 安装依赖 → 配置环境 → 启动服务</div><div class="en">Download Source → Install Dependencies → Configure Env → Start Service</div></div>
+            <div class="row"><div class="cn">支持一键部署到 Vercel、服务器、虚拟机</div><div class="en">Supports one-click deployment to Vercel, Server, VM</div></div>
+        </div>
+
+        <div class="card">
+            <h2>七、接口说明 | API Reference</h2>
+            <div class="row"><div class="cn">POST /email/create 创建临时邮箱</div><div class="en">POST /email/create Create Temporary Email</div></div>
+            <div class="row"><div class="cn">GET /email/list 获取邮件列表</div><div class="en">GET /email/list Get Email List</div></div>
+            <div class="row"><div class="cn">POST /email/send 发送邮件</div><div class="en">POST /email/send Send Email</div></div>
+            <div class="row"><div class="cn">DELETE /email/destroy 销毁邮箱</div><div class="en">DELETE /email/destroy Destroy Email</div></div>
+        </div>
+
+        <div class="card">
+            <h2>八、常见问题 | FAQ</h2>
+            <div class="row"><div class="cn">邮箱有效期：默认24小时，可手动销毁</div><div class="en">Email Validity: 24 hours by default, manually destroyable</div></div>
+            <div class="row"><div class="cn">附件大小：单文件最大 20MB，支持多文件</div><div class="en">Attachment Size: Max 20MB per file, multi-file supported</div></div>
+            <div class="row"><div class="cn">支持全球访问，无地区限制</div><div class="en">Global access available, no regional restrictions</div></div>
+        </div>
+
+        <div class="card">
+            <h2>九、联系方式 | Contact</h2>
+            <div class="row"><div class="cn">官方/技术支持邮箱：rao5201@126.com</div><div class="en">Official/Support Email: rao5201@126.com</div></div>
+            <div class="row"><div class="cn">技术支持时间：工作日 9:00–18:00</div><div class="en">Support Time: Workdays 9:00–18:00</div></div>
+        </div>
+    </main>
+    <footer>© 2026 Raoemail. All rights reserved.</footer>
+</body>
+</html>

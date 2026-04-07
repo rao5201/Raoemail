@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail - 邮件管理</title>
+    <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+    <!-- 引入Summernote富文本编辑器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
+        body {background:#0a192f; color:#e6f1ff; display:flex; min-height:100vh;}
+        .sidebar {width:260px; background:#172a45; padding:1.5rem; border-right:1px solid #233554;}
+        .sidebar-logo {display:flex; align-items:center; gap:0.8rem; margin-bottom:2rem;}
+        .sidebar-logo img {height:36px;}
+        .sidebar-logo h2 {color:#64ffda; font-size:1.4rem;}
+        .nav-item {display:flex; align-items:center; gap:0.8rem; padding:1rem; border-radius:6px; cursor:pointer; margin-bottom:0.5rem; color:#8892b0; transition:0.3s;}
+        .nav-item.active {background:rgba(100,255,218,0.1); color:#64ffda;}
+        .nav-item:hover {background:rgba(100,255,218,0.05);}
+        .main {flex:1; display:flex; flex-direction:column;}
+        .header {display:flex; justify-content:space-between; align-items:center; padding:1.5rem 2rem; border-bottom:1px solid #233554;}
+        .header h1 {font-size:1.8rem; color:#ccd6f6;}
+        .user-info {display:flex; align-items:center; gap:1rem;}
+        .lang-btn {background:transparent; border:1px solid #64ffda; color:#64ffda; padding:0.4rem 0.8rem; border-radius:4px; cursor:pointer; margin-left:0.5rem;}
+        .lang-btn.active {background:#64ffda; color:#0a192f;}
+        .content {flex:1; display:flex; overflow:hidden;}
+        .email-sidebar {width:300px; border-right:1px solid #233554; display:flex; flex-direction:column;}
+        .email-sidebar-header {padding:1rem; border-bottom:1px solid #233554;}
+        .compose-btn {width:100%; padding:0.8rem; background:#64ffda; color:#0a192f; border:none; border-radius:6px; font-weight:500; cursor:pointer;}
+        .compose-btn:hover {background:#4fdabb;}
+        .email-folders {flex:1; padding:1rem;}
+        .folder-item {padding:0.8rem; border-radius:6px; cursor:pointer; margin-bottom:0.5rem; color:#8892b0;}
+        .folder-item.active {background:rgba(100,255,218,0.1); color:#64ffda;}
+        .email-list {flex:1; display:flex; flex-direction:column; overflow:hidden;}
+        .email-list-header {padding:1rem 2rem; border-bottom:1px solid #233554;}
+        .email-list-content {flex:1; overflow-y:auto; padding:1rem 2rem;}
+        .email-item {padding:1rem; border-bottom:1px solid #233554; cursor:pointer; transition:0.3s;}
+        .email-item:hover {background:rgba(100,255,218,0.05);}
+        .email-item.unread {background:rgba(100,255,218,0.05);}
+        .email-item-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;}
+        .email-sender {font-weight:500; color:#64ffda;}
+        .email-subject {margin-bottom:0.5rem; color:#ccd6f6;}
+        .email-preview {color:#8892b0; font-size:0.9rem;}
+        .email-content {flex:1; padding:2rem; border-left:1px solid #233554; display:flex; flex-direction:column;}
+        .email-content-header {margin-bottom:2rem;}
+        .email-content-subject {font-size:1.5rem; margin-bottom:1rem; color:#ccd6f6;}
+        .email-content-info {display:flex; justify-content:space-between; margin-bottom:1rem; color:#8892b0;}
+        .email-content-body {flex:1; line-height:1.6; color:#e6f1ff;}
+        .email-actions {margin-top:2rem; display:flex; gap:1rem;}
+        .action-btn {padding:0.6rem 1.2rem; border:1px solid #64ffda; color:#64ffda; background:transparent; border-radius:6px; cursor:pointer;}
+        .action-btn:hover {background:rgba(100,255,218,0.1);}
+        .modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;}
+        .modal-content {position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:#172a45; border-radius:8px; width:600px; max-width:90%; max-height:90%; overflow-y:auto;}
+        .modal-header {padding:1.5rem; border-bottom:1px solid #233554; display:flex; justify-content:space-between; align-items:center;}
+        .modal-header h2 {color:#ccd6f6;}
+        .close-btn {background:none; border:none; color:#8892b0; font-size:1.5rem; cursor:pointer;}
+        .modal-body {padding:1.5rem;}
+        .form-group {margin-bottom:1rem;}
+        .form-group label {display:block; margin-bottom:0.5rem; color:#8892b0;}
+        .form-group input, .form-group textarea {width:100%; padding:0.8rem; background:#0a192f; border:1px solid #233554; border-radius:6px; color:#e6f1ff;}
+        .form-group textarea {min-height:200px; resize:vertical;}
+        .modal-footer {padding:1.5rem; border-top:1px solid #233554; display:flex; justify-content:flex-end; gap:1rem;}
+        .send-btn {padding:0.8rem 1.6rem; background:#64ffda; color:#0a192f; border:none; border-radius:6px; cursor:pointer;}
+        .send-btn:hover {background:#4fdabb;}
+        .cancel-btn {padding:0.8rem 1.6rem; border:1px solid #64ffda; color:#64ffda; background:transparent; border-radius:6px; cursor:pointer;}
+        .cancel-btn:hover {background:rgba(100,255,218,0.1);}
+        [data-lang="en"] {display:none;}
+        .en [data-lang="zh"] {display:none;}
+        .en [data-lang="en"] {display:block;}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../logo.svg" alt="Raoemail Logo">
+            <h2>Raoemail</h2>
+        </div>
+        <div class="nav-item" onclick="window.location.href='dashboard.html'">
+            <span data-lang="zh">首页</span>
+            <span data-lang="en">Dashboard</span>
+        </div>
+        <div class="nav-item active">
+            <span data-lang="zh">邮件管理</span>
+            <span data-lang="en">Email Management</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">营销工具</span>
+            <span data-lang="en">Marketing Tools</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">数据统计</span>
+            <span data-lang="en">Analytics</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">账户设置</span>
+            <span data-lang="en">Settings</span>
+        </div>
+        <div class="nav-item" onclick="logout()">
+            <span data-lang="zh">退出登录</span>
+            <span data-lang="en">Logout</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1 data-lang="zh">邮件管理</h1>
+            <h1 data-lang="en">Email Management</h1>
+            <div class="user-info">
+                <button class="lang-btn active" onclick="switchLang('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLang('en')">English</button>
+                <span id="user-email">user@raoemail.com</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 邮件侧边栏 -->
+            <div class="email-sidebar">
+                <div class="email-sidebar-header">
+                    <button class="compose-btn" onclick="openComposeModal()" data-lang="zh">撰写邮件</button>
+                    <button class="compose-btn" onclick="openComposeModal()" data-lang="en">Compose Email</button>
+                </div>
+                <div class="email-folders">
+                    <div class="folder-item active" onclick="loadEmails('inbox', this)">
+                        <span data-lang="zh">收件箱</span>
+                        <span data-lang="en">Inbox</span>
+                    </div>
+                    <div class="folder-item" onclick="loadEmails('sent', this)">
+                        <span data-lang="zh">已发送</span>
+                        <span data-lang="en">Sent</span>
+                    </div>
+                    <div class="folder-item" onclick="loadEmails('drafts', this)">
+                        <span data-lang="zh">草稿</span>
+                        <span data-lang="en">Drafts</span>
+                    </div>
+                    <div class="folder-item" onclick="loadEmails('trash', this)">
+                        <span data-lang="zh">垃圾箱</span>
+                        <span data-lang="en">Trash</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 邮件列表 -->
+            <div class="email-list">
+                <div class="email-list-header">
+                    <h2 id="folder-title" data-lang="zh">收件箱</h2>
+                    <h2 id="folder-title-en" data-lang="en">Inbox</h2>
+                </div>
+                <div class="email-list-content" id="email-list-content">
+                    <!-- 邮件列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 邮件内容 -->
+            <div class="email-content" id="email-content">
+                <div style="text-align:center; margin-top:50px; color:#8892b0;">
+                    <p data-lang="zh">请选择一封邮件查看内容</p>
+                    <p data-lang="en">Please select an email to view its content</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 撰写邮件模态框 -->
+    <div class="modal" id="compose-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-lang="zh">撰写邮件</h2>
+                <h2 data-lang="en">Compose Email</h2>
+                <button class="close-btn" onclick="closeComposeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="to" data-lang="zh">收件人</label>
+                    <label for="to" data-lang="en">To</label>
+                    <input type="email" id="to" placeholder="recipient@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject" data-lang="zh">主题</label>
+                    <label for="subject" data-lang="en">Subject</label>
+                    <input type="text" id="subject" placeholder="邮件主题">
+                </div>
+                <div class="form-group">
+                    <label for="body" data-lang="zh">内容</label>
+                    <label for="body" data-lang="en">Body</label>
+                    <div id="emailContent"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" onclick="closeComposeModal()" data-lang="zh">取消</button>
+                <button class="cancel-btn" onclick="closeComposeModal()" data-lang="en">Cancel</button>
+                <button class="send-btn" onclick="sendEmail()" data-lang="zh">发送</button>
+                <button class="send-btn" onclick="sendEmail()" data-lang="en">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 检查认证状态
+        function checkAuth() {
+            // 暂时绕过认证检查，用于测试
+            // const token = localStorage.getItem('token');
+            // if (!token) {
+            //     window.location.href = 'auth.html';
+            //     return false;
+            // }
+            return true;
+        }
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'auth.html';
+        }
+
+        // 切换语言
+        function switchLang(lang) {
+            document.documentElement.className = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 打开撰写邮件模态框
+        function openComposeModal() {
+            document.getElementById('compose-modal').style.display = 'block';
+            // 初始化富文本编辑器
+            $('#emailContent').summernote({
+                height: 300,
+                placeholder: '请输入邮件正文...'
+            });
+        }
+
+        // 关闭撰写邮件模态框
+        function closeComposeModal() {
+            document.getElementById('compose-modal').style.display = 'none';
+            // 清空表单
+            document.getElementById('to').value = '';
+            document.getElementById('subject').value = '';
+            // 重置富文本编辑器
+            $('#emailContent').summernote('reset');
+        }
+
+        // 发送邮件
+        async function sendEmail() {
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const content = $('#emailContent').summernote('code');
+
+            if (!to || !subject || !content) {
+                alert('请填写完整的邮件信息');
+                return;
+            }
+
+            try {
+                // 调用后端邮件发送接口
+                const response = await fetch('http://localhost:8080/api/email/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({ to: to, subject: subject, content: content })
+                });
+
+                const result = await response.json();
+                if (result.code === 200) {
+                    // 关闭模态框
+                    closeComposeModal();
+                    
+                    // 显示成功消息
+                    alert('邮件发送成功！');
+                    
+                    // 刷新邮件列表
+                    loadEmails('sent');
+                } else {
+                    alert('发送失败：' + result.msg);
+                }
+            } catch (err) {
+                alert('请求异常：' + err.message);
+            }
+        }
+
+        // 加载邮件列表
+        async function loadEmails(folder, targetElement) {
+            // 更新文件夹状态
+            document.querySelectorAll('.folder-item').forEach(item => item.classList.remove('active'));
+            if (targetElement) {
+                targetElement.classList.add('active');
+            } else {
+                // 找到对应文件夹并激活
+                const folderItems = document.querySelectorAll('.folder-item');
+                folderItems.forEach(item => {
+                    if (item.textContent.trim() === (folder === 'inbox' ? '收件箱' : 
+                                                      folder === 'sent' ? '已发送' : 
+                                                      folder === 'drafts' ? '草稿' : '垃圾箱')) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+
+            // 更新文件夹标题
+            const folderTitles = {
+                inbox: { zh: '收件箱', en: 'Inbox' },
+                sent: { zh: '已发送', en: 'Sent' },
+                drafts: { zh: '草稿', en: 'Drafts' },
+                trash: { zh: '垃圾箱', en: 'Trash' }
+            };
+            document.getElementById('folder-title').textContent = folderTitles[folder].zh;
+            document.getElementById('folder-title-en').textContent = folderTitles[folder].en;
+
+            // 生成邮件列表
+            const emailListContent = document.getElementById('email-list-content');
+            emailListContent.innerHTML = '<div style="text-align:center; padding:20px; color:#8892b0;">加载中...</div>';
+
+            try {
+                // 调用后端API获取邮件数据
+                let response;
+                if (folder === 'inbox') {
+                    response = await fetch('http://localhost:8080/api/email/inbox', {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        }
+                    });
+                } else {
+                    // 对于其他文件夹，暂时使用模拟数据
+                    // 实际项目中需要实现相应的API端点
+                    const mockEmails = {
+                        sent: [
+                            { id: 4, recipient: 'client@example.com', subject: '项目提案', body: '您好，这是我们的项目提案，请查收。', date: '2026-04-07 08:20' },
+                            { id: 5, recipient: 'team@raoemail.com', subject: '周会纪要', body: '附件是本周会议纪要，请各位查阅。', date: '2026-04-06 16:30' }
+                        ],
+                        drafts: [
+                            { id: 6, recipient: 'manager@raoemail.com', subject: '月度报告', body: '本月工作进展...', date: '2026-04-07 09:00' }
+                        ],
+                        trash: [
+                            { id: 7, sender: 'spam@example.com', subject: '优惠活动', body: '限时优惠，点击了解详情', date: '2026-04-04 11:20' }
+                        ]
+                    };
+                    
+                    // 模拟API响应
+                    emailListContent.innerHTML = '';
+                    mockEmails[folder].forEach(email => {
+                        const emailItem = document.createElement('div');
+                        emailItem.className = `email-item`;
+                        emailItem.onclick = () => viewEmail(email, folder);
+
+                        let senderHtml = '';
+                        if (folder === 'sent') {
+                            senderHtml = `<span class="email-sender">${email.recipient}</span>`;
+                        } else {
+                            senderHtml = `<span class="email-sender">${email.sender}</span>`;
+                        }
+
+                        emailItem.innerHTML = `
+                            <div class="email-item-header">
+                                ${senderHtml}
+                                <span style="color:#8892b0; font-size:0.9rem;">${email.date}</span>
+                            </div>
+                            <div class="email-subject">${email.subject}</div>
+                            <div class="email-preview">${email.body.substring(0, 100)}${email.body.length > 100 ? '...' : ''}</div>
+                        `;
+
+                        emailListContent.appendChild(emailItem);
+                    });
+
+                    // 清空邮件内容区域
+                    document.getElementById('email-content').innerHTML = `
+                        <div style="text-align:center; margin-top:50px; color:#8892b0;">
+                            <p data-lang="zh">请选择一封邮件查看内容</p>
+                            <p data-lang="en">Please select an email to view its content</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const result = await response.json();
+                if (result.code === 200) {
+                    const emails = result.data;
+                    
+                    emailListContent.innerHTML = '';
+                    
+                    if (emails.length === 0) {
+                        emailListContent.innerHTML = '<div style="text-align:center; padding:20px; color:#8892b0;">暂无邮件</div>';
+                    } else {
+                        emails.forEach(email => {
+                            const emailItem = document.createElement('div');
+                            emailItem.className = `email-item`;
+                            emailItem.onclick = () => viewEmail(email, folder);
+
+                            emailItem.innerHTML = `
+                                <div class="email-item-header">
+                                    <span class="email-sender">${email.from}</span>
+                                    <span style="color:#8892b0; font-size:0.9rem;">${email.date}</span>
+                                </div>
+                                <div class="email-subject">${email.subject}</div>
+                                <div class="email-preview">${email.subject.substring(0, 100)}${email.subject.length > 100 ? '...' : ''}</div>
+                            `;
+
+                            emailListContent.appendChild(emailItem);
+                        });
+                    }
+                } else {
+                    emailListContent.innerHTML = `<div style="text-align:center; padding:20px; color:#ff6b6b;">加载失败：${result.msg}</div>`;
+                }
+            } catch (err) {
+                emailListContent.innerHTML = `<div style="text-align:center; padding:20px; color:#ff6b6b;">请求异常：${err.message}</div>`;
+            }
+
+            // 清空邮件内容区域
+            document.getElementById('email-content').innerHTML = `
+                <div style="text-align:center; margin-top:50px; color:#8892b0;">
+                    <p data-lang="zh">请选择一封邮件查看内容</p>
+                    <p data-lang="en">Please select an email to view its content</p>
+                </div>
+            `;
+        }
+
+        // 查看邮件内容
+        function viewEmail(email, folder) {
+            const emailContent = document.getElementById('email-content');
+            
+            let senderHtml = '';
+            if (folder === 'sent') {
+                senderHtml = `<div><strong data-lang="zh">收件人:</strong><strong data-lang="en">To:</strong> ${email.recipient}</div>`;
+            } else {
+                senderHtml = `<div><strong data-lang="zh">发件人:</strong><strong data-lang="en">From:</strong> ${email.sender}</div>`;
+            }
+
+            emailContent.innerHTML = `
+                <div class="email-content-header">
+                    <div class="email-content-subject">${email.subject}</div>
+                    <div class="email-content-info">
+                        ${senderHtml}
+                        <div><strong data-lang="zh">日期:</strong><strong data-lang="en">Date:</strong> ${email.date}</div>
+                    </div>
+                </div>
+                <div class="email-content-body">${email.body}</div>
+                <div class="email-actions">
+                    <button class="action-btn" onclick="replyEmail('${email.sender || email.recipient}', 'Re: ${email.subject}')" data-lang="zh">回复</button>
+                    <button class="action-btn" onclick="replyEmail('${email.sender || email.recipient}', 'Re: ${email.subject}')" data-lang="en">Reply</button>
+                    <button class="action-btn" onclick="forwardEmail()" data-lang="zh">转发</button>
+                    <button class="action-btn" onclick="forwardEmail()" data-lang="en">Forward</button>
+                </div>
+            `;
+        }
+
+        // 回复邮件
+        function replyEmail(recipient, subject) {
+            document.getElementById('to').value = recipient;
+            document.getElementById('subject').value = subject;
+            document.getElementById('compose-modal').style.display = 'block';
+        }
+
+        // 转发邮件
+        function forwardEmail() {
+            document.getElementById('compose-modal').style.display = 'block';
+        }
+
+        // 页面加载时的初始化
+        window.onload = async function() {
+            if (!checkAuth()) return;
+            
+            // 从本地存储获取用户信息
+            const user = localStorage.getItem('user');
+            if (user) {
+                try {
+                    const userObj = JSON.parse(user);
+                    const userEmailElement = document.getElementById('user-email');
+                    if (userEmailElement) {
+                        userEmailElement.textContent = userObj.email;
+                    }
+                } catch (e) {
+                    console.error('解析用户信息失败:', e);
+                }
+            }
+            
+            // 加载收件箱邮件
+            await loadEmails('inbox');
+        };
+    </script>
+</body>
+</html>

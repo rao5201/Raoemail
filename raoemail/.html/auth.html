@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail - 登录 / 注册</title>
+    <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
+        body {background:#0a192f; color:#e6f1ff; display:flex; min-height:100vh; align-items:center; justify-content:center; padding:1rem;}
+        .auth-card {background:#172a45; padding:2.5rem; border-radius:12px; width:100%; max-width:450px; box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+        .logo {text-align:center; margin-bottom:2rem;}
+        .logo img {height:50px; margin-bottom:0.5rem;}
+        .logo a {text-decoration:none;}
+        .logo h2 {color:#64ffda; font-size:1.8rem; margin-top:0.5rem;}
+        .tab-group {display:flex; margin-bottom:2rem; border-bottom:1px solid #233554;}
+        .tab {flex:1; padding:1rem; text-align:center; cursor:pointer; font-weight:500; color:#8892b0; border-bottom:3px solid transparent;}
+        .tab.active {color:#64ffda; border-color:#64ffda;}
+        .form-group {margin-bottom:1.5rem;}
+        .form-group label {display:block; margin-bottom:0.5rem; color:#ccd6f6;}
+        .form-group input {width:100%; padding:1rem; background:#0a192f; border:1px solid #233554; border-radius:6px; color:#e6f1ff; font-size:1rem;}
+        .form-group input:focus {outline:none; border-color:#64ffda;}
+        .btn {width:100%; padding:1rem; border-radius:6px; font-size:1.1rem; font-weight:500; border:none; cursor:pointer; transition:0.3s; margin-top:0.5rem;}
+        .btn-primary {background:#64ffda; color:#0a192f;}
+        .btn-primary:hover {background:#4fdabb;}
+        .form-panel {display:none;}
+        .form-panel.active {display:block;}
+        .link-text {text-align:center; margin-top:1.5rem; color:#8892b0;}
+        .link-text a {color:#64ffda; text-decoration:none;}
+        .back-home {text-align:center; margin-top:1rem;}
+        .back-home a {color:#8892b0; font-size:0.9rem; text-decoration:none;}
+        .back-home a:hover {color:#64ffda;}
+        [lang=en] {display:none;}
+        html[lang=en] [lang=en] {display:block;}
+        html[lang=en] [lang=zh] {display:none;}
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <div class="logo">
+        <a href="../index.html">
+            <img src="../logo.svg" alt="Raoemail Logo">
+            <h2>Raoemail</h2>
+        </a>
+    </div>
+
+    <div class="tab-group">
+        <div class="tab active" onclick="switchPanel('login')" lang="zh">登录</div>
+        <div class="tab" onclick="switchPanel('login')" lang="en">Login</div>
+        <div class="tab" onclick="switchPanel('register')" lang="zh">注册</div>
+        <div class="tab" onclick="switchPanel('register')" lang="en">Sign Up</div>
+    </div>
+
+    <!-- 登录面板 -->
+    <div class="form-panel active" id="loginPanel">
+        <div class="form-group">
+            <label lang="zh">邮箱/账号</label>
+            <label lang="en">Email/Account</label>
+            <input type="text" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+            <label lang="zh">密码</label>
+            <label lang="en">Password</label>
+            <input type="password" placeholder="••••••••">
+        </div>
+
+        <button class="btn btn-primary" onclick="login()" lang="zh">登录进入系统</button>
+        <button class="btn btn-primary" onclick="login()" lang="en">Login</button>
+
+        <div class="link-text">
+          <span lang="zh">忘记密码？</span>
+          <span lang="en">Forgot Password?</span>
+          <a href="auth01.html"> 立即找回OK\(^o^)/~</a>
+        </div>
+    </div>
+
+    <!-- 注册面板 -->
+    <div class="form-panel" id="registerPanel">
+        <div class="form-group">
+            <label lang="zh">用户名</label>
+            <label lang="en">Username</label>
+            <input type="text" placeholder="请输入用户名">
+        </div>
+        <div class="form-group">
+            <label lang="zh">邮箱</label>
+            <label lang="en">Email</label>
+            <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+            <label lang="zh">手机号</label>
+            <label lang="en">Phone</label>
+            <input type="tel" placeholder="请输入手机号">
+        </div>
+        <div class="form-group">
+            <label lang="zh">身份证号</label>
+            <label lang="en">ID Card</label>
+            <input type="text" placeholder="请输入身份证号">
+        </div>
+        <div class="form-group">
+            <label lang="zh">设置密码</label>
+            <label lang="en">Set Password</label>
+            <input type="password" placeholder="至少8位">
+        </div>
+        <div class="form-group">
+            <label lang="zh">确认密码</label>
+            <label lang="en">Confirm Password</label>
+            <input type="password" placeholder="再次输入">
+        </div>
+        <div class="form-group">
+            <label lang="zh">找回密码问题</label>
+            <label lang="en">Security Question</label>
+            <select style="width:100%; padding:1rem; background:#0a192f; border:1px solid #233554; border-radius:6px; color:#e6f1ff; font-size:1rem;">
+                <option value="">请选择问题</option>
+                <option value="1">您的出生城市是？</option>
+                <option value="2">您的母校是？</option>
+                <option value="3">您的宠物名字是？</option>
+                <option value="4">您的最喜欢的颜色是？</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label lang="zh">问题答案</label>
+            <label lang="en">Answer</label>
+            <input type="text" placeholder="请输入答案">
+        </div>
+
+        <button class="btn btn-primary" onclick="register()" lang="zh">完成注册并登录</button>
+        <button class="btn btn-primary" onclick="register()" lang="en">Sign Up & Login</button>
+
+        <!-- 第三方登录 -->
+        <div style="text-align:center; margin-top:2rem;">
+            <div style="color:#8892b0; margin-bottom:1rem;" lang="zh">第三方账号登录</div>
+            <div style="color:#8892b0; margin-bottom:1rem; display:none;" lang="en">Third-party Login</div>
+            <div style="display:flex; justify-content:center; gap:1rem;">
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#07C160;" onclick="thirdPartyLogin('wechat')" lang="zh">微信</button>
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#1677FF;" onclick="thirdPartyLogin('alipay')" lang="zh">支付宝</button>
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#FE2C55;" onclick="thirdPartyLogin('douyin')" lang="zh">抖音</button>
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#FE2C55;" onclick="thirdPartyLogin('xiaohongshu')" lang="zh">小红书</button>
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#E02020;" onclick="thirdPartyLogin('pdd')" lang="zh">拼多多</button>
+                <button class="btn" style="width:auto; padding:0.5rem 1rem; background:#E02020;" onclick="thirdPartyLogin('jd')" lang="zh">京东</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-home">
+        <a href="../../intro.html" lang="zh">← 返回首页</a>
+        <a href="../../intro.html" lang="en">← Back to Home</a>
+    </div>
+</div>
+
+<script>
+function switchPanel(panel) {
+    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(panel + 'Panel').classList.add('active');
+    event.target.classList.add('active');
+}
+
+function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[lang=zh]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
+    document.querySelectorAll('[lang=en]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+}
+
+// 登录函数
+async function login() {
+    const email = document.querySelector('#loginPanel input[type="text"]').value;
+    const password = document.querySelector('#loginPanel input[type="password"]').value;
+
+    if (!email || !password) {
+        alert('请输入邮箱和密码');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            // 存储token和用户信息
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('user', JSON.stringify(result.user));
+            // 跳转到仪表盘
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(result.error || '登录失败');
+        }
+    } catch (error) {
+        console.error('登录错误:', error);
+        alert('登录失败，请稍后重试');
+    }
+}
+
+// 注册函数
+async function register() {
+    const username = document.querySelector('#registerPanel input[type="text"]:nth-child(3)').value;
+    const email = document.querySelector('#registerPanel input[type="email"]').value;
+    const phone = document.querySelector('#registerPanel input[type="tel"]').value;
+    const idCard = document.querySelector('#registerPanel input[type="text"]:nth-child(9)').value;
+    const password = document.querySelector('#registerPanel input[type="password"]:nth-child(12)').value;
+    const confirmPassword = document.querySelector('#registerPanel input[type="password"]:nth-child(15)').value;
+    const securityQuestion = document.querySelector('#registerPanel select').value;
+    const securityAnswer = document.querySelector('#registerPanel input[type="text"]:nth-child(18)').value;
+
+    if (!username || !email || !phone || !idCard || !password || !confirmPassword || !securityQuestion || !securityAnswer) {
+        alert('请填写完整的注册信息');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert('两次输入的密码不一致');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                name: username, 
+                email, 
+                password,
+                phone,
+                id_card: idCard,
+                security_question: securityQuestion,
+                security_answer: securityAnswer
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            // 注册成功后的情况选择逻辑
+            const userChoice = confirm('注册成功！\n\n选择操作：\n确定 - 自动登录并进入系统\n取消 - 返回登录页面');
+            
+            if (userChoice) {
+                // 自动登录并进入系统
+                await login();
+            } else {
+                // 返回登录页面
+                alert('已返回登录页面，请使用新账号登录');
+                switchPanel('login');
+            }
+        } else {
+            alert(result.error || '注册失败');
+            // 注册失败，留在当前页面
+        }
+    } catch (error) {
+        console.error('注册错误:', error);
+        alert('注册失败，请稍后重试');
+        // 网络错误，留在当前页面
+    }
+}
+
+// 系统变量和参数
+const systemVariables = {
+    apiBaseUrl: 'http://localhost:8080/api',
+    thirdPartyAuth: {
+        wechat: 'https://open.weixin.qq.com/connect/qrconnect',
+        alipay: 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm',
+        douyin: 'https://open.douyin.com/platform/oauth/connect',
+        xiaohongshu: 'https://www.xiaohongshu.com/api/sns/oauth2/authorize',
+        pdd: 'https://open.pinduoduo.com/oauth/authorize',
+        jd: 'https://oauth.jd.com/oauth2/to_authorize'
+    }
+};
+
+// 第三方登录函数
+function thirdPartyLogin(platform) {
+    console.log(`开始${platform}登录流程`);
+    
+    // 检查平台是否支持
+    if (!systemVariables.thirdPartyAuth[platform]) {
+        alert('暂不支持该平台登录');
+        return;
+    }
+    
+    // 生成随机状态码，用于防止CSRF攻击
+    const state = generateRandomString();
+    localStorage.setItem('oauth_state', state);
+    
+    // 构建授权URL
+    const redirectUri = encodeURIComponent(`${window.location.origin}${window.location.pathname}`);
+    let authUrl = systemVariables.thirdPartyAuth[platform];
+    
+    // 根据不同平台构建不同的授权URL
+    switch (platform) {
+        case 'wechat':
+            authUrl += `?appid=YOUR_WECHAT_APPID&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_login&state=${state}#wechat_redirect`;
+            break;
+        case 'alipay':
+            authUrl += `?app_id=YOUR_ALIPAY_APPID&redirect_uri=${redirectUri}&response_type=code&scope=auth_user&state=${state}`;
+            break;
+        case 'douyin':
+            authUrl += `?client_key=YOUR_DOUYIN_CLIENT_KEY&redirect_uri=${redirectUri}&response_type=code&scope=user_info&state=${state}`;
+            break;
+        case 'xiaohongshu':
+            authUrl += `?client_id=YOUR_XIAOHONGSHU_CLIENT_ID&redirect_uri=${redirectUri}&response_type=code&scope=user_info&state=${state}`;
+            break;
+        case 'pdd':
+            authUrl += `?client_id=YOUR_PDD_CLIENT_ID&response_type=code&redirect_uri=${redirectUri}&state=${state}`;
+            break;
+        case 'jd':
+            authUrl += `?response_type=code&client_id=YOUR_JD_CLIENT_ID&redirect_uri=${redirectUri}&state=${state}`;
+            break;
+    }
+    
+    // 跳转到第三方授权页面
+    alert(`正在跳转到${platform}登录页面...`);
+    // 实际项目中，这里应该跳转到对应的第三方登录页面
+    // window.location.href = authUrl;
+    
+    // 模拟第三方登录成功
+    setTimeout(() => {
+        handleThirdPartyLoginSuccess(platform, {
+            id: 'third_party_user_' + Date.now(),
+            name: platform + '_user',
+            email: platform + '_user@example.com'
+        });
+    }, 1000);
+}
+
+// 处理第三方登录成功
+async function handleThirdPartyLoginSuccess(platform, userInfo) {
+    try {
+        // 发送请求到后端进行第三方登录
+        const response = await fetch(`${systemVariables.apiBaseUrl}/auth/${platform}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            // 存储token和用户信息
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('user', JSON.stringify(result.user));
+            // 存储第三方绑定信息
+            saveThirdPartyBinding(platform, userInfo);
+            // 跳转到仪表盘
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(result.error || '登录失败');
+        }
+    } catch (error) {
+        console.error('第三方登录错误:', error);
+        alert('登录失败，请稍后重试');
+    }
+}
+
+// 保存第三方绑定信息
+function saveThirdPartyBinding(platform, userInfo) {
+    const bindings = getThirdPartyBindings();
+    bindings[platform] = {
+        userInfo,
+        boundAt: new Date().toISOString()
+    };
+    localStorage.setItem('third_party_bindings', JSON.stringify(bindings));
+}
+
+// 获取第三方绑定信息
+function getThirdPartyBindings() {
+    const bindings = localStorage.getItem('third_party_bindings');
+    return bindings ? JSON.parse(bindings) : {};
+}
+
+// 解除第三方绑定
+function unbindThirdParty(platform) {
+    if (confirm(`确定要解除${platform}的绑定吗？`)) {
+        const bindings = getThirdPartyBindings();
+        delete bindings[platform];
+        localStorage.setItem('third_party_bindings', JSON.stringify(bindings));
+        alert(`${platform}绑定已解除`);
+        // 刷新页面或更新UI
+        location.reload();
+    }
+}
+
+// 生成随机字符串
+function generateRandomString(length = 32) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+// 处理URL中的授权码
+function handleOAuthCallback() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+    const storedState = localStorage.getItem('oauth_state');
+    
+    if (code && state && state === storedState) {
+        // 验证state，防止CSRF攻击
+        localStorage.removeItem('oauth_state');
+        
+        // 从URL中获取平台信息
+        const platform = urlParams.get('platform') || 'wechat';
+        
+        // 发送code到后端获取token
+        exchangeCodeForToken(platform, code);
+    }
+}
+
+// 交换授权码获取token
+async function exchangeCodeForToken(platform, code) {
+    try {
+        const response = await fetch(`${systemVariables.apiBaseUrl}/auth/${platform}/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ code })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            // 存储token和用户信息
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('user', JSON.stringify(result.user));
+            // 跳转到仪表盘
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(result.error || '登录失败');
+        }
+    } catch (error) {
+        console.error('交换授权码错误:', error);
+        alert('登录失败，请稍后重试');
+    }
+}
+
+// 检查URL中是否有授权码
+window.addEventListener('load', handleOAuthCallback);
+
+setLang('zh');
+</script>
+
+</body>
+</html>

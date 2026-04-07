@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>找回密码 - Raoemail</title>
+  <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+    body{background:#0a192f;color:#e6f1ff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .box{background:#172a45;padding:2.5rem;border-radius:12px;width:100%;max-width:500px;box-shadow:0 10px 30px #0000004d}
+    .title{text-align:center;color:#64ffda;margin-bottom:1.5rem}
+    .input-group{margin-bottom:1rem}
+    label{display:block;margin-bottom:0.5rem;color:#ccd6f6}
+    input,select{width:100%;padding:1rem;background:#0a192f;border:1px solid #233554;border-radius:6px;color:#fff;font-size:1rem}
+    input:focus,select:focus{outline:none;border-color:#64ffda}
+    .btn{width:100%;padding:1rem;background:#64ffda;color:#0a192f;border:none;border-radius:6px;font-size:1rem;margin-top:0.5rem;cursor:pointer}
+    .btn:hover{background:#4fdabb}
+    .links{text-align:center;margin-top:1.5rem}
+    .links a{display:block;margin-top:0.5rem;color:#8892b0;text-decoration:none}
+    .links a:hover{color:#64ffda}
+    .tip{color:#8892b0;font-size:14px;margin-bottom:10px}
+  </style>
+</head>
+<body>
+<div class="box">
+  <h2 class="title">找回密码 / 重置密码</h2>
+
+  <div class="input-group">
+    <label>选择找回方式（任选一种）</label>
+    <select id="findType">
+      <option value="email">邮箱验证</option>
+      <option value="phone">手机验证</option>
+      <option value="idcard">身份证</option>
+      <option value="passport">护照</option>
+      <option value="question">安全问题</option>
+      <option value="image">图片验证</option>
+      <option value="trade">交易记录</option>
+      <option value="friend">好友验证</option>
+      <option value="other">其他方式</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>注册邮箱（必填）</label>
+    <input type="email" id="email" placeholder="请输入注册邮箱">
+  </div>
+
+  <div class="input-group">
+    <label>验证码</label>
+    <input type="text" id="code" placeholder="请输入验证码">
+  </div>
+
+  <div class="input-group">
+    <label>新密码</label>
+    <input type="password" id="newPwd" placeholder="设置新密码">
+  </div>
+
+  <div class="input-group">
+    <label>确认新密码</label>
+    <input type="password" id="confirmPwd" placeholder="确认新密码">
+  </div>
+
+  <button class="btn" onclick="submitReset()">提交重置</button>
+
+  <div class="links">
+    <a href="auth.html">← 返回登录</a>
+    <a href="../../intro.html">← 返回首页</a>
+  </div>
+</div>
+
+<script>
+function submitReset() {
+  const email = document.getElementById('email').value.trim();
+  const code = document.getElementById('code').value.trim();
+  const newPwd = document.getElementById('newPwd').value.trim();
+  const confirmPwd = document.getElementById('confirmPwd').value.trim();
+  const findType = document.getElementById('findType').value;
+
+  // 简单验证
+  if (!email || !code || !newPwd || !confirmPwd) {
+    alert("❌ 验证失败：请填写完整信息！\n方式：" + findType);
+    return; // 留在当前页
+  }
+
+  if (newPwd !== confirmPwd) {
+    alert("❌ 验证失败：两次密码不一致！");
+    return; // 留在当前页
+  }
+
+  // ======================
+  // 验证成功 → 提示 + 返回副首页
+  // ======================
+  alert("✅ 验证成功！密码已重置！\n找回方式：" + findType);
+  location.href = "../intro.html"; // 跳转到副首页
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail - 会员中心</title>
+    <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
+        body {background:#0a192f; color:#e6f1ff; display:flex; min-height:100vh;}
+        .sidebar {width:260px; background:#172a45; padding:1.5rem; border-right:1px solid #233554;}
+        .sidebar-logo {display:flex; align-items:center; gap:0.8rem; margin-bottom:2rem;}
+        .sidebar-logo img {height:36px;}
+        .sidebar-logo h2 {color:#64ffda; font-size:1.4rem;}
+        .nav-item {display:flex; align-items:center; gap:0.8rem; padding:1rem; border-radius:6px; cursor:pointer; margin-bottom:0.5rem; color:#8892b0; transition:0.3s;}
+        .nav-item.active {background:rgba(100,255,218,0.1); color:#64ffda;}
+        .nav-item:hover {background:rgba(100,255,218,0.05);}
+        .main {flex:1; padding:2rem;}
+        .header {display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;}
+        .header h1 {font-size:2rem; color:#ccd6f6;}
+        .user-info {display:flex; align-items:center; gap:1rem;}
+        .lang-btn {background:transparent; border:1px solid #64ffda; color:#64ffda; padding:0.4rem 0.8rem; border-radius:4px; cursor:pointer; margin-left:0.5rem;}
+        .lang-btn.active {background:#64ffda; color:#0a192f;}
+        .stats-grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; margin-bottom:2rem;}
+        .stat-card {background:#172a45; padding:1.5rem; border-radius:8px;}
+        .stat-card h3 {font-size:1.2rem; color:#8892b0; margin-bottom:0.5rem;}
+        .stat-card .number {font-size:2rem; font-weight:600; color:#64ffda;}
+        .content-card {background:#172a45; padding:2rem; border-radius:8px;}
+        .content-card h2 {font-size:1.6rem; margin-bottom:1.5rem; color:#ccd6f6;}
+        [data-lang="en"] {display:none;}
+        .en [data-lang="zh"] {display:none;}
+        .en [data-lang="en"] {display:block;}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../logo.svg" alt="Raoemail Logo">
+            <h2>Raoemail</h2>
+        </div>
+        <div class="nav-item active">
+            <span data-lang="zh">首页</span>
+            <span data-lang="en">Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='email-management.html'">
+            <span data-lang="zh">邮件管理</span>
+            <span data-lang="en">Email Management</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">营销工具</span>
+            <span data-lang="en">Marketing Tools</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">数据统计</span>
+            <span data-lang="en">Analytics</span>
+        </div>
+        <div class="nav-item">
+            <span data-lang="zh">账户设置</span>
+            <span data-lang="en">Settings</span>
+        </div>
+        <div class="nav-item" onclick="logout()">
+            <span data-lang="zh">退出登录</span>
+            <span data-lang="en">Logout</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1 data-lang="zh">会员中心</h1>
+            <h1 data-lang="en">Member Center</h1>
+            <div class="user-info">
+                <button class="lang-btn active" onclick="switchLang('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLang('en')">English</button>
+                <span>user@raoemail.com</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 data-lang="zh">总邮件数</h3>
+                <h3 data-lang="en">Total Emails</h3>
+                <div class="number">1,286</div>
+            </div>
+            <div class="stat-card">
+                <h3 data-lang="zh">未读邮件</h3>
+                <h3 data-lang="en">Unread</h3>
+                <div class="number">42</div>
+            </div>
+            <div class="stat-card">
+                <h3 data-lang="zh">营销发送</h3>
+                <h3 data-lang="en">Campaigns Sent</h3>
+                <div class="number">18</div>
+            </div>
+            <div class="stat-card">
+                <h3 data-lang="zh">会员等级</h3>
+                <h3 data-lang="en">Member Level</h3>
+                <div class="number">Pro</div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2 data-lang="zh">欢迎使用 Raoemail 专业邮件系统</h2>
+            <h2 data-lang="en">Welcome to Raoemail Professional Email System</h2>
+            <p data-lang="zh">您已成功登录会员中心，可使用邮件管理、AI分拣、自动化营销等全部功能。</p>
+            <p data-lang="en">You have successfully logged in. Access all features including email management, AI sorting, and automated marketing.</p>
+        </div>
+    </div>
+
+    <script>
+        // 检查认证状态
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // 没有token，重定向到登录页面
+                window.location.href = 'auth.html';
+                return false;
+            }
+            return true;
+        }
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'auth.html';
+        }
+
+        // 切换语言
+        function switchLang(lang) {
+            document.documentElement.className = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 页面加载时检查认证状态
+        window.onload = function() {
+            checkAuth();
+            // 尝试从本地存储获取用户信息
+            const user = localStorage.getItem('user');
+            if (user) {
+                try {
+                    const userObj = JSON.parse(user);
+                    const userEmailElement = document.querySelector('.user-info span');
+                    if (userEmailElement) {
+                        userEmailElement.textContent = userObj.email;
+                    }
+                } catch (e) {
+                    console.error('解析用户信息失败:', e);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
