@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raoemail - 管理中心 | 茶海虾王旗下品牌</title>
+    <link rel="icon" href="../../favicon512.ico" type="image/x-icon">
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
+        body {background:#0a192f; color:#e6f1ff; padding:2rem;}
+        .container {max-width:800px; margin:0 auto;}
+        .logo {display:flex; align-items:center; gap:0.8rem; margin-bottom:2rem;}
+        .logo img {height:40px;}
+        .logo h1 {color:#64ffda; font-size:1.6rem;}
+        .card {background:#172a45; padding:2rem; border-radius:12px; margin-bottom:1.5rem;}
+        .card h2 {color:#64ffda; margin-bottom:1rem; font-size:1.4rem;}
+        .info-row {display:flex; justify-content:space-between; padding:0.8rem 0; border-bottom:1px solid #233554;}
+        .info-row span {color:#8892b0;}
+        .info-row strong {color:#ccd6f6; font-size:1.1rem;}
+
+        .sponsor-img {
+            width: 100%;
+            max-width: 360px;
+            border-radius: 8px;
+            margin: 1rem auto;
+            display: block;
+            border: 1px solid #233554;
+        }
+
+        .sponsor-desc {
+            color: #8892b0;
+            line-height: 1.8;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+        .sponsor-desc strong {
+            color: #ccd6f6;
+        }
+        .sponsor-desc h3 {
+            color: #64ffda;
+            margin: 1.2rem 0 0.6rem;
+            font-size: 1.15rem;
+        }
+        
+        /* 茶海虾王品牌链接 */
+        .chxw-brand-link {
+            background: linear-gradient(135deg, #D7000F, #D4AF37);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(215, 0, 15, 0.3);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(215, 0, 15, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(215, 0, 15, 0.5); }
+        }
+        .chxw-brand-link a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: block;
+        }
+        .chxw-brand-link a:hover {
+            color: #FFD700;
+        }
+        .chxw-brand-link .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .back-home {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .back-home a {
+            color: #64ffda;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../logo.svg" alt="Raoemail">
+            <h1>Raoemail 管理中心</h1>
+        </div>
+
+        <!-- 茶海虾王品牌链接 -->
+        <div class="chxw-brand-link">
+            <a href="https://rao5201.github.io/chxw-official/" target="_blank">
+                🏠 访问茶海虾王官方网站 (CHXW)
+                <div class="subtitle">融合传统与现代的久潮流互联网平台 | IP 查询 · 新闻中心 · 产品中心 · 软件工具</div>
+            </a>
+        </div>
+
+        <!-- 汇款账户信息 -->
+        <div class="card">
+            <h2>💳 账户收款信息</h2>
+            <div class="info-row">
+                <span>银行名称</span>
+                <strong>中国农业银行</strong>
+            </div>
+            <div class="info-row">
+                <span>全国联行号</span>
+                <strong>103581007051</strong>
+            </div>
+            <div class="info-row">
+                <span>账 号</span>
+                <strong>6228480089304669172</strong>
+            </div>
+            <div class="info-row">
+                <span>开户行</span>
+                <strong>中国农业银行股份有限公司广州林安物流园支行</strong>
+            </div>
+            <div class="info-row">
+                <span>收款人</span>
+                <strong>饶思义</strong>
+            </div>
+        </div>
+
+        <!-- 返回首页 -->
+        <div class="back-home">
+            <div style="margin-bottom: 1rem;">
+                <label style="color: #8892b0; margin-right: 1rem;">选择返回页面：</label>
+                <select id="homePageSelector" onchange="navigateToHomePage()" style="padding: 0.5rem; background: #0a192f; border: 1px solid #233554; border-radius: 6px; color: #e6f1ff; font-size: 1rem;">
+                    <option value="../../intro.html">← 返回上一页</option>
+                    <option value="../../index.html">← 返回 Raoemail 首页</option>
+                </select>
+            </div>
+            <a href="../../intro.html">← 返回上一页</a> | <a href="../../index.html">← 返回 Raoemail 首页</a>
+        </div>
+        
+        <script>
+            // 导航到选择的首页
+            function navigateToHomePage() {
+                const selector = document.getElementById('homePageSelector');
+                const selectedPath = selector.value;
+                window.location.href = selectedPath;
+            }
+        </script>
+
+        <!-- 恳请赞助与融资计划 -->
+        <div class="card">
+            <h2>🙏 诚挚感谢 · 赞助支持</h2>
+            
+            <img src="恳请赞助.png" class="sponsor-img" alt="恳请赞助">
+
+            <div class="sponsor-desc">
+                <strong>Raoemail 智能邮件系统</strong> 是一款自主研发、面向企业与个人的一站式智能邮件服务平台。项目始终坚持免费开源、安全稳定、无广告的运营理念，持续为广大用户提供高效、可靠、智能的邮件管理体验。
+
+                <h3>📌 项目融资与发展计划</h3>
+                为持续提升系统性能、拓展功能模块、优化用户体验、保障服务器长期稳定运行，现正式启动项目赞助与融资计划：<br>
+                • 用于服务器、域名、SSL 证书、存储与带宽费用<br>
+                • 用于 AI 模型训练、功能升级与安全防护研发<br>
+                • 用于客户服务、技术支持与系统维护<br>
+                • 用于产品迭代、移动端开发与生态扩展<br>
+
+                <h3>🎯 赞助资金用途</h3>
+                所有赞助与融资资金将 100% 用于项目研发、服务器成本、安全维护与用户服务，致力于让 Raoemail 成为更安全、更稳定、更智能的邮件服务平台。
+
+                <h3>🔗 友情链接</h3>
+                Raoemail 是茶海虾王 (CHXW) 旗下品牌，访问 <a href="https://rao5201.github.io/chxw-official/" style="color:#64ffda;">官方网站</a> 了解更多优质服务：
+                <br>• 🌐 IP 地址查询 - 实时定位归属地
+                <br>• 📰 中国新闻 - 最新时事资讯
+                <br>• 🛒 产品中心 - 全品类电商平台
+                <br>• 🔧 软件工具 - 实用工具下载
+
+                <br><br>
+                <strong>Raoemail 管理中心工作人员和客户与善心，衷心感谢每一位用户的信任、支持与陪伴！</strong>
+                <br><br>
+                <strong>Raoemail 祝大家身体健康！万事如意！财源广进！幸福安康！谢谢！！！</strong>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
